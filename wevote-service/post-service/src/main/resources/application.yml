@@ -1,0 +1,19 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: post-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/we-vote?characterEncoding=UTF-8
+    username: root
+    password: Good18882336322
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com/fizzy/core/entity

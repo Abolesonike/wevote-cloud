@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.PostMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Post">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="post_user_id" jdbcType="INTEGER" property="postUserId" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="post_time" jdbcType="DATE" property="postTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="choose" jdbcType="VARCHAR"  property="choose" />
+        <result column="vote_number" jdbcType="VARCHAR"  property="voteNumber" />
+        <result column="voted_user" jdbcType="VARCHAR"  property="votedUser" />
+    </resultMap>
+    <!--查找所有帖子-->
+    <select id="findAllPost" parameterType="com.fizzy.core.entity.Post" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
+        select * from content
+    </select>
+
+    <!--通过id查找帖子-->
+    <select id="findPostById" parameterType="com.fizzy.core.entity.Post" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
+        select * from content where id = #{id}
+    </select>
+
+    <!-- 插入一个帖子 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Post" useGeneratedKeys="true" keyProperty="id">
+        insert into content (title, post_user_id, content, post_time, choose, vote_number, voted_user ,status)
+        values (#{title}, #{post_user_id}, #{content}, #{post_time},
+                #{choose}, #{vote_number}, #{voted_user} ,#{status})
+    </insert>
+
+    <!--通过id查找帖子投票数-->
+    <select id="findVoteNumberById" parameterType="com.fizzy.core.entity.Post" resultType="java.lang.String">
+        select vote_number from content where id = #{id}
+    </select>
+
+    <!-- 投票后更新投票用户 -->
+    <update id="addVoteUser">
+        update content set voted_user = concat (voted_user, #{userId}, ',') where id = #{id}
+    </update>
+
+    <!-- 投票后更新投票数 -->
+    <update id="updateVoteNumber">
+        update content set vote_number=#{vote_number} where id = #{id}
+    </update>
+
+</mapper>

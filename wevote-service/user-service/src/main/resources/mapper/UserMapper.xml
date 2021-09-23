@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.userservice.mapper.UserMapper">
+    <!--查找所有用户-->
+    <select id="findAllUser" parameterType="com.fizzy.core.entity.User" resultType="com.fizzy.core.entity.User">
+        select * from user
+    </select>
+
+    <!--通过用户名查找-->
+    <select id="findUserByName" parameterType="com.fizzy.core.entity.User" resultType="com.fizzy.core.entity.User">
+        select * from user where username = #{name}
+    </select>
+
+    <!--通过用户名和密码查找-->
+    <select id="getByUsernameAndPassword" parameterType="com.fizzy.core.entity.User" resultType="com.fizzy.core.entity.User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+
+    <!--通过id查找-->
+    <select id="findUserById" parameterType="com.fizzy.core.entity.User" resultType="com.fizzy.core.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+    <!-- 插入一个用户 -->
+    <insert id="insertOneUser" parameterType="com.fizzy.core.entity.User">
+        insert into user (username, password)
+        values (#{username}, #{password})
+    </insert>
+
+</mapper>
