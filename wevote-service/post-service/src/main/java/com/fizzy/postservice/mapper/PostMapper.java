@@ -9,7 +9,7 @@ import java.util.List;
  * @author FizzyElf
  * Creat time 2021-4-8
  * Last Edit time 2021-9-22
- * RestController注解 返回数据会被解析成json
+ * Repository
  */
 @Repository
 public interface PostMapper {

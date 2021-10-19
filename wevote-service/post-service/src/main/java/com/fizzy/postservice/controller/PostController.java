@@ -18,6 +18,7 @@ import java.util.*;
  * RestController注解 返回数据会被解析成json
  */
 @RestController
+@RequestMapping("/post")
 public class PostController {
     @Autowired
     PostService postService;
@@ -29,11 +30,10 @@ public class PostController {
     UserServiceFeign userServiceFeign;
 
     @CrossOrigin
-    @GetMapping("/api/postList")
+    @GetMapping("/postList")
     public List<Map<String,Object>> postList() {
         List<Map<String,Object>> resultList = new ArrayList<>();
         List<Post> contentList = postService.findAllContent();
-
         //根据帖子找用户，一个map对应一个帖子和用户，最后返回一个map集合
         for(Post content : contentList){
             Map<String, Object> map = new HashMap<>();
@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @CrossOrigin
-    @GetMapping("/api/detail/{id}")
+    @GetMapping("/detail/{id}")
     public HashMap<String,Object> detail(@PathVariable("id") int id) throws Exception {
         // 返回给前端的数据
         HashMap<String, Object> resultMap = new HashMap<>();
@@ -73,7 +73,7 @@ public class PostController {
     }
 
     @CrossOrigin
-    @PostMapping("/api/postVote")
+    @PostMapping("/postVote")
     public Result postVote(@RequestBody HashMap<String, Object> vote){
         System.out.println(vote);
         Post content = new Post();
@@ -120,7 +120,7 @@ public class PostController {
     }
 
     @CrossOrigin
-    @PostMapping("/api/vote")
+    @PostMapping("/vote")
     public boolean vote(@RequestBody HashMap<String, Object> getId){
         int id = (int) getId.get("id");
         int userId = (int) getId.get("userId");
@@ -129,7 +129,7 @@ public class PostController {
     }
 
     @CrossOrigin
-    @GetMapping("/api/test")
+    @GetMapping("/test")
     public List<Integer> test() throws Exception {
         List<Integer> list = new ArrayList<>();
         list.add(1);

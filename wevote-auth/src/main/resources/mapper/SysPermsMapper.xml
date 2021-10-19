@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.auth.mapper.SysPermsMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.SysPerms">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="perms_id" jdbcType="INTEGER" property="permsId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="p_id" jdbcType="VARCHAR" property="pId" />
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+        <result column="path" jdbcType="VARCHAR" property="path" />
+        <result column="perms_code" jdbcType="VARCHAR" property="permsCode" />
+        <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
+        <result column="create_time" jdbcType="TIMESTAMP"  property="createTime" />
+        <result column="modify_time" jdbcType="TIMESTAMP"  property="modifyTime" />
+        <result column="modify_username" jdbcType="VARCHAR" property="modifyUsername" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    </resultMap>
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.SysPerms" useGeneratedKeys="true" keyProperty="permsId">
+        insert into sys_perms (p_id, menu_name, path, perms_code, menu_type,
+                               create_time, modify_time, modify_username, user_id)
+        values (#{pId}, #{menuName}, #{path}, #{permsCode},#{menuType},
+                #{createTime},#{modifyTime},#{modifyUsername},#{userId})
+    </insert>
+
+    <!-- 删除一条数据 -->
+    <delete id="deleteByPermsId" parameterType="java.lang.Integer">
+        delete from sys_perms where perms_id = #{permsId}
+    </delete>
+
+    <!-- 查询一条数据 -->
+    <select id="selectByPermsId" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.SysPerms" resultMap="BaseResultMap">
+        select * from sys_perms where perms_id = #{permsId}
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from sys_perms
+    </select>
+
+    <!-- 修改一条数据 -->
+    <update id="updateById" parameterType="com.fizzy.core.entity.SysPerms">
+        update sys_perms set p_id = #{pId},menu_name = #{menuName},
+                            path = #{path},perms_code = #{permsCode},
+                            menu_type = #{menuType}, create_time = #{createTime},
+                            modify_time = #{modifyTime}, modify_username = #{modifyUsername},
+                            user_id = #{userId}
+        where perms_id = #{permsId}
+
+    </update>
+
+</mapper>

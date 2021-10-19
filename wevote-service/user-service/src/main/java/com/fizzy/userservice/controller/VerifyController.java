@@ -1,7 +1,7 @@
 package com.fizzy.userservice.controller;
 
 import com.fizzy.core.utils.VerifyCode;
-import com.fizzy.redis.utils.RedisUtil;
+import com.fizzy.redis.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

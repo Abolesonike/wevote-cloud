@@ -1,6 +1,6 @@
 package com.fizzy.userservice.controller;
 
-import com.fizzy.core.entity.User;
+import com.fizzy.core.entity.*;
 import com.fizzy.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,11 @@ public class UserController {
     @GetMapping("/getUserById/{id}")
     public User getUserById(@PathVariable("id") int id){
         return userService.findUserById(id);
+    }
+
+    @GetMapping("/getUserByName/{userName}")
+    public User getUserByName(@PathVariable("userName") String userName){
+        return userService.getByName(userName);
     }
 
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.auth.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.SysRole">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="role_id" jdbcType="INTEGER" property="roleId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+        <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="enable_status" jdbcType="VARCHAR" property="enableStatus" />
+        <result column="modify_time" jdbcType="TIMESTAMP"  property="modifyTime" />
+    </resultMap>
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.SysRole" useGeneratedKeys="true" keyProperty="roleId">
+        insert into sys_role (role_name, role_desc, create_date, enable_status, modify_time)
+        values (#{roleName}, #{roleDesc}, #{createDate}, #{enableStatus},#{modifyTime})
+    </insert>
+
+    <!-- 删除一条数据 -->
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from sys_role where role_id = #{roleId}
+    </delete>
+
+    <!-- 查询一条数据 -->
+    <select id="selectByRoleId" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.SysRole" resultMap="BaseResultMap">
+        select * from sys_role where role_id = #{roleId}
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from sys_role
+    </select>
+
+    <!-- 修改一条数据 -->
+    <update id="updateById" parameterType="com.fizzy.core.entity.SysRole">
+        update sys_role set role_name = #{roleName},role_desc = #{roleDesc},
+                            create_date = #{createDate},enable_status = #{enableStatus},
+                            modify_time = #{modifyTime} where role_id = #{roleId}
+
+    </update>
+
+</mapper>

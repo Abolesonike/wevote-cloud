@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="wevote-common-redis" />
+        <module name="post-service" />
+        <module name="wevote-gateway" />
+        <module name="wevote-core" />
+        <module name="wevote-auth" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="post-service" target="8" />
+      <module name="user-service" target="8" />
+      <module name="WeVote" target="8" />
+      <module name="wevote-auth" target="8" />
+      <module name="wevote-common" target="8" />
+      <module name="wevote-common-redis" target="8" />
+      <module name="wevote-common-security" target="8" />
+      <module name="wevote-core" target="8" />
+      <module name="wevote-gateway" target="8" />
+      <module name="wevote-service" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="post-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
+      <module name="wevote-auth" options="-parameters" />
+      <module name="wevote-common-redis" options="-parameters" />
+      <module name="wevote-common-security" options="-parameters" />
+      <module name="wevote-core" options="-parameters" />
+      <module name="wevote-gateway" options="-parameters" />
+      <module name="wevote-service" options="-parameters" />
+    </option>
+  </component>
+</project>

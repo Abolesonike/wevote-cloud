@@ -12,7 +12,6 @@
     <artifactId>wevote-common</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>wevote-common-security</module>
         <module>wevote-common-redis</module>
     </modules>
 

@@ -1,0 +1,6 @@
+# 项目排除路径
+/wevote-common/wevote-common-redis/target/
+/wevote-core/target/
+/wevote-gateway/target/
+/wevote-service/post-service/target/
+/wevote-service/user-service/target/

@@ -9,6 +9,7 @@
         <module>wevote-core</module>
         <module>wevote-gateway</module>
         <module>wevote-common</module>
+        <module>wevote-auth</module>
     </modules>
 
     <parent>
@@ -33,6 +34,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
         </dependency>
     </dependencies>
 

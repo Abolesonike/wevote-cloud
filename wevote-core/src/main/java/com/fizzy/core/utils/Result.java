@@ -1,5 +1,6 @@
 package com.fizzy.core.utils;
 
+import com.fizzy.core.entity.Post;
 import lombok.Data;
 
 @Data

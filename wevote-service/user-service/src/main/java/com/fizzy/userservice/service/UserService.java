@@ -1,7 +1,7 @@
 package com.fizzy.userservice.service;
 
 import com.fizzy.core.entity.User;
-import com.fizzy.userservice.mapper.UserMapper;
+import com.fizzy.userservice.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
