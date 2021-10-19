@@ -22,6 +22,12 @@ spring:
             - Path=/post-service/**
           filters:
             - StripPrefix=1
+        - id: gateway-auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - StripPrefix=1
       # 跨域
       globalcors:
         cors-configurations:

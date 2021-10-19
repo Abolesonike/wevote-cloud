@@ -6,6 +6,8 @@ import com.fizzy.core.entity.SysRole;
 import com.fizzy.core.entity.User;
 import com.fizzy.core.utils.Result;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +23,35 @@ import java.util.HashMap;
 @RestController
 public class LoginController {
 
-    @PostMapping("/loginByPwd")
-    public Result loginByPwd(@RequestParam String user_name, @RequestParam String Pwd, HttpServletRequest request) {
+    @PostMapping("/login")
+    public QueryResult loginByPwd(@RequestParam String user_name, @RequestParam String Pwd, HttpServletRequest request) {
 
-        // 认证 Subject：主体
-        Subject subject = SecurityUtils.getSubject();
-        // 根据用户信息，组成用户令牌token
-        UsernamePasswordToken Token = new UsernamePasswordToken(user_name, Pwd, false);
-        subject.login(Token);
-        User user1 = (User) subject.getPrincipal();
-        QueryResult queryResult = new QueryResult();
-        String token = subject.getSession().getId().toString();
-        queryResult.setData(user1);
-        queryResult.setToken(token);
-        return new Result(200);
+        try {
+            // 认证 Subject：主体
+            Subject subject = SecurityUtils.getSubject();
+            // 根据用户信息，组成用户令牌token
+            UsernamePasswordToken Token = new UsernamePasswordToken(user_name, Pwd, false);
+            subject.login(Token);
+            User user1 = (User) subject.getPrincipal();
+            QueryResult queryResult = new QueryResult();
+            String token = subject.getSession().getId().toString();
+            queryResult.setData(user1);
+            queryResult.setToken(token);
+            return queryResult;
+        } catch (UnknownAccountException e) {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setData("用户不存在！");
+            return queryResult;
+        } catch (IncorrectCredentialsException e) {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setData("密码错误！");
+            return queryResult;
+        }
+    }
+
+    @GetMapping("/goLogin")
+    public Result goLogin(){
+        return new Result(405,"未登录");
     }
 
     @RequestMapping("/logout")

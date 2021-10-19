@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class SysUser {
-  private String userId;
+  private Long userId;
   private String username;
   private String password;
   private java.sql.Timestamp lastLoginDate;

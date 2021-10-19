@@ -30,6 +30,7 @@ public class UserRealm extends AuthorizingRealm {
         User dbuser = userServiceFeign.getUserByName(user.getUsername());
         // 添加授权字符串
         info.addRole(dbuser.toString());
+        info.addStringPermission("1");
         return info;
 
     }

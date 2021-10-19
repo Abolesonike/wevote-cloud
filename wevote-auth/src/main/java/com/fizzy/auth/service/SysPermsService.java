@@ -34,14 +34,14 @@ public class SysPermsService {
     /**
      * 查询一条数据
      */
-    public SysRole selectByPermsId(int permsId){
+    public SysPerms selectByPermsId(int permsId){
         return sysPermsMapper.selectByPermsId(permsId);
     }
 
     /**
      * 查询所有数据
      */
-    public List<SysRole> selectAll(){
+    public List<SysPerms> selectAll(){
         return sysPermsMapper.selectAll();
     }
 

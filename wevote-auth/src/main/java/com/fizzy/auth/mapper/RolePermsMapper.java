@@ -1,39 +1,39 @@
 package com.fizzy.auth.mapper;
 
+import com.fizzy.core.entity.RolePerms;
 import com.fizzy.core.entity.SysPerms;
-import com.fizzy.core.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * Author FizzyElf
- * Date 2021/10/19 11:35
+ * Date 2021/10/19 17:19
  */
 @Mapper
-public interface SysPermsMapper {
+public interface RolePermsMapper {
     /**
      * 插入一条数据
      */
-    Boolean insertOne(SysPerms sysPerms);
+    Boolean insertOne(RolePerms RolePerms);
 
     /**
      * 删除一条数据
      */
-    Boolean deleteByPermsId(int permsId);
+    Boolean deleteById(int id);
 
     /**
      * 查询一条数据
      */
-    SysPerms selectByPermsId(int roleId);
+    List<Integer> selectPermsByRoleId(int id);
 
     /**
      * 查询所有数据
      */
-    List<SysPerms> selectAll();
+    List<RolePerms> selectAll();
 
     /**
      * 修改一条数据
      */
-    Boolean updateById(SysPerms sysPerms);
+    Boolean updateById(RolePerms rolePerms);
 }

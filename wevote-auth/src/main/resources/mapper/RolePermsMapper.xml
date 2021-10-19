@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.auth.mapper.RolePermsMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.RolePerms">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="rolePerms_id" jdbcType="INTEGER" property="rolePermsId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="perms_id" jdbcType="INTEGER" property="permsId" />
+    </resultMap>
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.RolePerms" useGeneratedKeys="true" keyProperty="rolePermsId">
+        insert into role_perms (role_id, perms_id) values (#{roleId}, #{permsId})
+    </insert>
+
+    <!-- 删除一条数据 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from role_perms where rolePerms_id = #{rolePermsId}
+    </delete>
+
+    <!-- 指定角色，查询权限 -->
+    <select id="selectPermsByRoleId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap">
+        select perms_id from role_perms where role_id = #{roleId}
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from role_perms
+    </select>
+
+    <!-- 修改一条数据 -->
+    <update id="updateById" parameterType="com.fizzy.core.entity.RolePerms">
+        update role_perms set role_id = #{roleId},perms_id = #{permsId}
+        where rolePerms_id = #{rolePermsId}
+
+    </update>
+
+</mapper>

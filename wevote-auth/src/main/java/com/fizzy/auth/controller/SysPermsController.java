@@ -30,12 +30,12 @@ public class SysPermsController {
     }
 
     @GetMapping("/find")
-    public SysRole find(@RequestBody HashMap<String, Integer> data) {
+    public SysPerms find(@RequestBody HashMap<String, Integer> data) {
         return sysPermsService.selectByPermsId(data.get("permsId"));
     }
 
     @GetMapping("/findAll")
-    public List<SysRole> findAll() {
+    public List<SysPerms> findAll() {
         return sysPermsService.selectAll();
     }
 

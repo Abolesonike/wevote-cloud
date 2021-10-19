@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.auth.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.SysUser">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="user_id" jdbcType="INTEGER" property="userId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="tel" jdbcType="VARCHAR" property="tel" />
+        <result column="enable_status" jdbcType="VARCHAR" property="enableStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    </resultMap>
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.SysUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into sys_user (username, password, last_login_date, email, tel,
+                              enable_status, create_time, idcard, modify_time)
+        values (#{username}, #{password}, #{lastLoginDate},
+                #{email}, #{tel}, #{enableStatus}, #{createTime},
+                #{idcard}, #{modifyTime})
+    </insert>
+
+    <!-- 删除一条数据 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from sys_user where user_id = #{id}
+    </delete>
+
+    <!-- 根据id查询 -->
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+        select * from sys_user where user_id = #{id}
+    </select>
+
+    <!-- 根据用户名查询 -->
+    <select id="selectByUsername" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+        select * from sys_user where username = #{username}
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from sys_user
+    </select>
+
+    <!-- 修改一条数据 -->
+    <update id="updateById" parameterType="com.fizzy.core.entity.SysUser">
+        update sys_user set username = #{username},password = #{password},
+                            last_login_date = #{lastLoginDate},email = #{email},
+                            tel = #{tel},enable_status = #{enableStatus},
+                            create_time = #{createTime},idcard = #{idcard},
+                            modify_time = #{modifyTime}
+        where user_id = #{userId}
+
+    </update>
+
+</mapper>

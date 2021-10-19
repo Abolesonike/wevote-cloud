@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.auth.mapper.UserRoleMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.UserRole">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="userRole_id" jdbcType="INTEGER" property="userRoleId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    </resultMap>
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.UserRole" useGeneratedKeys="true" keyProperty="userRoleId">
+        insert into user_role (role_id, role_id) values (#{userId}, #{roleId})
+    </insert>
+
+    <!-- 删除一条数据 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from user_role where userRole_id = #{userRoleId}
+    </delete>
+
+    <!-- 查询指定用户的角色 -->
+    <select id="selectRoleByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+        select role_id from user_role where user_id = #{userId}
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from user_role
+    </select>
+
+    <!-- 修改一条数据 -->
+    <update id="updateById" parameterType="com.fizzy.core.entity.UserRole">
+        update user_role set role_id = #{roleId},user_id = #{userId}
+        where userRole_id = #{userRoleId}
+
+    </update>
+
+</mapper>

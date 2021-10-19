@@ -37,10 +37,12 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> map = new HashMap<>();
-
+        map.put("/**","authc");
+        map.put("/login","anon");
+        map.put("/register","anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         //登录
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/goLogin");
         return shiroFilterFactoryBean;
     }
 }
