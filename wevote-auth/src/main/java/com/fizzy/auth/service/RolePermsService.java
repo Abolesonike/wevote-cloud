@@ -2,6 +2,7 @@ package com.fizzy.auth.service;
 
 import com.fizzy.auth.mapper.RolePermsMapper;
 import com.fizzy.core.entity.RolePerms;
+import com.fizzy.core.entity.SysPerms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,8 @@ public class RolePermsService {
     /**
      * 指定角色，查询权限
      */
-    public List<Integer> selectByPermsId(int id){
-        return rolePermsMapper.selectPermsByRoleId(id);
+    public List<RolePerms> selectByPermsId(int roleId){
+        return rolePermsMapper.selectPermsByRoleId(roleId);
     }
 
     /**

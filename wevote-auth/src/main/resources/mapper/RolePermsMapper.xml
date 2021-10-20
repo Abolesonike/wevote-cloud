@@ -22,7 +22,7 @@
 
     <!-- 指定角色，查询权限 -->
     <select id="selectPermsByRoleId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap">
-        select perms_id from role_perms where role_id = #{roleId}
+        select * from role_perms where role_id = #{roleId}
     </select>
 
     <!-- 查询所有数据 -->

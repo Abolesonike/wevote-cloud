@@ -37,7 +37,7 @@
     </select>
 
     <!-- 根据用户名查询 -->
-    <select id="selectByUsername" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+    <select id="selectRoleByUserName" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
         select * from sys_user where username = #{username}
     </select>
 

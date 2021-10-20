@@ -18,42 +18,42 @@ public class SysUserService {
     /**
      * 插入一条数据
      */
-    Boolean insertOne(SysUser sysUser){
+    public Boolean insertOne(SysUser sysUser){
         return sysUserMapper.insertOne(sysUser);
     }
 
     /**
      * 删除一条数据
      */
-    Boolean deleteById(int id){
+    public Boolean deleteById(int id){
         return sysUserMapper.deleteById(id);
     }
 
     /**
      * 根据id查询用户
      */
-    SysUser selectByUserId(int id){
+    public SysUser selectByUserId(int id){
         return sysUserMapper.selectByUserId(id);
     }
 
     /**
      * 根据用户名查询用户
      */
-    SysUser selectRoleByUserId(String username){
-        return sysUserMapper.selectByUsername(username);
+    public SysUser selectRoleByUserName(String username){
+        return sysUserMapper.selectRoleByUserName(username);
     }
 
     /**
      * 查询所有数据
      */
-    List<SysUser> selectAll(){
+    public List<SysUser> selectAll(){
         return sysUserMapper.selectAll();
     }
 
     /**
      * 修改一条数据
      */
-    Boolean updateById(SysUser sysUser){
+    public Boolean updateById(SysUser sysUser){
         return sysUserMapper.updateById(sysUser);
     }
 }

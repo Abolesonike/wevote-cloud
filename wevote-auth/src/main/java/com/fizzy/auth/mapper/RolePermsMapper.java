@@ -25,7 +25,7 @@ public interface RolePermsMapper {
     /**
      * 查询一条数据
      */
-    List<Integer> selectPermsByRoleId(int id);
+    List<RolePerms> selectPermsByRoleId(int id);
 
     /**
      * 查询所有数据

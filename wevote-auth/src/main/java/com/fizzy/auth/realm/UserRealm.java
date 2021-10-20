@@ -1,7 +1,12 @@
 package com.fizzy.auth.realm;
 
 import com.fizzy.auth.feign.UserServiceFeign;
-import com.fizzy.core.entity.User;
+import com.fizzy.auth.service.RolePermsService;
+import com.fizzy.auth.service.SysPermsService;
+import com.fizzy.auth.service.SysUserService;
+import com.fizzy.auth.service.UserRoleService;
+import com.fizzy.core.entity.RolePerms;
+import com.fizzy.core.entity.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -11,6 +16,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * Author FizzyElf
  * Date 2021/10/18 9:31
@@ -19,6 +26,18 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     UserServiceFeign userServiceFeign;
 
+    @Autowired
+    SysPermsService sysPermsService;
+
+    @Autowired
+    SysUserService sysUserService;
+
+    @Autowired
+    UserRoleService userRoleService;
+
+    @Autowired
+    RolePermsService rolePermsService;
+
     // 角色的权限信息，授权时使用
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -26,11 +45,18 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 获取当前用户
         Subject subject = SecurityUtils.getSubject();
-        User user = (User)subject.getPrincipal();
-        User dbuser = userServiceFeign.getUserByName(user.getUsername());
+        SysUser sysUser = (SysUser)subject.getPrincipal();
+        // User dbuser = userServiceFeign.getUserByName(user.getUsername());
+        SysUser dbuser = sysUserService.selectRoleByUserName(sysUser.getUsername());
+        // 获取当前用户的角色
+        int sysRole = userRoleService.selectRoleByUserId(dbuser.getUserId().intValue());
+        // 获取角色对应的权限
+        List<RolePerms> perms = rolePermsService.selectByPermsId(sysRole);
         // 添加授权字符串
-        info.addRole(dbuser.toString());
-        info.addStringPermission("1");
+        for(RolePerms perm : perms){
+            String permName =  sysPermsService.selectByPermsId((int) perm.getPermsId()).getPath();
+            info.addStringPermission(permName);
+        }
         return info;
 
     }
@@ -39,9 +65,10 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        User user = userServiceFeign.getUserByName(token.getUsername());
-        if(user != null){
-            return new SimpleAuthenticationInfo(user,user.getPassword(),getName());
+        // User user = userServiceFeign.getUserByName(token.getUsername());
+        SysUser sysUser = sysUserService.selectRoleByUserName(token.getUsername());
+        if(sysUser != null){
+            return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),getName());
         }
         return null;
     }

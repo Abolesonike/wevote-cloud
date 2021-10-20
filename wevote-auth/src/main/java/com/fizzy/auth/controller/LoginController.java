@@ -3,6 +3,7 @@ package com.fizzy.auth.controller;
 import com.fizzy.auth.service.SysRoleService;
 import com.fizzy.core.entity.QueryResult;
 import com.fizzy.core.entity.SysRole;
+import com.fizzy.core.entity.SysUser;
 import com.fizzy.core.entity.User;
 import com.fizzy.core.utils.Result;
 import org.apache.shiro.SecurityUtils;
@@ -32,10 +33,10 @@ public class LoginController {
             // 根据用户信息，组成用户令牌token
             UsernamePasswordToken Token = new UsernamePasswordToken(user_name, Pwd, false);
             subject.login(Token);
-            User user1 = (User) subject.getPrincipal();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
             QueryResult queryResult = new QueryResult();
             String token = subject.getSession().getId().toString();
-            queryResult.setData(user1);
+            queryResult.setData(sysUser);
             queryResult.setToken(token);
             return queryResult;
         } catch (UnknownAccountException e) {

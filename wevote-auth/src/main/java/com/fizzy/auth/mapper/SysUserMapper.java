@@ -29,7 +29,7 @@ public interface SysUserMapper {
     /**
      * 根据用户名查询用户
      */
-    SysUser selectByUsername(String username);
+    SysUser selectRoleByUserName(String username);
 
     /**
      * 查询所有数据
