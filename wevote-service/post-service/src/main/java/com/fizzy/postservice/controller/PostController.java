@@ -48,7 +48,7 @@ public class PostController {
 
     @CrossOrigin
     @GetMapping("/detail/{id}")
-    public HashMap<String,Object> detail(@PathVariable("id") int id) throws Exception {
+    public HashMap<String,Object> detail(@PathVariable("id") int id) {
         // 返回给前端的数据
         HashMap<String, Object> resultMap = new HashMap<>();
         // 根据前端的帖子id，查询帖子
