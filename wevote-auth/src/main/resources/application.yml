@@ -5,6 +5,8 @@ spring:
   application:
     name: auth-service
   cloud:
+    loadbalancer:
+      enabled: true
     nacos:
       discovery:
         server-addr: localhost:8848

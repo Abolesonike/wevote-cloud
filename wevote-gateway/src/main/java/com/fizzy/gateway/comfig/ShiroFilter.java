@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fizzy.core.utils.Result;
 import com.fizzy.gateway.feign.AuthFeign;
 import com.fizzy.gateway.uilts.SpringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.*;
 
 /**
  * Author FizzyElf
@@ -22,7 +24,10 @@ import java.nio.charset.StandardCharsets;
  */
 @Component
 public class ShiroFilter implements GlobalFilter, Ordered {
+
     AuthFeign authFeign;
+
+    ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -39,11 +44,21 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
         // OpenFeign
         authFeign = SpringUtils.getBean(AuthFeign.class);
-        boolean permitted = authFeign.isPermitted(requestUrl,token);
+//        boolean permitted = authFeign.isPermitted(requestUrl,token);
+
+        // WebFlux异步调用，同步会报错
+        boolean permitted = true;
+        Future<Boolean> future = executorService.submit(() ->authFeign.isPermitted(requestUrl,token));
+
+        try {
+            permitted = future.get();
+            System.out.println(permitted);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         if(!permitted){
             return endResponse(response, new Result(401,"未授权"));
         }
-        System.out.println(permitted);
         return chain.filter(exchange);
     }
 

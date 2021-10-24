@@ -5,6 +5,8 @@ spring:
   application:
     name: post-service
   cloud:
+    loadbalancer:
+      enabled: true
     nacos:
       discovery:
         server-addr: localhost:8848

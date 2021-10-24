@@ -34,6 +34,7 @@ public class LoginController {
             UsernamePasswordToken Token = new UsernamePasswordToken(user_name, Pwd, false);
             subject.login(Token);
             SysUser sysUser = (SysUser) subject.getPrincipal();
+            System.out.println(sysUser);
             QueryResult queryResult = new QueryResult();
             String token = subject.getSession().getId().toString();
             queryResult.setData(sysUser);
@@ -68,7 +69,14 @@ public class LoginController {
         System.out.println("isPermitted");
         //方案一，不灵活（对于get请求，不允许在url通过/拼接参数，可以通过?拼接）、不易排查问题
         boolean permitted = SecurityUtils.getSubject().isPermitted(requestURI);
+        SysUser sysUser = (SysUser)SecurityUtils.getSubject().getPrincipal();
+        System.out.println(sysUser);
         System.out.println("是否授权：" + permitted);
         return permitted;
+    }
+
+    @GetMapping("/auth/test")
+    public void authTest(){
+        System.out.println("进入auth服务");
     }
 }

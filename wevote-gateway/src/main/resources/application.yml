@@ -4,7 +4,15 @@ server:
 spring:
   application:
     name: gateway
+  redis:
+    host: 127.0.0.1 #Redis服务器地址
+    port: 6379 #Redis服务器连接端口
+    database: 0 #Redis数据库索引（默认为0）
+    timeout: 180000 #连接超时时间（毫秒）
+
   cloud:
+    loadbalancer:
+      enabled: true
     nacos:
       discovery:
         server-addr: localhost:8848 # 注册到Nacos中

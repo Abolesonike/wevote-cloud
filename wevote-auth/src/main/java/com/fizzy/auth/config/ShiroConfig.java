@@ -36,13 +36,13 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> map = new HashMap<>();
-        map.put("/**","authc");
-        map.put("/login","anon");
-        map.put("/register","anon");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
-        //登录
-        shiroFilterFactoryBean.setLoginUrl("/goLogin");
+//        Map<String, String> map = new HashMap<>();
+//        map.put("/**","authc");
+//        map.put("/login","anon");
+//        map.put("/register","anon");
+//        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
+//        //登录
+//        shiroFilterFactoryBean.setLoginUrl("/goLogin");
         return shiroFilterFactoryBean;
     }
 }
