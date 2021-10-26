@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 /**
@@ -65,12 +66,10 @@ public class LoginController {
     }
 
     @GetMapping("/isPermitted")
-    public boolean isPermitted(@RequestParam String requestURI,@RequestParam String token) {
+    public boolean isPermitted(@RequestParam String requestURI,@RequestParam String token, HttpServletRequest request) {
         System.out.println("isPermitted");
         //方案一，不灵活（对于get请求，不允许在url通过/拼接参数，可以通过?拼接）、不易排查问题
         boolean permitted = SecurityUtils.getSubject().isPermitted(requestURI);
-        SysUser sysUser = (SysUser)SecurityUtils.getSubject().getPrincipal();
-        System.out.println(sysUser);
         System.out.println("是否授权：" + permitted);
         return permitted;
     }

@@ -28,18 +28,17 @@ public class RedisUtil {
      }
 
     /**
-     * 普通缓存放入
+     * 普通缓存取出
      * @param key 键
      * @return true 成功 false 失败
      */
-    public boolean get(String key) {
+    public String get(String key) {
         try {
             ValueOperations<Object, Object> ops = redisTemplate.opsForValue();
-            ops.get(key);
-            return true;
+            return (String) ops.get(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "失败";
         }
     }
 }

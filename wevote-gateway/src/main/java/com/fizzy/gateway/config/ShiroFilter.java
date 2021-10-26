@@ -1,14 +1,16 @@
-package com.fizzy.gateway.comfig;
+package com.fizzy.gateway.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fizzy.core.utils.Result;
 import com.fizzy.gateway.feign.AuthFeign;
 import com.fizzy.gateway.uilts.SpringUtils;
+import com.fizzy.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,10 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
     AuthFeign authFeign;
 
+    @Autowired
+    RedisUtil redisUtil;
+
+
     ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     @Override
@@ -34,6 +40,8 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         System.out.println("进入GateWay Shiro过滤器");
         // 请求对象
         ServerHttpRequest request = exchange.getRequest();
+        // Cookie放入redis
+        redisUtil.set("Cookie",request.getHeaders().getFirst("Cookie"));
         // 响应对象
         ServerHttpResponse response = exchange.getResponse();
         String token = request.getHeaders().getFirst("token");
@@ -44,7 +52,6 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
         // OpenFeign
         authFeign = SpringUtils.getBean(AuthFeign.class);
-//        boolean permitted = authFeign.isPermitted(requestUrl,token);
 
         // WebFlux异步调用，同步会报错
         boolean permitted = true;
