@@ -22,8 +22,17 @@ public class PostService {
      * 查询所有帖子
      * @return 帖子对象的集合
      */
-    public List<Post> findAllContent(){
+    public List<Post> findAllPost(){
         return postMapper.findAllPost();
+    }
+
+    /**
+     * 查询指定状态的所以帖子
+     * @param status 状态
+     * @return 帖子列表
+     */
+    public List<Post> findAllPostByStatus(int status){
+        return postMapper.findAllPostByStatus(status);
     }
 
     /**
@@ -31,7 +40,7 @@ public class PostService {
      * @param id 要查询的id
      * @return 帖子对象
      */
-    public Post findContentById(int id){
+    public Post findPostById(int id){
         return postMapper.findPostById(id);
     }
 
@@ -45,40 +54,21 @@ public class PostService {
     }
 
     /**
-     * 更新投票用户
-     * @param userId 用户id
-     * @param id 帖子id
+     * 更新全部字段
+     * @param post 跟新的对象
      * @return 是否成功
      */
-    public boolean addVoteUser(int userId, int id){
-        return postMapper.addVoteUser(userId, id);
-    }
-
-    private String findVoteNumberById(int id){
-        return postMapper.findVoteNumberById(id);
+    public boolean updateAll(Post post){
+        return postMapper.updateAll(post);
     }
 
     /**
-     * 更新投票数量
-     * @param voteNumber 新投票数
-     * @param id 帖子id
+     * 删除一条
+     * @param id 删除主键
      * @return 是否成功
      */
-    public boolean updateVoteNumber(String voteNumber, int id){
-        String[] voteList = voteNumber.split(",");
-        String[] voteNumberOld = postMapper.findVoteNumberById(id).split(",");
-        StringBuilder voteNumberNew = new StringBuilder();
-        int index = 0;
-        for( String s : voteList){
-            if(s.equals("true")){
-                voteNumberNew.append(Integer.parseInt(voteNumberOld[index]) + 1).append(",");
-            }else{
-                voteNumberNew.append(voteNumberOld[index]).append(",");
-            }
-            index += 1;
-        }
-
-        return postMapper.updateVoteNumber(voteNumberNew.toString(), id);
+    public boolean deleteById(int id){
+        return postMapper.deleteById(id);
     }
 
 }

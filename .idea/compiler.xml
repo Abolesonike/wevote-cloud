@@ -7,19 +7,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="wevote-common-redis" />
         <module name="post-service" />
         <module name="wevote-gateway" />
-        <module name="wevote-core" />
         <module name="wevote-auth" />
+        <module name="wevote-common-redis" />
+        <module name="user-service" />
+        <module name="file-service" />
+        <module name="wevote-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="file-service" target="8" />
       <module name="post-service" target="8" />
       <module name="user-service" target="8" />
       <module name="WeVote" target="8" />
       <module name="wevote-auth" target="8" />
       <module name="wevote-common" target="8" />
+      <module name="wevote-common-qiniu" target="8" />
       <module name="wevote-common-redis" target="8" />
       <module name="wevote-common-security" target="8" />
       <module name="wevote-core" target="8" />
@@ -29,9 +33,11 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="file-service" options="-parameters" />
       <module name="post-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="wevote-auth" options="-parameters" />
+      <module name="wevote-common-qiniu" options="-parameters" />
       <module name="wevote-common-redis" options="-parameters" />
       <module name="wevote-common-security" options="-parameters" />
       <module name="wevote-core" options="-parameters" />

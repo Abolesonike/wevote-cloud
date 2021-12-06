@@ -19,6 +19,13 @@ public interface PostMapper {
     List<Post> findAllPost();
 
     /**
+     * 查询指定状态的所以帖子
+     * @param status 状态
+     * @return 帖子列表
+     */
+    List<Post> findAllPostByStatus(int status);
+
+    /**
      * 通过id查询帖子
      */
     Post findPostById(int id);
@@ -26,20 +33,20 @@ public interface PostMapper {
     /**
      *  插入一条
      */
-    boolean insertOne(Post content);
+    boolean insertOne(Post post);
+
 
     /**
-     * 添加投票用户
+     * 更新全部字段
+     * @param post 跟新的对象
+     * @return 是否成功
      */
-    boolean addVoteUser(int userId, int id);
+    boolean updateAll(Post post);
 
     /**
-     * 更新投票用户
+     * 删除一条
+     * @param id 删除主键
+     * @return 是否成功
      */
-    boolean updateVoteNumber(String vote_number, int id);
-
-    /**
-     * 通过id查找帖子投票数
-     */
-    String findVoteNumberById(int id);
+    boolean deleteById(int id);
 }

@@ -2,17 +2,16 @@ package com.fizzy.core.entity;
 
 import lombok.Data;
 
-import java.util.Date;
 
 @Data
 public class Post {
-    int id;
-    String title;
-    int postUserId;
-    String content;
-    Date postTime;
-    int status;
-    String choose;
-    String voteNumber;
-    String votedUser;
+    private int id;
+    private String title;
+    private long postUserId;
+    private String content;
+    private java.sql.Timestamp createTime;
+    private int likes;
+    private int status;
+    private String votes;
+    private long community;
 }

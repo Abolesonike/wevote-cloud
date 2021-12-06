@@ -1,22 +1,16 @@
 package com.fizzy.auth.controller;
 
-import com.fizzy.auth.service.SysRoleService;
 import com.fizzy.core.entity.QueryResult;
-import com.fizzy.core.entity.SysRole;
 import com.fizzy.core.entity.SysUser;
-import com.fizzy.core.entity.User;
 import com.fizzy.core.utils.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
 
 /**
  * Author FizzyElf
@@ -26,13 +20,13 @@ import java.util.HashMap;
 public class LoginController {
 
     @PostMapping("/login")
-    public QueryResult loginByPwd(@RequestParam String user_name, @RequestParam String Pwd, HttpServletRequest request) {
+    public QueryResult loginByPwd(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
 
         try {
             // 认证 Subject：主体
             Subject subject = SecurityUtils.getSubject();
             // 根据用户信息，组成用户令牌token
-            UsernamePasswordToken Token = new UsernamePasswordToken(user_name, Pwd, false);
+            UsernamePasswordToken Token = new UsernamePasswordToken(username, password, false);
             subject.login(Token);
             SysUser sysUser = (SysUser) subject.getPrincipal();
             System.out.println(sysUser);

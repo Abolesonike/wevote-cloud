@@ -8,6 +8,7 @@
         <!-- 用result属性来映射非主键字段 -->
         <result column="username" jdbcType="VARCHAR" property="username" />
         <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
         <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
         <result column="email" jdbcType="VARCHAR" property="email" />
         <result column="tel" jdbcType="VARCHAR" property="tel" />
@@ -19,26 +20,31 @@
 
     <!-- 插入一条数据 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.SysUser" useGeneratedKeys="true" keyProperty="userId">
-        insert into sys_user (username, password, last_login_date, email, tel,
+        insert into sys_user (username, password, head_url, last_login_date, email, tel,
                               enable_status, create_time, idcard, modify_time)
-        values (#{username}, #{password}, #{lastLoginDate},
+        values (#{username}, #{password}, #{headUrl}, #{lastLoginDate},
                 #{email}, #{tel}, #{enableStatus}, #{createTime},
                 #{idcard}, #{modifyTime})
     </insert>
 
     <!-- 删除一条数据 -->
-    <delete id="deleteById" parameterType="java.lang.Integer">
+    <delete id="deleteById" parameterType="java.lang.Long">
         delete from sys_user where user_id = #{id}
     </delete>
 
     <!-- 根据id查询 -->
-    <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+    <select id="selectByUserId" parameterType="java.lang.Long" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
         select * from sys_user where user_id = #{id}
     </select>
 
     <!-- 根据用户名查询 -->
-    <select id="selectRoleByUserName" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+    <select id="selectUserByName" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
         select * from sys_user where username = #{username}
+    </select>
+
+    <!-- 根据是否启用查询 -->
+    <select id="selectUserByEnable" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
+        select * from sys_user where enable_status = #{enableStatus}
     </select>
 
     <!-- 查询所有数据 -->
@@ -46,9 +52,15 @@
         select * from sys_user
     </select>
 
+    <!-- 用户名模糊查询 -->
+    <select id="selectByUsernameLike" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser" resultMap="BaseResultMap">
+        select * from sys_user where username like concat('%', #{username}, '%')
+    </select>
+
     <!-- 修改一条数据 -->
     <update id="updateById" parameterType="com.fizzy.core.entity.SysUser">
         update sys_user set username = #{username},password = #{password},
+                            head_url = #{headUrl},
                             last_login_date = #{lastLoginDate},email = #{email},
                             tel = #{tel},enable_status = #{enableStatus},
                             create_time = #{createTime},idcard = #{idcard},

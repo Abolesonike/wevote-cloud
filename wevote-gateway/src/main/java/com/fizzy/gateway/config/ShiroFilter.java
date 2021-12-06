@@ -10,19 +10,21 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.*;
 
 /**
  * Author FizzyElf
  * Date 2021/10/18 16:57
+ * GateWay过滤器
+ * 拦截所有GateWay的请求，进行鉴权
  */
 @Component
 public class ShiroFilter implements GlobalFilter, Ordered {
@@ -40,7 +42,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         System.out.println("进入GateWay Shiro过滤器");
         // 请求对象
         ServerHttpRequest request = exchange.getRequest();
-        // Cookie放入redis
+        // Cookie放入redis，方便feign拦截器取得
         redisUtil.set("Cookie",request.getHeaders().getFirst("Cookie"));
         // 响应对象
         ServerHttpResponse response = exchange.getResponse();
@@ -50,7 +52,17 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         String requestUrl = exchange.getRequest().getURI().getRawPath();
         System.out.println("requestUrl:"+requestUrl);
 
-        // OpenFeign
+        // 1.检查是否是 不需要登录 或者 不需要权限 的接口
+        if(requestUrl.equals("/login")){
+            return chain.filter(exchange);
+        }
+
+        // 2.检查是否有token
+        if(token == null || token.equals("")){
+            return endResponse(response, new Result(402,"未登录"));
+        }
+
+        // 3.OpenFeign，查看接口权限
         authFeign = SpringUtils.getBean(AuthFeign.class);
 
         // WebFlux异步调用，同步会报错

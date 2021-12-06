@@ -1,0 +1,31 @@
+server:
+  port: 8011
+
+spring:
+  application:
+    name: file-service
+  servlet:
+    multipart:
+      max-file-size: 100MB #单个文件大小
+      max-request-size: 500MB # 总文件大小（允许存储文件的文件夹大小）
+  cloud:
+    loadbalancer:
+      enabled: true
+    nacos:
+      discovery:
+        server-addr: http://47.108.113.58:8848/
+
+
+#  七牛秘钥
+oss:
+  qiniu:
+    accessKey: AnbwnvJGdVe033gk71ScVKY_8n_YqdiTCjN5E15Y
+    secretKey: 9LfD-d-GOqwecWviVMKqdaCsBVYGWFR-OBipr-gk
+    #图片名字
+    bucketPictureName: we-vote
+    #图片外部访问拦截
+    domainPicture: http://r3bpa9qft.hn-bkt.clouddn.com/
+    #文件名字
+    bucketFileName: we-vote-file
+    #文件外部访问拦截
+    domainFile: http://r3bpa9qft.hn-bkt.clouddn.com/

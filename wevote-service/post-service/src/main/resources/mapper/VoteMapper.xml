@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.VoteMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Vote">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="chooses" jdbcType="VARCHAR" property="chooses" />
+        <result column="vote_number" jdbcType="VARCHAR" property="voteNumber" />
+        <result column="vote_user" jdbcType="VARCHAR" property="voteUser" />
+        <result column="multi_choose" jdbcType="INTEGER" property="multiChoose" />
+    </resultMap>
+    <!--查找所有帖子-->
+    <select id="findAllVote" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
+        select * from vote
+    </select>
+
+    <!--通过id查找帖子-->
+    <select id="findVoteById" parameterType="com.fizzy.core.entity.Vote" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
+        select * from vote where id = #{id}
+    </select>
+
+    <!-- 插入一个帖子 -->
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Vote" useGeneratedKeys="true" keyProperty="id">
+        insert into vote (title, chooses, vote_number, vote_user, multi_choose)
+        values (#{title}, #{chooses}, #{voteNumber}, #{voteUser},#{multiChoose})
+    </insert>
+
+
+    <!-- 物理删除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from vote where id = #{id}
+    </delete>
+
+</mapper>

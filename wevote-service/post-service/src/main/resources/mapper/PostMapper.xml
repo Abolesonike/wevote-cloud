@@ -9,42 +9,44 @@
         <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="post_user_id" jdbcType="INTEGER" property="postUserId" />
         <result column="content" jdbcType="VARCHAR" property="content" />
-        <result column="post_time" jdbcType="DATE" property="postTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="likes" jdbcType="INTEGER" property="likes" />
         <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="choose" jdbcType="VARCHAR"  property="choose" />
-        <result column="vote_number" jdbcType="VARCHAR"  property="voteNumber" />
-        <result column="voted_user" jdbcType="VARCHAR"  property="votedUser" />
+        <result column="votes" jdbcType="VARCHAR"  property="votes" />
+        <result column="community" jdbcType="INTEGER" property="community" />
     </resultMap>
     <!--查找所有帖子-->
-    <select id="findAllPost" parameterType="com.fizzy.core.entity.Post" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
-        select * from content
+    <select id="findAllPost" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
+        select * from post
+    </select>
+
+    <!--根据status查找所有帖子-->
+    <select id="findAllPostByStatus" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
+        select * from post where status = #{status}
     </select>
 
     <!--通过id查找帖子-->
     <select id="findPostById" parameterType="com.fizzy.core.entity.Post" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
-        select * from content where id = #{id}
+        select * from post where id = #{id}
     </select>
 
     <!-- 插入一个帖子 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.Post" useGeneratedKeys="true" keyProperty="id">
-        insert into content (title, post_user_id, content, post_time, choose, vote_number, voted_user ,status)
-        values (#{title}, #{post_user_id}, #{content}, #{post_time},
-                #{choose}, #{vote_number}, #{voted_user} ,#{status})
+        insert into post (title, post_user_id, content, create_time, likes, status, votes, community)
+        values (#{title}, #{postUserId}, #{content}, #{createTime},#{likes},#{status}, #{votes}, #{community})
     </insert>
 
-    <!--通过id查找帖子投票数-->
-    <select id="findVoteNumberById" parameterType="com.fizzy.core.entity.Post" resultType="java.lang.String">
-        select vote_number from content where id = #{id}
-    </select>
 
-    <!-- 投票后更新投票用户 -->
-    <update id="addVoteUser">
-        update content set voted_user = concat (voted_user, #{userId}, ',') where id = #{id}
+    <!-- 全部更新 -->
+    <update id="updateAll" parameterType="com.fizzy.core.entity.Post">
+        update post set title=#{title},post_user_id=#{postUserId},content=#{content},
+                           create_time=#{createTime},likes=#{likes},status=#{status},votes=#{votes},community=#{community}
+                where id=#{id}
     </update>
 
-    <!-- 投票后更新投票数 -->
-    <update id="updateVoteNumber">
-        update content set vote_number=#{vote_number} where id = #{id}
-    </update>
+    <!-- 物理删除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from post where id = #{id}
+    </delete>
 
 </mapper>

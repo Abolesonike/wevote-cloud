@@ -38,6 +38,8 @@ public class SysRoleController {
         return sysRoleService.selectAll();
     }
 
+
+
     @PutMapping("/update")
     public Boolean update(@RequestBody SysRole sysRole){
         return sysRoleService.updateById(sysRole);

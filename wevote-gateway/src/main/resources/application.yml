@@ -5,17 +5,18 @@ spring:
   application:
     name: gateway
   redis:
-    host: 127.0.0.1 #Redis服务器地址
+    host: 47.108.113.58 #Redis服务器地址
     port: 6379 #Redis服务器连接端口
     database: 0 #Redis数据库索引（默认为0）
     timeout: 180000 #连接超时时间（毫秒）
+    password: good18882336322
 
   cloud:
     loadbalancer:
       enabled: true
     nacos:
       discovery:
-        server-addr: localhost:8848 # 注册到Nacos中
+        server-addr: http://47.108.113.58:8848/ # 注册到Nacos中
     gateway:
       routes:
         - id: gateway-user-service # 路由唯一表示
@@ -36,12 +37,19 @@ spring:
             - Path=/auth-service/**
           filters:
             - StripPrefix=1
+        - id: gateway-file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/file-service/**
+          filters:
+            - StripPrefix=1
       # 跨域
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:9999"
-            allowCredentials: "true"
+            allowedOrigins: "http://localhost:8080"
+            allowCredentials: true
+            allowedHeaders: "*"
             allowedMethods:
               - GET
               - POST

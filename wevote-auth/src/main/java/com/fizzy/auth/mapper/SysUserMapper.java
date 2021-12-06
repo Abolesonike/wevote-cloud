@@ -19,17 +19,27 @@ public interface SysUserMapper {
     /**
      * 删除一条数据
      */
-    Boolean deleteById(int id);
+    Boolean deleteById(long id);
 
     /**
      * 根据id查询用户
      */
-    SysUser selectByUserId(int id);
+    SysUser selectByUserId(long id);
 
     /**
      * 根据用户名查询用户
      */
-    SysUser selectRoleByUserName(String username);
+    SysUser selectUserByName(String username);
+
+    /**
+     * 根据启用状态
+     */
+    List<SysUser> selectUserByEnable(String enable);
+
+    /**
+     * 根据用户名模糊查询
+     */
+    List<SysUser> selectByUsernameLike(String username);
 
     /**
      * 查询所有数据
