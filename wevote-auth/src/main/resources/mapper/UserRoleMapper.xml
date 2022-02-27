@@ -25,6 +25,11 @@
         select role_id from user_role where user_id = #{userId}
     </select>
 
+    <!-- 更具角色id查询 -->
+    <select id="selectByRoleId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap" >
+        select * from user_role where role_id = #{roleId}
+    </select>
+
     <!-- 查询所有数据 -->
     <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
         select * from user_role
@@ -33,7 +38,7 @@
     <!-- 修改一条数据 -->
     <update id="updateById" parameterType="com.fizzy.core.entity.UserRole">
         update user_role set role_id = #{roleId},user_id = #{userId}
-        where userRole_id = #{userRoleId}
+        where user_id = #{userId}
 
     </update>
 

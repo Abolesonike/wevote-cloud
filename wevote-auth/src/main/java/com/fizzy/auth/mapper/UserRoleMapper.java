@@ -27,6 +27,13 @@ public interface UserRoleMapper {
     Integer selectRoleByUserId(int id);
 
     /**
+     * 根据角色查询
+     * @param roleId id
+     * @return 结果
+     */
+    List<UserRole> selectByRoleId(int roleId);
+
+    /**
      * 查询所有数据
      */
     List<UserRole> selectAll();

@@ -39,7 +39,7 @@
     </delete>
 
     <!-- 根据角色删除，用于批量插入时，删除之前角色分配的权限 -->
-    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    <delete id="deleteByRoleId" parameterType="java.lang.Long">
         delete from role_perms where role_id = #{roleId}
     </delete>
 

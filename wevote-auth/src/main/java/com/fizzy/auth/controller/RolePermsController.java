@@ -33,6 +33,6 @@ public class RolePermsController {
      */
     @PostMapping("/assignPermissions")
     public Result assignPermissions(@RequestBody List<Integer> permsList, @RequestParam int roleId){
-        return rolePermsService.batchInsert(permsList, roleId);
+        return rolePermsService.batchInsert(permsList, Long.parseLong(String.valueOf(roleId)));
     }
 }

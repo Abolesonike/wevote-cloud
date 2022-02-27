@@ -1,7 +1,10 @@
 package com.fizzy.auth.controller;
 
+import com.fizzy.auth.mapper.UserRoleMapper;
 import com.fizzy.auth.service.SysUserService;
+import com.fizzy.auth.service.UserRoleService;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.core.entity.UserRole;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
@@ -21,6 +24,9 @@ import java.util.Map;
 public class SysUserController {
     @Autowired
     SysUserService sysUserService;
+
+    @Autowired
+    UserRoleService userRoleService;
 
     @GetMapping("/findById")
     public SysUser findById(@RequestParam long id){
@@ -72,10 +78,17 @@ public class SysUserController {
      */
     @PutMapping("/changeEnable")
     public boolean disable(@RequestBody Map<String, Object> data){
-        System.out.println(data);
         SysUser user = sysUserService.selectByUserId(Long.parseLong(data.get("id").toString()));
         user.setEnableStatus((String) data.get("enable"));
         return sysUserService.updateById(user);
+    }
+
+    @PutMapping("/changeRole")
+    public boolean changeRole(@RequestBody Map<String, Object> data) {
+        UserRole userRole = new UserRole();
+        userRole.setUserId(Long.parseLong(data.get("userId").toString()));
+        userRole.setRoleId(Long.parseLong(data.get("roleId").toString()));
+        return userRoleService.updateById(userRole);
     }
 
 

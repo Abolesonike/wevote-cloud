@@ -4,7 +4,7 @@ package com.fizzy.core.entity;
 import lombok.Data;
 
 /**
- * Author FizzyElf
+ * @author FizzyElf
  * Date 2021/10/19 10:07
  * last edit 2021/11/08 12:14 添加headUrl
  *
@@ -20,7 +20,12 @@ public class SysUser {
   private String tel;
   private String enableStatus;
   private java.sql.Timestamp createTime;
-  private String idcard;
+  private String idCard;
   private java.sql.Timestamp modifyTime;
+
+  /**
+   * 用户角色，非数据库字段
+   */
+  private String roleName;
 
 }

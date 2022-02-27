@@ -33,7 +33,7 @@ public class RolePermsService {
      * @param roleId 角色id
      * @return 成功条数
      */
-    public Result batchInsert(List<Integer> permsList, int roleId) {
+    public Result batchInsert(List<Integer> permsList, long roleId) {
         List<RolePerms> rolePermsList = new ArrayList<>();
         for (Integer perms : permsList){
             RolePerms rolePerms = new RolePerms();
@@ -64,7 +64,7 @@ public class RolePermsService {
         return rolePermsMapper.deleteByPermsId(permsId);
     }
 
-    public int deleteByRoleId(int roleId) {
+    public int deleteByRoleId(long roleId) {
         return rolePermsMapper.deleteByRoleId(roleId);
     }
 

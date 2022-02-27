@@ -4,6 +4,7 @@ import com.fizzy.auth.mapper.UserRoleMapper;
 import com.fizzy.core.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -35,6 +36,16 @@ public class UserRoleService {
      */
     public Integer selectRoleByUserId(int id){
         return userRoleMapper.selectRoleByUserId(id);
+    }
+
+    /**
+     * 检查角色是否被分配
+     * @param roleId 角色id
+     * @return 是否被分配
+     */
+    public Boolean checkIsAssigned(int roleId) {
+        List<UserRole> userRoles = userRoleMapper.selectByRoleId(roleId);
+        return CollectionUtils.isEmpty(userRoles) || userRoles.size() == 0;
     }
 
     /**

@@ -34,6 +34,11 @@ public interface SysRoleMapper {
     List<SysRole> selectAll();
 
     /**
+     * 查询所有数据
+     */
+    List<SysRole> selectAll(int enableStatus);
+
+    /**
      * 修改一条数据
      */
     Boolean updateById(SysRole sysRole);

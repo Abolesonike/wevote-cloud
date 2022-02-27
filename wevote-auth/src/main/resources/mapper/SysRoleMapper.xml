@@ -32,6 +32,7 @@
     <!-- 查询所有数据 -->
     <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
         select * from sys_role
+        <if test="enableStatus != null">where enable_status = #{enableStatus}</if>
     </select>
 
     <!-- 修改一条数据 -->
@@ -39,7 +40,6 @@
         update sys_role set role_name = #{roleName},role_desc = #{roleDesc},
                             create_date = #{createDate},enable_status = #{enableStatus},
                             modify_time = #{modifyTime} where role_id = #{roleId}
-
     </update>
 
 </mapper>

@@ -46,7 +46,7 @@ public interface RolePermsMapper {
      * @param roleId 角色id
      * @return 删除条数
      */
-    int deleteByRoleId(int roleId);
+    int deleteByRoleId(long roleId);
 
     /**
      * 根据roleId查询

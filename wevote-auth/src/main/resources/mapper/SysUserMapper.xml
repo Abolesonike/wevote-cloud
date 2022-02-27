@@ -14,8 +14,9 @@
         <result column="tel" jdbcType="VARCHAR" property="tel" />
         <result column="enable_status" jdbcType="VARCHAR" property="enableStatus" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+        <result column="idcard" jdbcType="VARCHAR" property="idCard" />
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     </resultMap>
 
     <!-- 插入一条数据 -->
@@ -24,7 +25,7 @@
                               enable_status, create_time, idcard, modify_time)
         values (#{username}, #{password}, #{headUrl}, #{lastLoginDate},
                 #{email}, #{tel}, #{enableStatus}, #{createTime},
-                #{idcard}, #{modifyTime})
+                #{idCard}, #{modifyTime})
     </insert>
 
     <!-- 删除一条数据 -->
@@ -43,13 +44,25 @@
     </select>
 
     <!-- 根据是否启用查询 -->
-    <select id="selectUserByEnable" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"  resultMap="BaseResultMap">
-        select * from sys_user where enable_status = #{enableStatus}
+    <select id="selectUserByEnable" parameterType="java.lang.String" resultType="com.fizzy.core.entity.SysUser"
+            resultMap="BaseResultMap">
+        SELECT u.*,
+               r.role_name role_name
+        FROM sys_user u
+                 LEFT JOIN user_role ur ON u.user_id = ur.user_id
+                 LEFT JOIN sys_role r ON r.role_id = ur.role_id
+        where u.enable_status = #{enableStatus}
     </select>
 
     <!-- 查询所有数据 -->
     <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
-        select * from sys_user
+        SELECT
+            u.*,
+            r.role_name
+        FROM
+            sys_user u
+                LEFT JOIN user_role ur ON u.user_id = ur.user_id
+                LEFT JOIN sys_role r ON r.role_id = ur.role_id
     </select>
 
     <!-- 用户名模糊查询 -->
@@ -63,7 +76,7 @@
                             head_url = #{headUrl},
                             last_login_date = #{lastLoginDate},email = #{email},
                             tel = #{tel},enable_status = #{enableStatus},
-                            create_time = #{createTime},idcard = #{idcard},
+                            create_time = #{createTime},idcard = #{idCard},
                             modify_time = #{modifyTime}
         where user_id = #{userId}
 

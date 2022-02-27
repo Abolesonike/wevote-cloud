@@ -3,7 +3,7 @@ package com.fizzy.core.entity;
 import lombok.Data;
 
 /**
- * Author FizzyElf
+ * @author FizzyElf
  * Date 2021/10/19 10:07
  */
 @Data

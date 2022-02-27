@@ -2,9 +2,12 @@ package com.fizzy.auth.service;
 
 import com.fizzy.auth.mapper.SysRoleMapper;
 import com.fizzy.core.entity.SysRole;
+import com.fizzy.core.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,11 +19,27 @@ public class SysRoleService {
     @Autowired
     SysRoleMapper sysRoleMapper;
 
+    @Autowired
+    RolePermsService rolePermsService;
+
     /**
      * 插入一条数据
      */
-    public Boolean insertOne(SysRole sysRole){
-        return sysRoleMapper.insertOne(sysRole);
+    public Boolean insertOne(List<Integer> permsList, String roleName, String roleDesc){
+        SysRole sysRole = new SysRole();
+        Date date = new Date();
+        java.sql.Timestamp dateSQL = new java.sql.Timestamp(date.getTime());
+        sysRole.setCreateDate(dateSQL);
+        sysRole.setModifyTime(dateSQL);
+        sysRole.setRoleName(roleName);
+        sysRole.setRoleDesc(roleDesc);
+        sysRole.setEnableStatus("1");
+        if(sysRoleMapper.insertOne(sysRole)){
+            Result result = rolePermsService.batchInsert(permsList, sysRole.getRoleId());
+            return result.getCode() == 200;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -42,6 +61,13 @@ public class SysRoleService {
      */
     public List<SysRole> selectAll(){
         return sysRoleMapper.selectAll();
+    }
+
+    /**
+     * 查询所有数据
+     */
+    public List<SysRole> selectAll(int enableStatus){
+        return sysRoleMapper.selectAll(enableStatus);
     }
 
     /**
