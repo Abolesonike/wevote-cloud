@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author FizzyElf
+ * @author FizzyElf
  * Date 2021/11/3 16:04
  */
 @RestController
@@ -23,7 +23,7 @@ public class SysUserController {
     SysUserService sysUserService;
 
     @GetMapping("/findById")
-    public SysUser findById(@RequestParam int id){
+    public SysUser findById(@RequestParam long id){
         return sysUserService.selectByUserId(id);
     }
 
@@ -99,5 +99,11 @@ public class SysUserController {
     public String getLoginUserId(){
         SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         return String.valueOf(sysUser.getUserId());
+    }
+
+    @GetMapping("/loginUserName")
+    public String getLoginUserName(){
+        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        return String.valueOf(sysUser.getUsername());
     }
 }

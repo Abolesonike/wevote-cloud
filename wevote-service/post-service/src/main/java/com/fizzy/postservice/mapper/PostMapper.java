@@ -1,6 +1,7 @@
 package com.fizzy.postservice.mapper;
 
 import com.fizzy.core.entity.Post;
+import com.fizzy.postservice.entity.PostVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface PostMapper {
     /**
      * 查找所有帖子
+     * @return 结果
      */
     List<Post> findAllPost();
 
@@ -26,12 +28,23 @@ public interface PostMapper {
     List<Post> findAllPostByStatus(int status);
 
     /**
+     * 查询指定状态的所以帖子
+     * @param status 状态
+     * @return 帖子列表
+     */
+    List<PostVo> findAllPostVoByStatus(int status);
+
+    /**
      * 通过id查询帖子
+     * @param id id
+     * @return 结果
      */
     Post findPostById(int id);
 
     /**
-     *  插入一条
+     * 插入一条
+     * @param post 插入数据
+     * @return 是否成功
      */
     boolean insertOne(Post post);
 

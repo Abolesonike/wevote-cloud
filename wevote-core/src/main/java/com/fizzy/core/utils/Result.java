@@ -1,11 +1,16 @@
 package com.fizzy.core.utils;
 
-import com.fizzy.core.entity.Post;
 import lombok.Data;
 
+/**
+ *
+ * @author FizzyElf
+ */
 @Data
 public class Result {
-    //响应码
+    /**
+     * 响应码
+     */
     private int code;
     private String message;
 

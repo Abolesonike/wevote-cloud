@@ -1,10 +1,15 @@
 package com.fizzy.postservice.service;
 
 import com.fizzy.core.entity.Post;
+import com.fizzy.postservice.entity.PostVo;
+import com.fizzy.postservice.feign.SysUserServiceFeign;
 import com.fizzy.postservice.mapper.PostMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +22,12 @@ import java.util.List;
 public class PostService {
     @Autowired
     PostMapper postMapper;
+
+    @Autowired
+    CommunityService communityService;
+
+    @Autowired
+    SysUserServiceFeign sysUserServiceFeign;
 
     /**
      * 查询所有帖子
@@ -33,6 +44,15 @@ public class PostService {
      */
     public List<Post> findAllPostByStatus(int status){
         return postMapper.findAllPostByStatus(status);
+    }
+
+    /**
+     * 查询指定状态的所以帖子
+     * @param status 状态
+     * @return 帖子列表
+     */
+    public List<PostVo> findAllPostVoByStatus(int status){
+        return postMapper.findAllPostVoByStatus(status);
     }
 
     /**
@@ -69,6 +89,19 @@ public class PostService {
      */
     public boolean deleteById(int id){
         return postMapper.deleteById(id);
+    }
+
+    public PostVo getPostVo(Post post){
+        PostVo postVo = new PostVo();
+        postVo.setId(postVo.getId());
+        postVo.setTitle(post.getTitle());
+        postVo.setPostUserName(sysUserServiceFeign.findById(post.getPostUserId()).getUsername());
+        postVo.setContent(post.getContent());
+        postVo.setCreateTime(post.getCreateTime());
+        postVo.setLikes(post.getLikes());
+        postVo.setVotes(post.getVotes());
+        postVo.setCommunity(communityService.findById(post.getCommunity()).getName());
+        return postVo;
     }
 
 }

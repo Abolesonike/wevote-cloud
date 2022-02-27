@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Date 2021/10/26 10:39
  * OpenFeign请求拦截，把Cookie从redis中取出，放入请求头
  * 解决不太服务session不一致的问题
+ * @author CDLX
  */
 @Configuration
 public class FeignRequestInterceptor implements RequestInterceptor {

@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * Author FizzyElf
+ * @author FizzyElf
  * Date 2021/11/3 16:08
  */
 @FeignClient(name = "auth-service", path = "/sysUser")
 public interface SysUserServiceFeign {
+    /**
+     * 通过id查询用户
+     * @param id id
+     * @return 用户
+     */
     @GetMapping("/findById")
-    public SysUser findById(@RequestParam int id);
+    SysUser findById(@RequestParam long id);
 }

@@ -15,14 +15,47 @@
         insert into role_perms (role_id, perms_id) values (#{roleId}, #{permsId})
     </insert>
 
+    <!-- 批量插入 -->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
+        insert into role_perms
+        (role_id, perms_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.roleId},
+            #{item.permsId}
+            )
+        </foreach>
+    </insert>
+
     <!-- 删除一条数据 -->
     <delete id="deleteById" parameterType="java.lang.Integer">
         delete from role_perms where rolePerms_id = #{rolePermsId}
     </delete>
 
+    <!-- 根据权限删除，用于权限删除时联动删除，减少没用的数据 -->
+    <delete id="deleteByPermsId" parameterType="java.lang.Integer">
+        delete from role_perms where perms_id = #{permsId}
+    </delete>
+
+    <!-- 根据角色删除，用于批量插入时，删除之前角色分配的权限 -->
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from role_perms where role_id = #{roleId}
+    </delete>
+
     <!-- 指定角色，查询权限 -->
     <select id="selectPermsByRoleId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap">
         select * from role_perms where role_id = #{roleId}
+    </select>
+
+    <!-- 指定角色，查询权限id -->
+    <select id="selectPermsIdByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select perms_id from role_perms where role_id = #{roleId}
+    </select>
+
+    <!-- 根据权限id查询 -->
+    <select id="selectByPermsId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap">
+        select * from role_perms where perms_id = #{permsIf}
     </select>
 
     <!-- 查询所有数据 -->

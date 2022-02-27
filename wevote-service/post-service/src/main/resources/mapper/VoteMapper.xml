@@ -17,9 +17,14 @@
         select * from vote
     </select>
 
-    <!--通过id查找帖子-->
-    <select id="findVoteById" parameterType="com.fizzy.core.entity.Vote" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
+    <!--查找所有帖子-->
+    <select id="findVoteById" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
         select * from vote where id = #{id}
+    </select>
+
+    <!--通过id查找帖子-->
+    <select id="findChoosesById" parameterType="com.fizzy.core.entity.Vote" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
+        select chooses from vote where id = #{id}
     </select>
 
     <!-- 插入一个帖子 -->
@@ -27,6 +32,12 @@
         insert into vote (title, chooses, vote_number, vote_user, multi_choose)
         values (#{title}, #{chooses}, #{voteNumber}, #{voteUser},#{multiChoose})
     </insert>
+
+    <update id="updateAll" parameterType="com.fizzy.core.entity.Vote">
+        update vote set title=#{title},chooses=#{chooses},vote_number=#{voteNumber},
+                        vote_user=#{voteUser},multi_choose=#{multiChoose}
+        where id=#{id}
+    </update>
 
 
     <!-- 物理删除 -->

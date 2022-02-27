@@ -1,6 +1,10 @@
 package com.fizzy.core.entity;
 
+import lombok.Builder;
 import lombok.Data;
+
+import java.beans.Transient;
+import java.util.List;
 
 /**
  * Author FizzyElf
@@ -9,8 +13,8 @@ import lombok.Data;
 @Data
 public class SysPerms {
 
-  private long permsId;
-  private String pId;
+  private int permsId;
+  private int pId;
   private String menuName;
   private String path;
   private String permsCode;
@@ -19,4 +23,17 @@ public class SysPerms {
   private java.sql.Timestamp modifyTime;
   private String modifyUsername;
   private String userId;
+  /**
+   * 非数据库字段，是否有子权限
+   */
+  private boolean hasChildren;
+  /**
+   * 非数据库字段，子权限
+   */
+  private List<SysPerms> children;
+  /**
+   * 非数据库字段，当前角色是否有该权限
+   */
+  private boolean isHave;
+
 }

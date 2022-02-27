@@ -6,7 +6,7 @@
         <!-- 用id属性来映射主键字段 -->
         <id column="perms_id" jdbcType="INTEGER" property="permsId" />
         <!-- 用result属性来映射非主键字段 -->
-        <result column="p_id" jdbcType="VARCHAR" property="pId" />
+        <result column="p_id" jdbcType="INTEGER" property="pId" />
         <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
         <result column="path" jdbcType="VARCHAR" property="path" />
         <result column="perms_code" jdbcType="VARCHAR" property="permsCode" />
@@ -35,9 +35,24 @@
         select * from sys_perms where perms_id = #{permsId}
     </select>
 
+
     <!-- 查询所有数据 -->
     <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
         select * from sys_perms
+    </select>
+
+    <!-- 查询一级菜单 -->
+    <select id="selectParent" resultType="java.util.List" resultMap="BaseResultMap">
+        SELECT * FROM sys_perms WHERE p_id = 0
+    </select>
+    
+    <!-- 查询子菜单 -->
+    <select id="selectChildren" resultType="java.util.List" resultMap="BaseResultMap">
+        SELECT * FROM sys_perms WHERE p_id = #{parentId} AND perms_id != #{parentId}
+    </select>
+
+    <select id="selectByPath" resultMap="BaseResultMap" resultType="com.fizzy.core.entity.SysPerms">
+        select * from sys_perms where path = #{path}
     </select>
 
     <!-- 修改一条数据 -->

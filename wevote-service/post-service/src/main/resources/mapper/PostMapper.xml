@@ -15,6 +15,19 @@
         <result column="votes" jdbcType="VARCHAR"  property="votes" />
         <result column="community" jdbcType="INTEGER" property="community" />
     </resultMap>
+    <resultMap id="postVoMap" type="com.fizzy.postservice.entity.PostVo">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="username" jdbcType="VARCHAR" property="postUserName" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="votes" jdbcType="VARCHAR"  property="votes" />
+        <result column="name" jdbcType="VARCHAR"  property="community" />
+    </resultMap>
     <!--查找所有帖子-->
     <select id="findAllPost" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
         select * from post
@@ -23,6 +36,26 @@
     <!--根据status查找所有帖子-->
     <select id="findAllPostByStatus" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
         select * from post where status = #{status}
+    </select>
+
+    <!--根据status查找所有帖子-->
+    <select id="findAllPostVoByStatus" parameterType="java.lang.Integer" resultType="com.fizzy.postservice.entity.PostVo" resultMap="postVoMap">
+        SELECT
+            p.id,
+            p.title,
+            p.content,
+            p.create_time,
+            p.likes,
+            p.votes,
+            p.`status`,
+            u.username,
+            c.`name`
+        FROM
+            post p
+                LEFT JOIN sys_user u ON u.user_id = p.post_user_id
+                LEFT JOIN community c ON c.id = p.community
+        WHERE
+            p.`status` = #{status}
     </select>
 
     <!--通过id查找帖子-->

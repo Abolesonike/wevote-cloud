@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**
- * Author FizzyElf
+ * @author FizzyElf
  * Date 2021/10/18 9:31
  */
 public class UserRealm extends AuthorizingRealm {
@@ -38,7 +38,11 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     RolePermsService rolePermsService;
 
-    // 角色的权限信息，授权时使用
+    /**
+     * 角色的权限信息，授权时使用
+     * @param principalCollection 授权
+     * @return 授权信息
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         // 进行授权
@@ -46,12 +50,11 @@ public class UserRealm extends AuthorizingRealm {
         // 获取当前用户
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser)subject.getPrincipal();
-        // User dbuser = userServiceFeign.getUserByName(user.getUsername());
-        SysUser dbuser = sysUserService.selectRoleByUserName(sysUser.getUsername());
+        SysUser dbUser = sysUserService.selectRoleByUserName(sysUser.getUsername());
         // 获取当前用户的角色
-        int sysRole = userRoleService.selectRoleByUserId(dbuser.getUserId().intValue());
+        int sysRole = userRoleService.selectRoleByUserId(dbUser.getUserId().intValue());
         // 获取角色对应的权限
-        List<RolePerms> perms = rolePermsService.selectByPermsId(sysRole);
+        List<RolePerms> perms = rolePermsService.selectByRoleId(sysRole);
         // 添加授权字符串
         for(RolePerms perm : perms){
             String permName =  sysPermsService.selectByPermsId((int) perm.getPermsId()).getPath();
@@ -61,11 +64,15 @@ public class UserRealm extends AuthorizingRealm {
 
     }
 
-    // 用户的角色信息，认证时使用
+    /**
+     * 用户的角色信息，认证时使用
+     * @param authenticationToken 认证
+     * @return 认证结果
+     * @throws AuthenticationException 异常
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        // User user = userServiceFeign.getUserByName(token.getUsername());
         SysUser sysUser = sysUserService.selectRoleByUserName(token.getUsername());
         if(sysUser != null){
             return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),getName());

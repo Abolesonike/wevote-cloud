@@ -24,6 +24,13 @@ public class VoteService {
         return voteMapper.findAllVote();
     }
 
+    /**
+     * 根据id查询选项
+     */
+    String findChoosesById(long id){
+        return voteMapper.findChoosesById(id);
+    }
+
 
     /**
      * 通过id查询帖子
@@ -41,6 +48,16 @@ public class VoteService {
      */
     public boolean insertOne(Vote vote){
         return voteMapper.insertOne(vote);
+    }
+
+    /**
+     * 投票
+     * @param vote 更新对象
+     * @return 更新后的数据
+     */
+    public Vote voteFor(Vote vote){
+        voteMapper.updateAll(vote);
+        return voteMapper.findVoteById(vote.getId());
     }
 
 

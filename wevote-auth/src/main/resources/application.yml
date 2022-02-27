@@ -13,7 +13,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/we-vote?characterEncoding=UTF-8
     username: root
-    password: Good18882336322
+    password: good18882336322
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:

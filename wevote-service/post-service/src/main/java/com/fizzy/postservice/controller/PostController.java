@@ -2,6 +2,7 @@ package com.fizzy.postservice.controller;
 
 import com.fizzy.core.entity.Post;
 import com.fizzy.core.entity.Vote;
+import com.fizzy.postservice.entity.PostVo;
 import com.fizzy.postservice.feign.SysUserServiceFeign;
 import com.fizzy.postservice.feign.UserServiceFeign;
 import com.fizzy.postservice.service.PostService;
@@ -38,13 +39,14 @@ public class PostController {
     @Autowired
     UserServiceFeign userServiceFeign;
 
-    static class postVote {
+    static class PostVote {
         public Post post;
         public List<Vote> voteList;
+        public Long postUserId;
     }
 
     @PostMapping("/addPost")
-    public boolean addPost(@RequestBody postVote postVote){
+    public boolean addPost(@RequestBody PostVote postVote){
         Post post = postVote.post;
         // 储存投票
         StringBuilder voteId = new StringBuilder();
@@ -60,19 +62,28 @@ public class PostController {
             if(vote.getMultiChoose() == 0){
                 vote.setMultiChoose(1);
             }
-            voteService.insertOne(vote);
+            // 初始化投票用户
+            vote.setVoteUser("");
+            if(!voteService.insertOne(vote)){
+                return false;
+            }
             voteId.append(vote.getId());
             voteId.append(",");
         }
         System.out.println(voteId);
         // 储存帖子
-        post.setPostUserId(2L); // 创建用户
-        Date nowDate = new Date(); // 创建时间
+        // 创建用户
+        post.setPostUserId(postVote.postUserId);
+        // 创建时间
+        Date nowDate = new Date();
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(nowDate.getTime());
         post.setCreateTime(sqlDate);
-        post.setLikes(0); // 初始化点赞
-        post.setStatus(0); // 初始化状态
-        post.setVotes(String.valueOf(voteId)); // 绑定投票
+        // 初始化点赞
+        post.setLikes(0);
+        // 初始化状态
+        post.setStatus(0);
+        // 绑定投票
+        post.setVotes(String.valueOf(voteId));
         return postService.insertOne(post);
     }
 
@@ -113,6 +124,17 @@ public class PostController {
         return new PageInfo<>(contentList);
     }
 
+    @GetMapping("/postVoListStatus")
+    public PageInfo<PostVo> postVoListStatus(@RequestParam int pageNum,
+                                         @RequestParam int pageSize,
+                                         @RequestParam int status) {
+        PageHelper.startPage(pageNum,pageSize);
+
+        List<PostVo> contentList = postService.findAllPostVoByStatus(status);
+
+        return new PageInfo<>(contentList);
+    }
+
 
     /**
      * 改变帖子的状态
@@ -137,11 +159,21 @@ public class PostController {
      */
     @DeleteMapping("/delete")
     public boolean delete(@RequestParam int id){
+        Post post = postService.findPostById(id);
+        // 删除投票
+        String []voteIds = post.getVotes().split(",");
+        if (voteIds.length > 0){
+            for (String voteId : voteIds) {
+                if (!"".equals(voteId)) {
+                    voteService.deleteById(Integer.parseInt(voteId));
+                }
+            }
+        }
         return postService.deleteById(id);
     }
 
     @GetMapping("/test")
-    public List<Integer> test() throws Exception {
+    public List<Integer> test() {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
