@@ -15,4 +15,7 @@ public class Community {
   private long status;
   private long owner;
   private long classification;
+  private java.sql.Timestamp creationDate;
+  private java.sql.Timestamp creationDateStart;
+  private java.sql.Timestamp creationDateEnd;
 }

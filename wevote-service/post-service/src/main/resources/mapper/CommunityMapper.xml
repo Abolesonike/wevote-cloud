@@ -6,16 +6,48 @@
         <!-- 用id属性来映射主键字段 -->
         <id column="id" jdbcType="INTEGER" property="id" />
         <!-- 用result属性来映射非主键字段 -->
-        <result column="title" jdbcType="VARCHAR" property="name" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="introduction" jdbcType="VARCHAR" property="introduction" />
         <result column="cover_url" jdbcType="VARCHAR" property="coverUrl" />
         <result column="status" jdbcType="INTEGER" property="status" />
         <result column="owner" jdbcType="INTEGER" property="owner" />
         <result column="classification" jdbcType="INTEGER" property="classification" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
     </resultMap>
 
     <select id="findById" resultMap="BaseResultMap" resultType="com.fizzy.core.entity.Community">
         select * from community where id = #{id}
     </select>
+
+    <select id="select" resultType="com.fizzy.core.entity.Community" resultMap="BaseResultMap">
+        select * from community c
+        <where>
+            <if test="name!=null">
+                AND c.name LIKE CONCAT('%', CONCAT(#{name}, '%'))
+            </if>
+            <if test="status!=null and status!=0">
+                AND c.status =#{status}
+            </if>
+            <if test="owner!=null and owner!=0">
+                AND c.owner=#{owner}
+            </if>
+            <if test="classification!=null and classification!=0">
+                AND c.classification=#{classification}
+            </if>
+            <if test="creationDateStart!=null">
+                AND c.creation_date>#{creationDateStart}
+            </if>
+            <if test="creationDateEnd!=null">
+                AND #{creationDateEnd}>c.creation_date
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Community" useGeneratedKeys="true">
+        insert into community (name, introduction, cover_url, status,
+                               owner, classification, creation_date)
+        values (#{name}, #{introduction}, #{coverUrl}, #{status},
+                #{owner}, #{classification}, #{creationDate})
+    </insert>
 
 </mapper>
