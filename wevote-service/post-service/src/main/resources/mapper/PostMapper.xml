@@ -58,6 +58,33 @@
             p.`status` = #{status}
     </select>
 
+    <!--条件查询帖子vo-->
+    <select id="selectPostVo" parameterType="com.fizzy.core.entity.Post"
+            resultType="com.fizzy.postservice.entity.PostVo" resultMap="postVoMap">
+        SELECT
+        p.id,
+        p.title,
+        p.content,
+        p.create_time,
+        p.likes,
+        p.votes,
+        p.`status`,
+        u.username,
+        c.`name`
+        FROM
+        post p
+        LEFT JOIN sys_user u ON u.user_id = p.post_user_id
+        LEFT JOIN community c ON c.id = p.community
+        <where>
+            <if test="status!=null and status!=0">
+                AND p.`status` = #{status}
+            </if>
+            <if test="community!=null and community!=0">
+                AND p.community=#{community}
+            </if>
+        </where>
+    </select>
+
     <!--通过id查找帖子-->
     <select id="findPostById" parameterType="com.fizzy.core.entity.Post" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
         select * from post where id = #{id}

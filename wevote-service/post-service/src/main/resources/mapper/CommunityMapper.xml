@@ -15,6 +15,37 @@
         <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
     </resultMap>
 
+
+    <resultMap id="SysUserMap" type="com.fizzy.core.entity.SysUser">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="user_id" jdbcType="INTEGER" property="userId" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+        <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="tel" jdbcType="VARCHAR" property="tel" />
+        <result column="enable_status" jdbcType="VARCHAR" property="enableStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="idcard" jdbcType="VARCHAR" property="idCard" />
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    </resultMap>
+
+    <resultMap id="CommunityMap" type="com.fizzy.core.entity.Community">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="owner" jdbcType="INTEGER" property="owner" />
+        <result column="classification" jdbcType="INTEGER" property="classification" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    </resultMap>
+
     <select id="findById" resultMap="BaseResultMap" resultType="com.fizzy.core.entity.Community">
         select * from community where id = #{id}
     </select>
@@ -22,6 +53,9 @@
     <select id="select" resultType="com.fizzy.core.entity.Community" resultMap="BaseResultMap">
         select * from community c
         <where>
+            <if test="id!=null and id!=0">
+                AND c.id =#{id}
+            </if>
             <if test="name!=null">
                 AND c.name LIKE CONCAT('%', CONCAT(#{name}, '%'))
             </if>
@@ -49,5 +83,19 @@
         values (#{name}, #{introduction}, #{coverUrl}, #{status},
                 #{owner}, #{classification}, #{creationDate})
     </insert>
+
+    <!-- 查询社区的所有成员 -->
+    <select id="selectAdmin" parameterType="java.lang.Long" resultMap="SysUserMap" resultType="com.fizzy.core.entity.SysUser">
+        SELECT u.* FROM sys_user u
+                            LEFT JOIN community_admin c ON u.user_id = c.user_id
+        WHERE c.community_id = #{communityId}
+    </select>
+
+    <!-- 查询用户加入的社区 -->
+    <select id="selectAdminComm" parameterType="java.lang.Integer"  resultMap="CommunityMap" resultType="com.fizzy.core.entity.Community">
+        SELECT c.* FROM community_admin ca
+                            LEFT JOIN community c ON ca.community_id = c.id
+        WHERE ca.user_id = #{userId}
+    </select>
 
 </mapper>

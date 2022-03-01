@@ -1,6 +1,7 @@
 package com.fizzy.postservice.mapper;
 
 import com.fizzy.core.entity.Community;
+import com.fizzy.core.entity.SysUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +33,18 @@ public interface CommunityMapper {
      * @return 是否成功
      */
     boolean insertOne(Community community);
+
+    /**
+     * 查询社区所有的成员
+     * @param communityId 社区id
+     * @return 社区成员
+     */
+    List<SysUser> selectAdmin(Long communityId);
+
+    /**
+     * 查询用户加入的社区
+     * @param userId 用户id
+     * @return 加入的社区
+     */
+    List<Community> selectAdminComm(int userId);
 }

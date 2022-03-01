@@ -2,25 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.fizzy.postservice.mapper.CommunityAdminMapper">
-    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Community">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.CommunityAdmin">
         <!-- 用id属性来映射主键字段 -->
         <id column="id" jdbcType="INTEGER" property="id" />
         <!-- 用result属性来映射非主键字段 -->
-        <result column="title" jdbcType="VARCHAR" property="name" />
-        <result column="introduction" jdbcType="VARCHAR" property="introduction" />
-        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl" />
-        <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="owner" jdbcType="INTEGER" property="owner" />
-        <result column="classification" jdbcType="INTEGER" property="classification" />
+        <result column="community_id" jdbcType="INTEGER" property="communityId" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="type" jdbcType="INTEGER" property="type" />
     </resultMap>
 
-    <select id="findById" resultMap="BaseResultMap" resultType="com.fizzy.core.entity.Community">
-        select * from community where id = #{id}
-    </select>
 
-    <insert id="insertOne" parameterType="com.fizzy.core.entity.Community" useGeneratedKeys="true">
-        insert into community (name, introduction, cover_url, status, owner, classification)
-        values (#{name}, #{introduction}, #{coverUrl}, #{status},#{owner},#{classification})
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.CommunityAdmin" useGeneratedKeys="true">
+        insert into community_admin (community_id, user_id, type)
+        values (#{communityId}, #{userId}, #{type})
     </insert>
+
 
 </mapper>

@@ -2,6 +2,7 @@ package com.fizzy.postservice.controller;
 
 import com.fizzy.core.entity.Community;
 import com.fizzy.core.entity.CommunityClassification;
+import com.fizzy.core.entity.SysUser;
 import com.fizzy.postservice.service.CommClassificationService;
 import com.fizzy.postservice.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +37,38 @@ public class CommunityController {
      */
     @PostMapping("/createCommunity")
     public boolean createCommunity(@RequestBody Community community){
-        // 待审核
-        community.setStatus(-1);
-        Date date = new Date();
-        java.sql.Timestamp dateSQL = new java.sql.Timestamp(date.getTime());
-        community.setCreationDate(dateSQL);
-        return communityService.insertOne(community);
+        return communityService.createCommunity(community);
     }
 
+
+    /**
+     * 条件查询社区
+     * @param community 查询条件
+     * @return 查询结果
+     */
     @PostMapping("/select")
     public List<Community> select(@RequestBody Community community){
         return communityService.select(community);
+    }
+
+    /**
+     * 查询用户加入的社区
+     * @param userId 用户id
+     * @return 加入的社区
+     */
+    @GetMapping("/selectUserJoinedComm")
+    public List<Community> selectAdminComm(@RequestParam int userId) {
+        return communityService.selectAdminComm(userId);
+    }
+
+    /**
+     * 查询社区的所有用户
+     * @param communityId 社区id
+     * @return 社区用户
+     */
+    @GetMapping("/selectCommAdmin")
+    public List<SysUser> selectCommAdmin(@RequestParam Long communityId) {
+        return communityService.selectAdmin(communityId);
     }
 
 

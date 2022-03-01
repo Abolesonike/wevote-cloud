@@ -56,6 +56,15 @@ public class PostService {
     }
 
     /**
+     * 条件查询帖子
+     * @param post 查询条件
+     * @return 查询结果
+     */
+    public List<PostVo> selectPostVo(Post post) {
+        return postMapper.selectPostVo(post);
+    }
+
+    /**
      * 通过id查询帖子
      * @param id 要查询的id
      * @return 帖子对象

@@ -35,6 +35,13 @@ public interface PostMapper {
     List<PostVo> findAllPostVoByStatus(int status);
 
     /**
+     * 条件查询帖子
+     * @param post 查询条件
+     * @return 查询结果
+     */
+    List<PostVo> selectPostVo(Post post);
+
+    /**
      * 通过id查询帖子
      * @param id id
      * @return 结果

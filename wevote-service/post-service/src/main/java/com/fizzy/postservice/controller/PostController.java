@@ -135,6 +135,16 @@ public class PostController {
         return new PageInfo<>(contentList);
     }
 
+    @RequestMapping("/selectPostVo")
+    public PageInfo<PostVo> postVoListStatus(@RequestParam int pageNum,
+                                             @RequestParam int pageSize,
+                                             @RequestBody Post post) {
+        PageHelper.startPage(pageNum,pageSize);
+
+        List<PostVo> contentList = postService.selectPostVo(post);
+
+        return new PageInfo<>(contentList);
+    }
 
     /**
      * 改变帖子的状态
