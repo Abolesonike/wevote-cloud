@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.commentservice.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Comment">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="from_user_id" jdbcType="INTEGER" property="fromUserId"/>
+        <result column="from_user_name" jdbcType="VARCHAR" property="fromUserName"/>
+        <result column="to_user_id" jdbcType="INTEGER" property="toUserId"/>
+        <result column="to_user_name" jdbcType="VARCHAR" property="toUserName"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="replay_type" jdbcType="INTEGER" property="replayType"/>
+        <result column="belong" jdbcType="INTEGER" property="belong"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+
+    <!--查找所有回复-->
+    <select id="findAllReplay" parameterType="com.fizzy.core.entity.Comment" resultType="com.fizzy.core.entity.Comment">
+        select *
+        from comment
+    </select>
+
+
+    <!--通过id查找-->
+    <select id="findById" parameterType="com.fizzy.core.entity.Comment" resultType="com.fizzy.core.entity.Comment">
+        select *
+        from comment
+        where id = #{id}
+    </select>
+
+    <!--通过类型查找-->
+    <select id="findByReplayType" parameterType="com.fizzy.core.entity.Comment"
+            resultType="com.fizzy.core.entity.Comment">
+        select *
+        from comment
+        where replay_type = #{replayType}
+    </select>
+
+    <!-- 查找belong并且类型等于1或者2 -->
+    <select id="findBy2or3AndBelong" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
+        SELECT c.*,
+               t1.from_user_name,
+               t2.to_user_name
+        FROM COMMENT c,
+             (
+                 SELECT c.id,
+                        u.username from_user_name
+                 FROM COMMENT c
+                          LEFT JOIN sys_user u ON c.from_user_id = u.user_id
+             ) t1,
+             (
+                 SELECT c.id,
+                        u.username to_user_name
+                 FROM COMMENT c
+                          LEFT JOIN sys_user u ON c.to_user_id = u.user_id
+             ) t2
+        WHERE t1.id = c.id
+          AND t2.id = c.id
+          AND (replay_type = 2 or replay_type = 3)
+          AND belong = #{belong}
+        order by c.create_time
+    </select>
+
+    <!-- belong和类型查找帖子 -->
+    <select id="findByReplayTypeAndBelong" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
+        SELECT c.*,
+               t1.from_user_name,
+               t2.to_user_name
+        FROM COMMENT c,
+             (
+                 SELECT c.id,
+                        u.username from_user_name
+                 FROM COMMENT c
+                          LEFT JOIN sys_user u ON c.from_user_id = u.user_id
+             ) t1,
+             (
+                 SELECT c.id,
+                        u.username to_user_name
+                 FROM COMMENT c
+                          LEFT JOIN sys_user u ON c.to_user_id = u.user_id
+             ) t2
+        WHERE t1.id = c.id
+          AND t2.id = c.id
+          AND c.replay_type = #{replayType}
+          AND c.belong = #{belong}
+        order by c.create_time desc
+    </select>
+
+
+    <!-- 插入一条回复 -->
+    <insert id="insertOneReplay" parameterType="com.fizzy.core.entity.Comment">
+        insert into comment (from_user_id, to_user_id, content, like_count, replay_type, belong, create_time, status)
+        values (#{fromUserId}, #{toUserId}, #{content}, #{likeCount}, #{replayType}, #{belong}, #{createTime},
+                #{status})
+    </insert>
+
+    <!-- 点赞 -->
+    <update id="replayLikeAdd">
+        update comment
+        set like_count=like_count + 1
+        where id = #{id}
+    </update>
+
+</mapper>

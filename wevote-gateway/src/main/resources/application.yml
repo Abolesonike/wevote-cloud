@@ -43,6 +43,12 @@ spring:
             - Path=/file-service/**
           filters:
             - StripPrefix=1
+        - id: gateway-comment-service
+          uri: lb://comment-service
+          predicates:
+            - Path=/comment-service/**
+          filters:
+            - StripPrefix=1
       # 跨域
       globalcors:
         cors-configurations:

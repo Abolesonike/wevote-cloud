@@ -14,8 +14,8 @@
     <modules>
         <module>user-service</module>
         <module>post-service</module>
-        <module>post-service</module>
         <module>file-service</module>
+        <module>comment-service</module>
     </modules>
 
     <properties>

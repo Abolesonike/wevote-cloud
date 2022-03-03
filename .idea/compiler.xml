@@ -9,6 +9,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="post-service" />
+        <module name="comment-service" />
         <module name="wevote-gateway" />
         <module name="wevote-auth" />
         <module name="wevote-common-redis" />
@@ -18,8 +19,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="comment-service" target="8" />
       <module name="file-service" target="8" />
       <module name="post-service" target="8" />
+      <module name="replay-service" target="8" />
       <module name="user-service" target="8" />
       <module name="WeVote" target="8" />
       <module name="wevote-auth" target="8" />
@@ -34,8 +37,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="comment-service" options="-parameters" />
       <module name="file-service" options="-parameters" />
       <module name="post-service" options="-parameters" />
+      <module name="replay-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="wevote-auth" options="-parameters" />
       <module name="wevote-common-qiniu" options="-parameters" />

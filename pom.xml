@@ -10,7 +10,6 @@
         <module>wevote-gateway</module>
         <module>wevote-common</module>
         <module>wevote-auth</module>
-        <module>replay-service</module>
     </modules>
 
     <parent>
