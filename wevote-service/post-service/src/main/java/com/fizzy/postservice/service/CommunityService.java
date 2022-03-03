@@ -31,13 +31,26 @@ public class CommunityService {
         return communityMapper.select(community);
     }
 
+    public boolean updateAllById(Community community) {
+        return communityMapper.updateAllById(community);
+    }
+
+    /**
+     * 通过id删除一条
+     * @param community 删除的数据
+     * @return 是否成功
+     */
+    public boolean deleteById(Community community) {
+        return communityMapper.deleteById(community);
+    }
+
     public Community findById(long id) {
         return communityMapper.findById(id);
     }
 
     public boolean createCommunity(Community community) {
         // 待审核
-        community.setStatus(-1);
+        community.setStatus(1);
         Date date = new Date();
         java.sql.Timestamp creationDate = new java.sql.Timestamp(date.getTime());
         community.setCreationDate(creationDate);

@@ -27,9 +27,37 @@ public interface CommunityClassificationMapper {
     List<CommunityClassification> findByAllEnable(int status);
 
     /**
+     * 根据名字查找
+     * @param name 名字
+     * @return 结果
+     */
+    CommunityClassification findByName(String name);
+
+    /**
+     * 条件查询
+     * @param communityClassification 查询条件
+     * @return 结果
+     */
+    List<CommunityClassification> select(CommunityClassification communityClassification);
+
+    /**
+     * 更新全部
+     * @param classification 更新数据
+     * @return 是否成功
+     */
+    boolean updateAllById(CommunityClassification classification);
+
+    /**
      * 插入一条数据
      * @param communityClassification 插入数据
      * @return 是否成功
      */
     boolean insertOne(CommunityClassification communityClassification);
+
+    /**
+     * 删除一条
+     * @param id 删除id
+     * @return 是否成功
+     */
+    boolean deleteOne(int id);
 }

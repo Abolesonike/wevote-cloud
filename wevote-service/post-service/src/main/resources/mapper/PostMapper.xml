@@ -76,6 +76,21 @@
         LEFT JOIN sys_user u ON u.user_id = p.post_user_id
         LEFT JOIN community c ON c.id = p.community
         <where>
+            <if test="id!=null and id!=0">
+                AND p.id = #{id}
+            </if>
+            <if test="postUserName!=null">
+                AND u.username LIKE CONCAT('%', CONCAT(#{postUserName}, '%'))
+            </if>
+            <if test="title!=null">
+                AND p.title LIKE CONCAT('%', CONCAT(#{title}, '%'))
+            </if>
+            <if test="createTimeStart!=null">
+                AND p.create_time>#{createTimeStart}
+            </if>
+            <if test="createTimeEnd!=null">
+                AND #{createTimeEnd}>p.create_time
+            </if>
             <if test="status!=null and status!=0">
                 AND p.`status` = #{status}
             </if>

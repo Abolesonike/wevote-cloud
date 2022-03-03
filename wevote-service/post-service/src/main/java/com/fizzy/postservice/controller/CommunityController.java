@@ -5,9 +5,13 @@ import com.fizzy.core.entity.CommunityClassification;
 import com.fizzy.core.entity.SysUser;
 import com.fizzy.postservice.service.CommClassificationService;
 import com.fizzy.postservice.service.CommunityService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +31,6 @@ public class CommunityController {
     @Autowired
     CommunityService communityService;
 
-    @Autowired
-    CommClassificationService commClassificationService;
 
     /**
      * 创建社区
@@ -41,14 +43,50 @@ public class CommunityController {
     }
 
 
+//    /**
+//     * 条件查询社区
+//     * @param community 查询条件
+//     * @return 查询结果
+//     */
+//    @PostMapping("/select")
+//    public List<Community> select(@RequestBody Community community){
+//        return communityService.select(community);
+//    }
+
     /**
      * 条件查询社区
+     *
      * @param community 查询条件
      * @return 查询结果
      */
     @PostMapping("/select")
-    public List<Community> select(@RequestBody Community community){
-        return communityService.select(community);
+    public PageInfo<Community> select(@RequestParam int pageNum,
+                                      @RequestParam int pageSize,
+                                      @RequestBody Community community) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(communityService.select(community));
+    }
+
+    /**
+     * 更新一条
+     * @param community 更新数据
+     * @return 是否成功
+     */
+    @PutMapping("/update")
+    public boolean update(@RequestBody Community community) {
+        return communityService.updateAllById(community);
+    }
+
+    /**
+     * 删除一条
+     * @param id id
+     * @return 是否成功
+     */
+    @DeleteMapping("/delete")
+    public boolean delete(@RequestParam long id) {
+        Community community = new Community();
+        community.setId(id);
+        return communityService.deleteById(community);
     }
 
     /**
@@ -69,16 +107,5 @@ public class CommunityController {
     @GetMapping("/selectCommAdmin")
     public List<SysUser> selectCommAdmin(@RequestParam Long communityId) {
         return communityService.selectAdmin(communityId);
-    }
-
-
-    /**
-     * 查询所有启用的社区分类
-     * @param status 状态
-     * @return 结果
-     */
-    @GetMapping("/getAllClassification")
-    public List<CommunityClassification> getAllClassification(@RequestParam int status){
-        return commClassificationService.findByAllEnable(status);
     }
 }

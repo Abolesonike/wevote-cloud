@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "auth-service")
 public interface AuthFeign {
     @RequestMapping(method = RequestMethod.GET, value = "/isPermitted")
-    boolean isPermitted(@RequestParam String requestURI,@RequestParam String token);
+    boolean isPermitted(@RequestParam String requestUrl,@RequestParam String token);
+
 
     @GetMapping("/goLogin")
     Result goLogin();

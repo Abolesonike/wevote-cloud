@@ -42,8 +42,8 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         System.out.println("进入GateWay Shiro过滤器");
         // 请求对象
         ServerHttpRequest request = exchange.getRequest();
-        // Cookie放入redis，方便feign拦截器取得
-        redisUtil.set("Cookie",request.getHeaders().getFirst("Cookie"));
+        // Cookie放入redis，设置过期时间一天，方便feign拦截器取得
+        redisUtil.setExpire("Cookie",request.getHeaders().getFirst("Cookie"), 1, TimeUnit.DAYS);
         // 响应对象
         ServerHttpResponse response = exchange.getResponse();
         String token = request.getHeaders().getFirst("token");

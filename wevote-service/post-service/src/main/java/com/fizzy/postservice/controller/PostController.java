@@ -81,7 +81,7 @@ public class PostController {
         // 初始化点赞
         post.setLikes(0);
         // 初始化状态
-        post.setStatus(0);
+        post.setStatus(1);
         // 绑定投票
         post.setVotes(String.valueOf(voteId));
         return postService.insertOne(post);

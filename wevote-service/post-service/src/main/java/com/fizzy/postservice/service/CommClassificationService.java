@@ -37,12 +37,43 @@ public class CommClassificationService {
     }
 
     /**
+     * 条件查询
+     * @param communityClassification 查询条件
+     * @return 结果
+     */
+    public List<CommunityClassification> select(CommunityClassification communityClassification) {
+        return commClassificationMapper.select(communityClassification);
+    }
+
+    /**
+     * 更新全部
+     * @param classification 更新数据
+     * @return 是否成功
+     */
+    public boolean updateAllById(CommunityClassification classification){
+        return commClassificationMapper.updateAllById(classification);
+    }
+
+
+    /**
      * 插入一条数据
      *
      * @param communityClassification 插入数据
      * @return 是否成功
      */
     public boolean insertOne(CommunityClassification communityClassification){
+        if(commClassificationMapper.findByName(communityClassification.getName()) != null) {
+            return false;
+        }
         return commClassificationMapper.insertOne(communityClassification);
+    }
+
+    /**
+     * 删除一条
+     * @param id 删除id
+     * @return 是否成功
+     */
+    public boolean deleteOne(int id) {
+        return commClassificationMapper.deleteOne(id);
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisUtil {
     @Autowired
@@ -26,6 +28,23 @@ public class RedisUtil {
              return false;
          }
      }
+
+    /**
+     * 普通缓存放入，设置过期时间
+     * @param key 键
+     * @param value 值
+     * @return true 成功 false 失败
+     */
+    public boolean setExpire(String key, Object value,long time ,TimeUnit timeUnit) {
+        try {
+            ValueOperations<Object, Object> ops = redisTemplate.opsForValue();
+            ops.set(key, value, time, timeUnit);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 普通缓存取出

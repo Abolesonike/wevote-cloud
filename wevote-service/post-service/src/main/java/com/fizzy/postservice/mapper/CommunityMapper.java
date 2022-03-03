@@ -28,6 +28,20 @@ public interface CommunityMapper {
     List<Community> select(Community community);
 
     /**
+     * 通过id更新全部内容
+     * @param community 更新内容
+     * @return 是否成功
+     */
+    boolean updateAllById(Community community);
+
+    /**
+     * 通过id删除一条
+     * @param community 删除的数据
+     * @return 是否成功
+     */
+    boolean deleteById(Community community);
+
+    /**
      * 插入一条
      * @param community 插入数据
      * @return 是否成功

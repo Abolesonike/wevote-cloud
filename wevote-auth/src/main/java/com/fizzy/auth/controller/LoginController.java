@@ -7,10 +7,14 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+
+import org.apache.shiro.session.mgt.SessionKey;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * Author FizzyElf
@@ -32,6 +36,7 @@ public class LoginController {
             System.out.println(sysUser);
             QueryResult queryResult = new QueryResult();
             String token = subject.getSession().getId().toString();
+            SecurityUtils.getSubject().getSession().setTimeout(86400000);
             queryResult.setData(sysUser);
             queryResult.setToken(token);
             return queryResult;
@@ -60,10 +65,10 @@ public class LoginController {
     }
 
     @GetMapping("/isPermitted")
-    public boolean isPermitted(@RequestParam String requestURI,@RequestParam String token, HttpServletRequest request) {
+    public boolean isPermitted(@RequestParam String requestUrl,@RequestParam String token, HttpServletRequest request) {
         System.out.println("isPermitted");
         //方案一，不灵活（对于get请求，不允许在url通过/拼接参数，可以通过?拼接）、不易排查问题
-        boolean permitted = SecurityUtils.getSubject().isPermitted(requestURI);
+        boolean permitted = SecurityUtils.getSubject().isPermitted(requestUrl);
         System.out.println("是否授权：" + permitted);
         return permitted;
     }
