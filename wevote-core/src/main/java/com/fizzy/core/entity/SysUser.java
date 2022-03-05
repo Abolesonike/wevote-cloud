@@ -28,4 +28,7 @@ public class SysUser {
    */
   private String roleName;
 
+  private java.sql.Timestamp createTimeStart;
+  private java.sql.Timestamp createTimeEnd;
+
 }

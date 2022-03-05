@@ -33,6 +33,15 @@ public class SysUserController {
         return sysUserService.selectByUserId(id);
     }
 
+    @PostMapping("/select")
+    public PageInfo<SysUser> select(@RequestParam int pageNum,
+                                    @RequestParam int pageSize,
+                                    @RequestBody SysUser sysUser) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<SysUser> userList = sysUserService.selectAll(sysUser);
+        return new PageInfo<>(userList);
+    }
+
     /**
      * 分页查询所有
      * @param pageNum 页数

@@ -60,8 +60,8 @@ public class SysUserService {
     /**
      * 查询所有数据
      */
-    public List<SysUser> selectAll(){
-        return sysUserMapper.selectAll();
+    public List<SysUser> selectAll(SysUser sysUser){
+        return sysUserMapper.selectAll(sysUser);
     }
 
     /**

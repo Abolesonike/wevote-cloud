@@ -42,9 +42,11 @@ public interface SysUserMapper {
     List<SysUser> selectByUsernameLike(String username);
 
     /**
-     * 查询所有数据
+     * 条件查询所有
+     * @param sysUser 查询条件
+     * @return 结果
      */
-    List<SysUser> selectAll();
+    List<SysUser> selectAll(SysUser sysUser);
 
     /**
      * 修改一条数据
