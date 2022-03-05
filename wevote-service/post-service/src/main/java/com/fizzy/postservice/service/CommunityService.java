@@ -6,6 +6,7 @@ import com.fizzy.core.entity.SysUser;
 import com.fizzy.postservice.mapper.CommunityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -74,8 +75,8 @@ public class CommunityService {
      * @param communityId 社区id
      * @return 社区成员
      */
-    public List<SysUser> selectAdmin(Long communityId){
-        return communityMapper.selectAdmin(communityId);
+    public List<SysUser> selectAdmin(Long communityId, SysUser user){
+        return communityMapper.selectAdmin(communityId, user);
     }
 
     /**
@@ -85,5 +86,15 @@ public class CommunityService {
      */
     public List<Community> selectAdminComm(int userId){
         return communityMapper.selectAdminComm(userId);
+    }
+
+    /**
+     * 查询用户是否加入色社区
+     * @param communityId 社区id
+     * @param userId 用户id
+     * @return true or false
+     */
+    public boolean checkUserIsJoined(Long communityId, int userId) {
+        return !CollectionUtils.isEmpty(communityMapper.checkUserIsJoined(communityId, userId));
     }
 }

@@ -34,6 +34,9 @@
         <result column="idcard" jdbcType="VARCHAR" property="idCard"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="comm_role" jdbcType="INTEGER" property="commRole"/>
+        <result column="comm_joined_time" jdbcType="TIMESTAMP" property="commJoinedTime"/>
+        <result column="post_num" jdbcType="INTEGER" property="postNum"/>
     </resultMap>
 
     <select id="findById" resultMap="BaseResultMap" resultType="com.fizzy.core.entity.Community">
@@ -109,12 +112,33 @@
     </insert>
 
     <!-- 查询社区的所有成员 -->
-    <select id="selectAdmin" parameterType="java.lang.Long" resultMap="SysUserMap"
+    <select id="selectAdmin" resultMap="SysUserMap"
             resultType="com.fizzy.core.entity.SysUser">
-        SELECT u.*
+        SELECT u.*,
+        c.join_time comm_joined_time,
+        c.type comm_role,
+        t.post_num
         FROM sys_user u
-                 LEFT JOIN community_admin c ON u.user_id = c.user_id
-        WHERE c.community_id = #{communityId}
+        LEFT JOIN community_admin c ON u.user_id = c.user_id
+        LEFT JOIN (SELECT community, post_user_id, COUNT(*) post_num
+        FROM post
+        GROUP BY community, post_user_id) t ON t.community = #{communityId}
+        AND t.post_user_id = c.user_id
+
+        <where>
+            <if test="communityId!=null">
+                AND c.community_id = #{communityId}
+            </if>
+            <if test="user.username!=null">
+                AND u.username LIKE CONCAT('%', CONCAT(#{user.username}, '%'))
+            </if>
+            <if test="user.commJoinedTimeStart!=null">
+                AND c.join_time>#{user.commJoinedTimeStart}
+            </if>
+            <if test="user.commJoinedTimeEnd!=null">
+                AND #{user.commJoinedTimeEnd}>c.join_time
+            </if>
+        </where>
     </select>
 
     <!-- 查询用户加入的社区 -->
@@ -124,6 +148,13 @@
         FROM community_admin ca
                  LEFT JOIN community c ON ca.community_id = c.id
         WHERE ca.user_id = #{userId}
+    </select>
+
+    <select id="checkUserIsJoined" resultType="java.lang.Long">
+        select community_id
+        from community_admin
+        where community_id = #{communityId}
+          and user_id = #{userId}
     </select>
 
 </mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.CommunityApplyMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.CommunityApply">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="apply_user_id" jdbcType="INTEGER" property="applyUserId" />
+        <result column="apply_community" jdbcType="INTEGER" property="applyCommunity" />
+        <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+        <result column="apply_reason" jdbcType="VARCHAR" property="applyReason" />
+        <result column="apply_user_name" jdbcType="VARCHAR" property="applyUserName" />
+    </resultMap>
+
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.CommunityApply" useGeneratedKeys="true">
+        insert into community_apply (apply_user_id, apply_time, apply_reason, apply_community)
+        values (#{applyUserId}, #{applyTime}, #{applyReason}, #{applyCommunity})
+    </insert>
+
+    <delete id="deleteOne" parameterType="com.fizzy.core.entity.CommunityApply">
+        delete from community_apply where id = #{id}
+    </delete>
+
+    <select id="select" parameterType="com.fizzy.core.entity.CommunityApply" resultMap="BaseResultMap">
+        select c.*,u.username apply_user_name from community_apply c
+            left join sys_user u on u.user_id = c.apply_user_id
+        <where>
+            <if test="applyCommunity!=null">
+                AND c.apply_community = #{applyCommunity}
+            </if>
+            <if test="applyUserName!=null">
+                AND u.username LIKE CONCAT('%', CONCAT(#{applyUserName}, '%'))
+            </if>
+            <if test="applyTimeStart!=null">
+                AND c.apply_time>#{applyTimeStart}
+            </if>
+            <if test="applyTimeEnd!=null">
+                AND #{applyTimeEnd}>c.apply_time
+            </if>
+        </where>
+    </select>
+
+</mapper>

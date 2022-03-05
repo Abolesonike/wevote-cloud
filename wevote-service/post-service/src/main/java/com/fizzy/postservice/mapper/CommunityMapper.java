@@ -3,6 +3,7 @@ package com.fizzy.postservice.mapper;
 import com.fizzy.core.entity.Community;
 import com.fizzy.core.entity.SysUser;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -53,7 +54,8 @@ public interface CommunityMapper {
      * @param communityId 社区id
      * @return 社区成员
      */
-    List<SysUser> selectAdmin(Long communityId);
+    List<SysUser> selectAdmin(@RequestParam("communityId") Long communityId,
+                              @RequestParam("user") SysUser user);
 
     /**
      * 查询用户加入的社区
@@ -61,4 +63,12 @@ public interface CommunityMapper {
      * @return 加入的社区
      */
     List<Community> selectAdminComm(int userId);
+
+    /**
+     * 检查用户是否加入指定社区
+     * @param communityId 社区id
+     * @param userId 用户id
+     * @return 社区id
+     */
+    List<Long> checkUserIsJoined(long communityId, int userId);
 }

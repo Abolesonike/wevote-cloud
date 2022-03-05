@@ -10,5 +10,5 @@ public class CommunityAdmin {
   private long communityId;
   private long userId;
   private long type;
-
+  private java.sql.Timestamp joinTime;
 }

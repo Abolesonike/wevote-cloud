@@ -101,11 +101,21 @@ public class CommunityController {
 
     /**
      * 查询社区的所有用户
+     *
      * @param communityId 社区id
      * @return 社区用户
      */
-    @GetMapping("/selectCommAdmin")
-    public List<SysUser> selectCommAdmin(@RequestParam Long communityId) {
-        return communityService.selectAdmin(communityId);
+    @PostMapping("/selectCommAdmin")
+    public PageInfo<SysUser> selectCommAdmin(@RequestParam int pageNum,
+                                             @RequestParam int pageSize,
+                                             @RequestParam Long communityId,
+                                             @RequestBody SysUser user) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(communityService.selectAdmin(communityId, user));
+    }
+
+    @GetMapping("/checkIsJoined")
+    public boolean checkUserIsJoined(@RequestParam long communityId, @RequestParam int userId) {
+        return communityService.checkUserIsJoined(communityId, userId);
     }
 }
