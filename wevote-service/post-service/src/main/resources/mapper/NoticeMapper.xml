@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.NoticeMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Notice">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="post_user_id" jdbcType="VARCHAR" property="postUserId" />
+        <result column="post_user_name" jdbcType="VARCHAR" property="postUserName" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="community" jdbcType="INTEGER" property="community" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    </resultMap>
+
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Notice" useGeneratedKeys="true">
+        insert into notice (title, content, community, status, creation_date, post_user_id)
+        values (#{title}, #{content}, #{community}, #{status}, #{creationDate}, #{postUserId})
+    </insert>
+
+    <delete id="deleteOne" parameterType="com.fizzy.core.entity.Notice">
+        delete from notice where id = #{id}
+    </delete>
+
+    <select id="select" parameterType="com.fizzy.core.entity.Notice" resultMap="BaseResultMap">
+        select n.*, u.username post_user_name from notice n left join sys_user u on n.post_user_id = u.user_id
+        <where>
+            <if test="title!=null">
+                AND title LIKE CONCAT('%', CONCAT(#{title}, '%'))
+            </if>
+            <if test="community!=null and  community!=0">
+                AND community = #{community}
+            </if>
+            <if test="status!=null and status!=0">
+                AND status = #{status}
+            </if>
+            <if test="creationDateStart!=null">
+                AND creation_date>#{creationDateStart}
+            </if>
+            <if test="creationDateEnd!=null">
+                AND #{creationDateEnd}>creation_date
+            </if>
+        </where>
+        order by n.status desc
+    </select>
+
+    <update id="updateOne" parameterType="com.fizzy.core.entity.Notice">
+        update notice
+        set title=#{title},
+            content=#{content},
+            community=#{community},
+            status=#{status}
+        where id = #{id}
+    </update>
+
+</mapper>
