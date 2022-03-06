@@ -118,4 +118,18 @@ public class CommunityController {
     public boolean checkUserIsJoined(@RequestParam long communityId, @RequestParam int userId) {
         return communityService.checkUserIsJoined(communityId, userId);
     }
+
+    /**
+     * 查询用户管理的社区
+     *
+     * @param userId 用户id
+     * @return 社区
+     */
+    @GetMapping("/managerCommunity")
+    public PageInfo<Community> managerCommunity(@RequestParam int pageNum,
+                                               @RequestParam int pageSize,
+                                               @RequestParam int userId) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(communityService.managerCommunity(userId));
+    }
 }

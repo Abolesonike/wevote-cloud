@@ -71,4 +71,11 @@ public interface CommunityMapper {
      * @return 社区id
      */
     List<Long> checkUserIsJoined(long communityId, int userId);
+
+    /**
+     * 查询用户管理的社区
+     * @param userId 用户id
+     * @return 社区
+     */
+    List<Community> managerCommunity(int userId);
 }

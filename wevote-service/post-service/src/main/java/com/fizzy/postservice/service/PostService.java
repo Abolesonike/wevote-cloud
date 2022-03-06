@@ -1,5 +1,6 @@
 package com.fizzy.postservice.service;
 
+import com.fizzy.core.entity.Message;
 import com.fizzy.core.entity.Post;
 import com.fizzy.postservice.entity.PostVo;
 import com.fizzy.postservice.feign.SysUserServiceFeign;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +30,9 @@ public class PostService {
 
     @Autowired
     SysUserServiceFeign sysUserServiceFeign;
+
+    @Autowired
+    MessageService messageService;
 
     /**
      * 查询所有帖子
@@ -89,6 +94,56 @@ public class PostService {
      */
     public boolean updateAll(Post post){
         return postMapper.updateAll(post);
+    }
+
+    public boolean changeStatus(Post post) {
+        Message message = new Message();
+        Date date = new Date();
+        message.setCreationDate(new java.sql.Timestamp(date.getTime()));
+        message.setTitle("投票状态改变通知");
+        message.setUserId((int) post.getPostUserId());
+        message.setIsRead(2);
+        StringBuilder content = new StringBuilder();
+        content.append("《");
+        content.append(post.getTitle());
+        content.append("》");
+        switch (post.getStatus()) {
+            case 1:
+                content.append("投票已被管理员重新提交审核。");
+                message.setContent(String.valueOf(content));
+                messageService.insertOne(message);
+                break;
+            case 2:
+                content.append("投票已经审核通过。");
+                message.setContent(String.valueOf(content));
+                messageService.insertOne(message);
+                break;
+            case 3:
+                content.append("投票审核未通过,");
+                content.append("理由为：");
+                content.append(post.getStatusReason());
+                content.append("。请编辑后重新提交。");
+                message.setContent(String.valueOf(content));
+                messageService.insertOne(message);
+                break;
+            case 4:
+                content.append("投票已被管理员删除。");
+                content.append("理由为：");
+                content.append(post.getStatusReason());
+                message.setContent(String.valueOf(content));
+                messageService.insertOne(message);
+                break;
+            case 5:
+                content.append("投票被举报");
+                content.append("理由为：");
+                content.append(post.getStatusReason());
+                message.setContent(String.valueOf(content));
+                messageService.insertOne(message);
+                break;
+            default:
+                break;
+        }
+        return updateAll(post);
     }
 
     /**

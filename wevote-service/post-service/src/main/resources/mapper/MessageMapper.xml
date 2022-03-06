@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.MessageMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.Message">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="is_read" jdbcType="INTEGER" property="isRead" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    </resultMap>
+
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Message" useGeneratedKeys="true">
+        insert into message (title, content, user_id, is_read, creation_date)
+        values (#{title}, #{content}, #{userId}, #{isRead}, #{creationDate})
+    </insert>
+
+    <delete id="deleteOne" parameterType="com.fizzy.core.entity.Message">
+        delete from message where id = #{id}
+    </delete>
+
+    <select id="select" parameterType="com.fizzy.core.entity.Message" resultMap="BaseResultMap">
+        select * from message
+        <where>
+            <if test="title!=null">
+                AND title LIKE CONCAT('%', CONCAT(#{title}, '%'))
+            </if>
+            <if test="userId!=null and  userId!=0">
+                AND user_id = #{userId}
+            </if>
+        </where>
+        order by creation_date desc
+    </select>
+
+    <update id="updateOne" parameterType="com.fizzy.core.entity.Message">
+        update message
+        set title=#{title},
+            content=#{content},
+            is_read=#{isRead},
+        where id = #{id}
+    </update>
+
+</mapper>

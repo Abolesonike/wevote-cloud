@@ -97,4 +97,13 @@ public class CommunityService {
     public boolean checkUserIsJoined(Long communityId, int userId) {
         return !CollectionUtils.isEmpty(communityMapper.checkUserIsJoined(communityId, userId));
     }
+
+    /**
+     * 查询用户管理的社区
+     * @param userId 用户id
+     * @return 社区
+     */
+    public List<Community> managerCommunity(int userId) {
+        return communityMapper.managerCommunity(userId);
+    }
 }

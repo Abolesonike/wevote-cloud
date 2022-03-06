@@ -157,4 +157,30 @@
           and user_id = #{userId}
     </select>
 
+    <select id="managerCommunity" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+            c.*,
+            t.post_num,
+            t2.user_num
+        FROM
+            community_admin ca
+                LEFT JOIN community c ON ca.community_id = c.id
+                LEFT JOIN (
+                SELECT
+                    count(*) post_num,
+                    c.id
+                FROM
+                    community c,
+                    post p
+                WHERE
+                    c.id = p.community
+                GROUP BY
+                    c.id
+            ) t ON t.id = c.id
+                LEFT JOIN ( SELECT community_id, count(*) user_num FROM community_admin GROUP BY community_id ) t2 ON t2.community_id = c.id
+        WHERE
+            ca.user_id = #{userId}
+          AND ca.type != 3
+    </select>
+
 </mapper>

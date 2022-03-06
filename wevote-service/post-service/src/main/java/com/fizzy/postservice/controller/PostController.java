@@ -10,7 +10,9 @@ import com.fizzy.postservice.service.VoteService;
 import com.fizzy.userservice.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.netty.util.internal.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -87,26 +89,6 @@ public class PostController {
         return postService.insertOne(post);
     }
 
-    @GetMapping("/postList")
-    public PageInfo<Post> postList(@RequestParam int pageNum, @RequestParam int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-
-        List<Map<String,Object>> resultList = new ArrayList<>();
-        List<Post> contentList = postService.findAllPost();
-        //根据帖子找用户，一个map对应一个帖子和用户，最后返回一个map集合
-        // 先不查用户，否则分页插件不能正常使用 2021/11/03
-//        for(Post content : contentList){
-//            Map<String, Object> map = new HashMap<>();
-//            //User user = userService.findUserById(content.getPostUserId());
-//            // User user = userServiceFeign.getUserById(content.getPostUserId());
-//            SysUser user = sysUserServiceFeign.findById(content.getPostUserId());
-//            map.put("user",user);
-//            map.put("content",content);
-//            resultList.add(map);
-//        }
-
-        return new PageInfo<>(contentList);
-    }
 
     @GetMapping("/findById")
     public Post postDetail(@RequestParam int id){
@@ -153,13 +135,16 @@ public class PostController {
      * @return 是否成功
      */
     @GetMapping("/changeStatus")
-    public boolean changeStatus(@RequestParam int id, @RequestParam int status){
+    public boolean changeStatus(@RequestParam int id, @RequestParam int status, @RequestParam String reason){
         // 查询帖子
         Post post = postService.findPostById(id);
         // 改变状态
         post.setStatus(status);
+        if(!ObjectUtils.isEmpty(reason) && !"".equals(reason) ) {
+            post.setStatusReason(reason);
+        }
         // 更新全部字段
-        return postService.updateAll(post);
+        return postService.changeStatus(post);
     }
 
     /**

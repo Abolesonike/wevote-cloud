@@ -37,6 +37,11 @@ public class Post {
 
     private int status;
 
+    /**
+     * 非数据库字段，改变帖子状态的理由
+     */
+    private String statusReason;
+
     private String votes;
 
     private long community;
