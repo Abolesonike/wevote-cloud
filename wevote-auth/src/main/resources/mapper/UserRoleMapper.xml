@@ -12,7 +12,7 @@
 
     <!-- 插入一条数据 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.UserRole" useGeneratedKeys="true" keyProperty="userRoleId">
-        insert into user_role (role_id, role_id) values (#{userId}, #{roleId})
+        insert into user_role (user_id, role_id) values (#{userId}, #{roleId})
     </insert>
 
     <!-- 删除一条数据 -->

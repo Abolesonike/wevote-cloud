@@ -4,13 +4,16 @@ import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.fizzy.aliyun.util.AliyunMessageClient;
 import com.fizzy.auth.service.SysUserService;
+import com.fizzy.auth.service.UserRoleService;
 import com.fizzy.core.entity.QueryResult;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.core.entity.UserRole;
 import com.fizzy.core.utils.Result;
 import com.fizzy.core.utils.VerifyCode;
 import com.fizzy.redis.utils.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
@@ -36,6 +40,9 @@ public class LoginController {
 
     @Autowired
     SysUserService sysUserService;
+
+    @Autowired
+    UserRoleService userRoleService;
 
     @PostMapping("/login")
     public QueryResult loginByPwd(@RequestParam String tel,
@@ -66,7 +73,7 @@ public class LoginController {
             return queryResult;
         } catch (UnknownAccountException e) {
             QueryResult queryResult = new QueryResult();
-            queryResult.setData("用户不存在！");
+            queryResult.setData("电话号码不存在！");
             return queryResult;
         } catch (IncorrectCredentialsException e) {
             QueryResult queryResult = new QueryResult();
@@ -86,7 +93,15 @@ public class LoginController {
         }
         Md5Hash md5 = new Md5Hash(sysUser.getPassword(), sysUser.getTel(),5);
         sysUser.setPassword(md5.toString());
+        // 创建时间
+        Date nowDate = new Date();
+        java.sql.Timestamp sqlDate = new java.sql.Timestamp(nowDate.getTime());
+        sysUser.setCreateTime(sqlDate);
         sysUserService.insertOne(sysUser);
+        UserRole userRole = new UserRole();
+        userRole.setUserId(sysUser.getUserId());
+        userRole.setRoleId(4);
+        userRoleService.insertOne(userRole);
         return new Result(200,"注册成功！");
     }
 
@@ -149,6 +164,28 @@ public class LoginController {
         redisUtil.setExpire("phoneVerifyCode:" + phoneNumber,coed,30,TimeUnit.MINUTES);
         return new Result(200,"验证码发送成功！");
 
+    }
+
+    @GetMapping("/resetPassword")
+    public Result resetPassword(@RequestParam String tel,
+                                  @RequestParam String password,
+                                  @RequestParam String verifyCode,
+                                  HttpServletRequest request) {
+        String verifyCode1 = redisUtil.get("phoneVerifyCode:" + tel);
+        if(!verifyCode.equalsIgnoreCase(String.valueOf(verifyCode1))) {
+            return new Result(202,"验证码错误！");
+        }
+        SysUser user = new SysUser();
+        user.setTel(tel);
+        try {
+            SysUser sysUser = sysUserService.selectAll(user).get(0);
+            Md5Hash md5 = new Md5Hash(password, tel,5);
+            sysUser.setPassword(md5.toString());
+            sysUserService.updateById(sysUser);
+            return new Result(200,"成功");
+        } catch (IndexOutOfBoundsException e){
+            return new Result(203,"手机号不存在！");
+        }
     }
 
     @GetMapping("/auth/test")
