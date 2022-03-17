@@ -3,12 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WeVote.iml" filepath="$PROJECT_DIR$/WeVote.iml" />
-      <module fileurl="file://$PROJECT_DIR$/comment-service/comment-service.iml" filepath="$PROJECT_DIR$/comment-service/comment-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wevote-service/comment-service/comment-service.iml" filepath="$PROJECT_DIR$/wevote-service/comment-service/comment-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-service/file-service/file-service.iml" filepath="$PROJECT_DIR$/wevote-service/file-service/file-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wevote-service/job-service/job-service.iml" filepath="$PROJECT_DIR$/wevote-service/job-service/job-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-service/post-service/post-service.iml" filepath="$PROJECT_DIR$/wevote-service/post-service/post-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/wevote-service/user-service/user-service.iml" filepath="$PROJECT_DIR$/wevote-service/user-service/user-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-auth/wevote-auth.iml" filepath="$PROJECT_DIR$/wevote-auth/wevote-auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wevote-common/wevote-commin-aliyun/wevote-commin-aliyun.iml" filepath="$PROJECT_DIR$/wevote-common/wevote-commin-aliyun/wevote-commin-aliyun.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-common/wevote-common.iml" filepath="$PROJECT_DIR$/wevote-common/wevote-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wevote-common/wevote-common-es/wevote-common-es.iml" filepath="$PROJECT_DIR$/wevote-common/wevote-common-es/wevote-common-es.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-common/wevote-common-redis/wevote-common-redis.iml" filepath="$PROJECT_DIR$/wevote-common/wevote-common-redis/wevote-common-redis.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-core/wevote-core.iml" filepath="$PROJECT_DIR$/wevote-core/wevote-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/wevote-gateway/wevote-gateway.iml" filepath="$PROJECT_DIR$/wevote-gateway/wevote-gateway.iml" />

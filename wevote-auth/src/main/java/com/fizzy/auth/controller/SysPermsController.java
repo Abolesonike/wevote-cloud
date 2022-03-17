@@ -78,11 +78,12 @@ public class SysPermsController {
      * @param pageSize 页大小
      * @return 权限列表
      */
-    @GetMapping("/parentPermsList")
+    @PostMapping("/parentPermsList")
     public PageInfo<SysPerms> parentPermsList(@RequestParam int pageNum,
-                                             @RequestParam int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<SysPerms> permsList = sysPermsService.selectParent();
+                                              @RequestParam int pageSize,
+                                              @RequestBody SysPerms sysPerms) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<SysPerms> permsList = sysPermsService.selectParent(sysPerms);
         return new PageInfo<>(permsList);
     }
 
@@ -100,9 +101,9 @@ public class SysPermsController {
      * 树形节点权限，父权限节点
      * @return 父节点
      */
-    @GetMapping("/selectParentNode")
-    public List<PermsTreeNode> selectParentNode(@RequestParam int roleId) {
-        return sysPermsService.selectParentNode(roleId);
+    @PostMapping("/selectParentNode")
+    public List<PermsTreeNode> selectParentNode(@RequestParam int roleId, @RequestBody SysPerms sysPerms) {
+        return sysPermsService.selectParentNode(roleId, sysPerms);
     }
 
     /**

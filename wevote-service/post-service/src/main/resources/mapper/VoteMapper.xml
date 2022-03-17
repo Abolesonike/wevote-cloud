@@ -11,6 +11,7 @@
         <result column="vote_number" jdbcType="VARCHAR" property="voteNumber" />
         <result column="vote_user" jdbcType="VARCHAR" property="voteUser" />
         <result column="multi_choose" jdbcType="INTEGER" property="multiChoose" />
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
     </resultMap>
     <!--查找所有帖子-->
     <select id="findAllVote" resultType="com.fizzy.core.entity.Vote" resultMap="BaseResultMap">
@@ -29,13 +30,13 @@
 
     <!-- 插入一个帖子 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.Vote" useGeneratedKeys="true" keyProperty="id">
-        insert into vote (title, chooses, vote_number, vote_user, multi_choose)
-        values (#{title}, #{chooses}, #{voteNumber}, #{voteUser},#{multiChoose})
+        insert into vote (title, chooses, vote_number, vote_user, multi_choose, end_date)
+        values (#{title}, #{chooses}, #{voteNumber}, #{voteUser},#{multiChoose},#{endDate})
     </insert>
 
     <update id="updateAll" parameterType="com.fizzy.core.entity.Vote">
         update vote set title=#{title},chooses=#{chooses},vote_number=#{voteNumber},
-                        vote_user=#{voteUser},multi_choose=#{multiChoose}
+                        vote_user=#{voteUser},multi_choose=#{multiChoose},end_date=#{endDate}
         where id=#{id}
     </update>
 

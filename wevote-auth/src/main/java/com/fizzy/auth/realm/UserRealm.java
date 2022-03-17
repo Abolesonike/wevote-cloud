@@ -1,6 +1,5 @@
 package com.fizzy.auth.realm;
 
-import com.fizzy.auth.feign.UserServiceFeign;
 import com.fizzy.auth.service.RolePermsService;
 import com.fizzy.auth.service.SysPermsService;
 import com.fizzy.auth.service.SysUserService;
@@ -23,8 +22,6 @@ import java.util.List;
  * Date 2021/10/18 9:31
  */
 public class UserRealm extends AuthorizingRealm {
-    @Autowired
-    UserServiceFeign userServiceFeign;
 
     @Autowired
     SysPermsService sysPermsService;
@@ -50,7 +47,7 @@ public class UserRealm extends AuthorizingRealm {
         // 获取当前用户
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser)subject.getPrincipal();
-        SysUser dbUser = sysUserService.selectRoleByUserName(sysUser.getUsername());
+        SysUser dbUser = sysUserService.selectUserByName(sysUser.getUsername());
         // 获取当前用户的角色
         int sysRole = userRoleService.selectRoleByUserId(dbUser.getUserId().intValue());
         // 获取角色对应的权限
@@ -73,7 +70,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        SysUser sysUser = sysUserService.selectRoleByUserName(token.getUsername());
+        SysUser sysUser = sysUserService.selectUserByName(token.getUsername());
         if(sysUser != null){
             return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),getName());
         }

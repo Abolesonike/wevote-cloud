@@ -39,7 +39,7 @@ public class SysUserService {
     /**
      * 根据用户名查询用户
      */
-    public SysUser selectRoleByUserName(String username){
+    public SysUser selectUserByName(String username){
         return sysUserMapper.selectUserByName(username);
     }
 

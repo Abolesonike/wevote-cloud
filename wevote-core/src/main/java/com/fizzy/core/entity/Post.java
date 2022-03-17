@@ -46,4 +46,6 @@ public class Post {
 
     private long community;
 
+    private int type;
+
 }

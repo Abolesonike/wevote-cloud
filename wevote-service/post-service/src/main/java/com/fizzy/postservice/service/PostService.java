@@ -5,14 +5,19 @@ import com.fizzy.core.entity.Post;
 import com.fizzy.postservice.entity.PostVo;
 import com.fizzy.postservice.feign.SysUserServiceFeign;
 import com.fizzy.postservice.mapper.PostMapper;
+import com.fizzy.redis.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author FizzyElf
@@ -33,6 +38,9 @@ public class PostService {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     /**
      * 查询所有帖子
@@ -66,7 +74,28 @@ public class PostService {
      * @return 查询结果
      */
     public List<PostVo> selectPostVo(Post post) {
+        if (post.getId() != 0) {
+            String s = redisUtil.get("postViewNumber:" + post.getId());
+            try {
+                int view = Integer.parseInt(s) + 1;
+                redisUtil.set("postViewNumber:" + post.getId(),String.valueOf(view));
+                redisUtil.setSet("postHeatUpdateList", post.getId());
+            } catch (NumberFormatException e){
+                redisUtil.set("postViewNumber:" + post.getId(),"1");
+                redisUtil.setSet("postHeatUpdateList", post.getId());
+            }
+
+        }
         return postMapper.selectPostVo(post);
+    }
+
+    /**
+     * 条件查询帖子
+     * @param ids 要查哪些
+     * @return 查询结果
+     */
+    public List<PostVo> selectPostVoByIds(List<Long> ids) {
+        return postMapper.selectPostVoByIds(ids);
     }
 
     /**
@@ -145,6 +174,52 @@ public class PostService {
         }
         return updateAll(post);
     }
+
+    public Map<String, Object> postOperate(int postId, long userId, int opType,String type) {
+        Map<String, Object> result = new HashMap<>(2);
+        boolean isOperated = redisUtil.isSetMember(type + postId, userId);
+        if (opType == 0) {
+            // 当userId等于0时，查询帖子的点赞数
+            result.put("isOperated", isOperated);
+            result.put("number",redisUtil.setSize(type+postId));
+            return result;
+        }
+        // 判断是否点过
+        if (isOperated) {
+            redisUtil.removeSet(type+postId, userId);
+            redisUtil.removeSet("user"+type+userId, postId);
+            isOperated = redisUtil.isSetMember(type + postId, userId);
+            redisUtil.setSet("postHeatUpdateList", postId);
+            result.put("isOperated", isOperated);
+            result.put("number",redisUtil.setSize(type+postId));
+            return result;
+        }
+        redisUtil.setSet(type+postId, userId);
+        redisUtil.setSet("user"+type+userId, postId);
+        isOperated = redisUtil.isSetMember(type + postId, userId);
+        redisUtil.setSet("postHeatUpdateList", postId);
+        result.put("isOperated", isOperated);
+        result.put("number",redisUtil.setSize(type+postId));
+        return result;
+    }
+
+    public PageInfo<PostVo> myPostLC(int pageNum,
+                                     int pageSize, long userId, String type) {
+        Set<Object> set = redisUtil.getSet(type + userId);
+        if (set.size() == 0) {
+            List<Long> ids = new ArrayList<>();
+            ids.add(0L);
+            PageHelper.startPage(pageNum, pageSize);
+            List<PostVo> postVoList = selectPostVoByIds(ids);
+            return new PageInfo<>(postVoList);
+        }
+        List<Long> ids = new ArrayList<>();
+        set.forEach((s) -> ids.add(Long.valueOf(String.valueOf(s))));
+        PageHelper.startPage(pageNum, pageSize);
+        List<PostVo> postVoList = selectPostVoByIds(ids);
+        return new PageInfo<>(postVoList);
+    }
+
 
     /**
      * 删除一条

@@ -2,6 +2,9 @@ package com.fizzy.commentservice.controller;
 
 import com.fizzy.commentservice.service.CommentService;
 import com.fizzy.core.entity.Comment;
+import com.fizzy.core.entity.Post;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,17 @@ public class CommentController {
 
     @Autowired
     CommentService commentService;
+
+    @PostMapping("/select")
+    public PageInfo<Comment> select(@RequestParam int pageNum,
+                                    @RequestParam int pageSize,
+                                    @RequestBody Comment comment) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<Comment> contentList = commentService.select(comment);
+
+        return new PageInfo<>(contentList);
+    }
 
     @GetMapping("/commentList")
     public List<Comment> list(@RequestParam("id") int id) {

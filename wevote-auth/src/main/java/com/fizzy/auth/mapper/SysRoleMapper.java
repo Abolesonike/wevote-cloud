@@ -1,9 +1,7 @@
 package com.fizzy.auth.mapper;
 
 import com.fizzy.core.entity.SysRole;
-import com.fizzy.core.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

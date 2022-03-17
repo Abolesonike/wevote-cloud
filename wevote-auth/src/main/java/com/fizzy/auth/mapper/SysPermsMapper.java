@@ -42,9 +42,11 @@ public interface SysPermsMapper {
 
     /**
      * 查询一级菜单
+     *
+     * @param sysPerms 条件
      * @return 一级菜单
      */
-    List<SysPerms> selectParent();
+    List<SysPerms> selectParent(SysPerms sysPerms);
 
     /**
      * 查询子菜单

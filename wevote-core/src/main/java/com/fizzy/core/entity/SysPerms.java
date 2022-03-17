@@ -36,4 +36,8 @@ public class SysPerms {
    */
   private boolean isHave;
 
+  private java.sql.Timestamp createTimeStart;
+
+  private java.sql.Timestamp createTimeEnd;
+
 }

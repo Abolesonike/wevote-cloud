@@ -42,6 +42,13 @@ public interface PostMapper {
     List<PostVo> selectPostVo(Post post);
 
     /**
+     * 条件查询帖子
+     * @param ids 要查哪些
+     * @return 查询结果
+     */
+    List<PostVo> selectPostVoByIds(List<Long> ids);
+
+    /**
      * 通过id查询帖子
      * @param id id
      * @return 结果

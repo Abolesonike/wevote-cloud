@@ -97,12 +97,12 @@ public class SysPermsService {
     /**
      * 查询一级菜单
      */
-    public List<SysPerms> selectParent(){
-        List<SysPerms> permsList = sysPermsMapper.selectParent();
-        for (SysPerms sysPerms : permsList){
+    public List<SysPerms> selectParent(SysPerms sysPerms){
+        List<SysPerms> permsList = sysPermsMapper.selectParent(sysPerms);
+        for (SysPerms sysPerm : permsList){
             // 检查是否有子路径
-            List<SysPerms> childrenPermsList = sysPermsMapper.selectChildren(sysPerms.getPermsId());
-            sysPerms.setHasChildren(childrenPermsList.size() > 0);
+            List<SysPerms> childrenPermsList = sysPermsMapper.selectChildren(sysPerm.getPermsId());
+            sysPerm.setHasChildren(childrenPermsList.size() > 0);
         }
         return permsList;
     }
@@ -127,8 +127,8 @@ public class SysPermsService {
      * 树形节点权限，父权限节点
      * @return 父节点
      */
-    public List<PermsTreeNode> selectParentNode(int roleId) {
-        List<SysPerms> permsList = selectParent();
+    public List<PermsTreeNode> selectParentNode(int roleId, SysPerms sysPerms) {
+        List<SysPerms> permsList = selectParent(sysPerms);
         return getPermsTreeNodes(permsList, roleId);
     }
 

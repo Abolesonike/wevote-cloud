@@ -14,14 +14,44 @@
         <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
         <result column="replay_type" jdbcType="INTEGER" property="replayType"/>
         <result column="belong" jdbcType="INTEGER" property="belong"/>
+        <result column="to_comment" jdbcType="INTEGER" property="toComment"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
 
     <!--查找所有回复-->
-    <select id="findAllReplay" parameterType="com.fizzy.core.entity.Comment" resultType="com.fizzy.core.entity.Comment">
-        select *
-        from comment
+    <select id="select" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
+        SELECT c.*,
+               t1.from_user_name
+        FROM COMMENT c,
+             (
+                 SELECT c.id,
+                        u.username from_user_name
+                 FROM COMMENT c
+                          LEFT JOIN sys_user u ON c.from_user_id = u.user_id
+             ) t1
+        <where>
+            t1.id = c.id
+            <if test="id!=null and id!=0">
+                AND c.id = #{id}
+            </if>
+            <if test="fromUserName!=null">
+                AND t1.from_user_name LIKE CONCAT('%', CONCAT(#{fromUserName}, '%'))
+            </if>
+            <if test="content!=null">
+                AND c.content LIKE CONCAT('%', CONCAT(#{content}, '%'))
+            </if>
+            <if test="createTimeStart!=null">
+                AND c.create_time>#{createTimeStart}
+            </if>
+            <if test="createTimeEnd!=null">
+                AND #{createTimeEnd}>c.create_time
+            </if>
+            <if test="status!=null and status!=0">
+                AND c.`status` = #{status}
+            </if>
+        </where>
+        order by c.create_time
     </select>
 
 
@@ -93,9 +123,9 @@
 
     <!-- 插入一条回复 -->
     <insert id="insertOneReplay" parameterType="com.fizzy.core.entity.Comment">
-        insert into comment (from_user_id, to_user_id, content, like_count, replay_type, belong, create_time, status)
-        values (#{fromUserId}, #{toUserId}, #{content}, #{likeCount}, #{replayType}, #{belong}, #{createTime},
-                #{status})
+        insert into comment (from_user_id, to_user_id, content, like_count, replay_type, belong, to_comment, create_time, status)
+        values (#{fromUserId}, #{toUserId}, #{content}, #{likeCount}, #{replayType}, #{belong},
+                #{toComment}, #{createTime},#{status})
     </insert>
 
     <!-- 点赞 -->

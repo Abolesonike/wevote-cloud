@@ -14,9 +14,10 @@ import java.util.List;
 public interface CommentMapper {
     /**
      * 查找所有回复
+     * @param comment 条件
      * @return 结果
      */
-    List<Comment> findAllReplay();
+    List<Comment> select(Comment comment);
 
     /**
      * 通过id查找

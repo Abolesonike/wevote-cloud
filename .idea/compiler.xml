@@ -8,12 +8,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="job-service" />
+        <module name="wevote-common-es" />
+        <module name="wevote-commin-aliyun" />
         <module name="post-service" />
         <module name="comment-service" />
         <module name="wevote-gateway" />
         <module name="wevote-auth" />
         <module name="wevote-common-redis" />
-        <module name="user-service" />
         <module name="file-service" />
         <module name="wevote-core" />
       </profile>
@@ -21,12 +23,15 @@
     <bytecodeTargetLevel>
       <module name="comment-service" target="8" />
       <module name="file-service" target="8" />
+      <module name="job-service" target="8" />
       <module name="post-service" target="8" />
       <module name="replay-service" target="8" />
       <module name="user-service" target="8" />
       <module name="WeVote" target="8" />
       <module name="wevote-auth" target="8" />
+      <module name="wevote-commin-aliyun" target="8" />
       <module name="wevote-common" target="8" />
+      <module name="wevote-common-es" target="8" />
       <module name="wevote-common-qiniu" target="8" />
       <module name="wevote-common-redis" target="8" />
       <module name="wevote-common-security" target="8" />
@@ -39,10 +44,13 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="comment-service" options="-parameters" />
       <module name="file-service" options="-parameters" />
+      <module name="job-service" options="-parameters" />
       <module name="post-service" options="-parameters" />
       <module name="replay-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="wevote-auth" options="-parameters" />
+      <module name="wevote-commin-aliyun" options="-parameters" />
+      <module name="wevote-common-es" options="-parameters" />
       <module name="wevote-common-qiniu" options="-parameters" />
       <module name="wevote-common-redis" options="-parameters" />
       <module name="wevote-common-security" options="-parameters" />

@@ -53,7 +53,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         System.out.println("requestUrl:"+requestUrl);
 
         // 1.检查是否是 不需要登录 或者 不需要权限 的接口
-        if("/login".equals(requestUrl)){
+        if("/login".equals(requestUrl) ||"/signIn".equals(requestUrl) || "/verifyCode".equals(requestUrl)|| "/messageCode".equals(requestUrl)  ){
             return chain.filter(exchange);
         }
 

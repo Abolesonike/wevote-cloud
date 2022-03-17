@@ -1,20 +1,29 @@
 package com.fizzy.auth.controller;
 
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.fizzy.aliyun.util.AliyunMessageClient;
+import com.fizzy.auth.service.SysUserService;
 import com.fizzy.core.entity.QueryResult;
 import com.fizzy.core.entity.SysUser;
 import com.fizzy.core.utils.Result;
+import com.fizzy.core.utils.VerifyCode;
+import com.fizzy.redis.utils.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.session.Session;
-
-import org.apache.shiro.session.mgt.SessionKey;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Author FizzyElf
@@ -22,14 +31,26 @@ import java.io.Serializable;
  */
 @RestController
 public class LoginController {
+    @Autowired
+    RedisUtil redisUtil;
+
+    @Autowired
+    SysUserService sysUserService;
 
     @PostMapping("/login")
-    public QueryResult loginByPwd(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
-
+    public QueryResult loginByPwd(@RequestParam String username, @RequestParam String password,@RequestParam String verifyCode, HttpServletRequest request) {
+        Object verifyCode1 = redisUtil.get("verifyCode");
+        if(!verifyCode.equalsIgnoreCase(String.valueOf(verifyCode1))) {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setData("验证码错误！");
+            return queryResult;
+        }
         try {
             // 认证 Subject：主体
             Subject subject = SecurityUtils.getSubject();
             // 根据用户信息，组成用户令牌token
+            Md5Hash md5 = new Md5Hash(password, username,3);
+            password = md5.toString();
             UsernamePasswordToken Token = new UsernamePasswordToken(username, password, false);
             subject.login(Token);
             SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -51,6 +72,22 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/signIn")
+    public Result signIn(@RequestBody SysUser sysUser,@RequestParam String verifyCode, HttpServletRequest request) {
+        String verifyCode1 = redisUtil.get("phoneVerifyCode:" + sysUser.getTel());
+        if(!verifyCode.equalsIgnoreCase(String.valueOf(verifyCode1))) {
+            return new Result(202,"验证码错误！");
+        }
+        if(sysUserService.selectUserByName(sysUser.getUsername()) != null) {
+            return new Result(201,"用户名重复！");
+        }
+        Md5Hash md5 = new Md5Hash(sysUser.getPassword(), sysUser.getUsername(),3);
+        sysUser.setPassword(md5.toString());
+        sysUserService.insertOne(sysUser);
+        return new Result(200,"注册成功！");
+    }
+
+
     @GetMapping("/goLogin")
     public Result goLogin(){
         return new Result(405,"未登录");
@@ -71,6 +108,42 @@ public class LoginController {
         boolean permitted = SecurityUtils.getSubject().isPermitted(requestUrl);
         System.out.println("是否授权：" + permitted);
         return permitted;
+    }
+
+    @GetMapping("/verifyCode")
+    public void code(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        VerifyCode vc = new VerifyCode();
+        BufferedImage image = vc.getImage();
+        String text = vc.getText();
+        redisUtil.setExpire("verifyCode",text,1,TimeUnit.MINUTES);
+        VerifyCode.output(image, resp.getOutputStream());
+    }
+
+    @GetMapping("/messageCode")
+    public Result messageCode(@RequestParam String phoneNumber) throws Exception {
+        // 检查号码是否注册
+        SysUser  sysUse = new SysUser();
+        sysUse.setTel(phoneNumber);
+//        if (!CollectionUtils.isEmpty(sysUserService.selectAll(sysUse))) {
+//            return new Result(201,"该号码已经注册！");
+//        }
+        String coed =  String.valueOf((int)((Math.random()*9+1)*100000));
+        com.aliyun.dysmsapi20170525.Client client = AliyunMessageClient.createClient(
+                "LTAI5t6Z8uvgTr8KPNyg5gK5", "UwkVykTht8JN2YdOE9P3QF4DDAmrAh");
+        SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                .setSignName("阿里云短信测试")
+                .setTemplateCode("SMS_154950909")
+                .setPhoneNumbers(phoneNumber)
+                .setTemplateParam("{\"code\":\""+ coed +"\"}");
+        // 复制代码运行请自行打印 API 的返回值
+        SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
+        if ("OK".equals(sendSmsResponse.getBody().getCode())) {
+            redisUtil.setExpire("phoneVerifyCode:" + phoneNumber,coed,30,TimeUnit.MINUTES);
+            return new Result(200,"验证码发送成功！");
+        } else {
+            return new Result(203,sendSmsResponse.getBody().getMessage());
+        }
+
     }
 
     @GetMapping("/auth/test")

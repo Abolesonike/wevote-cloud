@@ -14,4 +14,5 @@ public class Vote {
     private String voteNumber;
     private String voteUser;
     private int multiChoose;
+    private java.sql.Timestamp endDate;
 }

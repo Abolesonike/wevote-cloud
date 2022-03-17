@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>wevote-common-redis</module>
+        <module>wevote-commin-aliyun</module>
+        <module>wevote-common-es</module>
     </modules>
 
     <properties>

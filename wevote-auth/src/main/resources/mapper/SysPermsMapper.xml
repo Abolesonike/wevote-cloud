@@ -43,7 +43,23 @@
 
     <!-- 查询一级菜单 -->
     <select id="selectParent" resultType="java.util.List" resultMap="BaseResultMap">
-        SELECT * FROM sys_perms WHERE p_id = 0
+        SELECT * FROM sys_perms
+        <where>
+            AND p_id = 0
+            <if test="menuName!=null and menuName!=''">
+                AND menu_name LIKE CONCAT('%', CONCAT(#{menuName}, '%'))
+            </if>
+            <if test="path!=null and path!=''">
+                AND path LIKE CONCAT('%', CONCAT(#{path}, '%'))
+            </if>
+            <if test="createTimeStart!=null">
+                AND create_time>#{createTimeStart}
+            </if>
+            <if test="createTimeEnd!=null">
+                AND #{createTimeEnd}>create_time
+            </if>
+        </where>
+
     </select>
     
     <!-- 查询子菜单 -->

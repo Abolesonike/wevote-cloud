@@ -46,7 +46,7 @@ public class NoticeController {
      * @param notice 数据
      * @return 结果
      */
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public boolean deleteOne(@RequestBody Notice notice){
         return noticeService.deleteOne(notice);
     }

@@ -14,6 +14,7 @@
         <result column="status" jdbcType="INTEGER" property="status" />
         <result column="votes" jdbcType="VARCHAR"  property="votes" />
         <result column="community" jdbcType="INTEGER" property="community" />
+        <result column="type" jdbcType="INTEGER" property="type" />
     </resultMap>
     <resultMap id="postVoMap" type="com.fizzy.postservice.entity.PostVo">
         <!-- 用id属性来映射主键字段 -->
@@ -24,9 +25,11 @@
         <result column="content" jdbcType="VARCHAR" property="content" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
         <result column="status" jdbcType="INTEGER" property="status" />
         <result column="votes" jdbcType="VARCHAR"  property="votes" />
         <result column="name" jdbcType="VARCHAR"  property="community" />
+        <result column="type" jdbcType="INTEGER" property="type" />
     </resultMap>
     <!--查找所有帖子-->
     <select id="findAllPost" resultType="com.fizzy.core.entity.Post" resultMap="BaseResultMap">
@@ -67,6 +70,8 @@
         p.content,
         p.create_time,
         p.likes,
+        p.type,
+        t1.comment_num,
         p.votes,
         p.`status`,
         u.username,
@@ -75,9 +80,14 @@
         post p
         LEFT JOIN sys_user u ON u.user_id = p.post_user_id
         LEFT JOIN community c ON c.id = p.community
+        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` GROUP BY belong) t1
+        ON p.id = t1.belong
         <where>
             <if test="id!=null and id!=0">
                 AND p.id = #{id}
+            </if>
+            <if test="postUserId!=null and postUserId!=0">
+                AND p.post_user_id = #{postUserId}
             </if>
             <if test="postUserName!=null">
                 AND u.username LIKE CONCAT('%', CONCAT(#{postUserName}, '%'))
@@ -98,6 +108,41 @@
                 AND p.community=#{community}
             </if>
         </where>
+        order by
+        <choose>
+            <when test='type!=null and type!=0'>p.type desc, create_time desc</when>
+            <otherwise> p.create_time desc </otherwise>
+        </choose>
+    </select>
+
+    <!--条件查询帖子vo-->
+    <select id="selectPostVoByIds" parameterType="java.util.List"
+            resultType="com.fizzy.postservice.entity.PostVo" resultMap="postVoMap">
+        SELECT
+        p.id,
+        p.title,
+        p.content,
+        p.create_time,
+        p.likes,
+        p.type,
+        t1.comment_num,
+        p.votes,
+        p.`status`,
+        u.username,
+        c.`name`
+        FROM
+        post p
+        LEFT JOIN sys_user u ON u.user_id = p.post_user_id
+        LEFT JOIN community c ON c.id = p.community
+        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` GROUP BY belong) t1
+        ON p.id = t1.belong
+
+                <where>
+                    <foreach collection="ids" open="and p.id in(" close=")" item="id" separator=",">
+                        #{id}
+                    </foreach>
+                </where>
+        order by p.create_time desc
     </select>
 
     <!--通过id查找帖子-->
@@ -107,14 +152,14 @@
 
     <!-- 插入一个帖子 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.Post" useGeneratedKeys="true" keyProperty="id">
-        insert into post (title, post_user_id, content, create_time, likes, status, votes, community)
-        values (#{title}, #{postUserId}, #{content}, #{createTime},#{likes},#{status}, #{votes}, #{community})
+        insert into post (title, post_user_id, content, create_time, likes, status, votes, community, type)
+        values (#{title}, #{postUserId}, #{content}, #{createTime},#{likes},#{status}, #{votes}, #{community},#{type})
     </insert>
 
 
     <!-- 全部更新 -->
     <update id="updateAll" parameterType="com.fizzy.core.entity.Post">
-        update post set title=#{title},post_user_id=#{postUserId},content=#{content},
+        update post set title=#{title},post_user_id=#{postUserId},content=#{content},type=#{type},
                            create_time=#{createTime},likes=#{likes},status=#{status},votes=#{votes},community=#{community}
                 where id=#{id}
     </update>

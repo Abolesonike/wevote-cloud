@@ -34,9 +34,13 @@ public class Comment {
 
   private int belong;
 
+  private int toComment;
+
   private int status;
 
   private java.sql.Timestamp createTime;
+  private java.sql.Timestamp createTimeStart;
+  private java.sql.Timestamp createTimeEnd;
 
   /**
    * 该条回复的回复

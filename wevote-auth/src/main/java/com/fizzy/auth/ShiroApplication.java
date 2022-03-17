@@ -6,10 +6,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 /**
- * Author FizzyElf
- * Date 2021/10/18 10:40
+ * @author FizzyElf
+ * @date 2021/10/18 10:40
  */
-@SpringBootApplication()
+@SpringBootApplication(scanBasePackages = "com.fizzy.*")
 @EnableFeignClients
 public class ShiroApplication {
     public static void main(String[] args) {

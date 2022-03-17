@@ -16,7 +16,9 @@ public class PostVo {
     private String content;
     private java.sql.Timestamp createTime;
     private int likes;
+    private int commentNum;
     private int status;
     private String votes;
     private String community;
+    private int type;
 }

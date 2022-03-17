@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.jobservice.mapper.PostHeatMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.PostHeat">
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="post_id" jdbcType="INTEGER" property="postId"/>
+        <result column="community_id" jdbcType="INTEGER" property="communityId"/>
+        <result column="comment" jdbcType="INTEGER" property="comment"/>
+        <result column="time" jdbcType="VARCHAR" property="time"/>
+    </resultMap>
+    <resultMap id="postVoMap" type="com.fizzy.core.entity.PostVo">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="username" jdbcType="VARCHAR" property="postUserName"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="likes" jdbcType="INTEGER" property="likes"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="votes" jdbcType="VARCHAR" property="votes"/>
+        <result column="name" jdbcType="VARCHAR" property="community"/>
+    </resultMap>
+
+
+    <!--查找所有回复-->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT p.id           post_id,
+               p.community community_id,
+               TIMESTAMPDIFF(
+                       HOUR,
+                       create_time,
+                       NOW()) time,
+               t1.comment_num comment
+        FROM `post` p
+                 LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` GROUP BY belong) t1
+                           ON p.id = t1.belong
+        <where>
+            <foreach collection="ids" open="and id in(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="postVoMap" parameterType="java.lang.Integer">
+        SELECT p.id,
+               p.title,
+               p.content,
+               p.create_time,
+               p.likes,
+               p.votes,
+               p.`status`,
+               u.username,
+               c.`name`
+        FROM post p
+                 LEFT JOIN sys_user u ON u.user_id = p.post_user_id
+                 LEFT JOIN community c ON c.id = p.community
+
+        WHERE p.id = #{id}
+    </select>
+
+</mapper>

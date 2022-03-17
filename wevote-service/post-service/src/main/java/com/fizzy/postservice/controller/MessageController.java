@@ -27,6 +27,11 @@ public class MessageController {
     @Autowired
     MessageService messageService;
 
+    @PostMapping("/insert")
+    public boolean insertOne(@RequestBody Message message) {
+        return messageService.insertOne(message);
+    }
+
 
     /**
      * 删除

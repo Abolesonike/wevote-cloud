@@ -71,6 +71,9 @@
             <if test="username!=null and username!=''">
                 AND u.username LIKE CONCAT('%', CONCAT(#{username}, '%'))
             </if>
+            <if test="tel!=null and tel!=0">
+                AND u.tel = #{tel}
+            </if>
             <if test="enableStatus!=null and enableStatus!=0">
                 AND u.enable_status = #{enableStatus}
             </if>
