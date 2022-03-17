@@ -70,10 +70,16 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        SysUser sysUser = sysUserService.selectUserByName(token.getUsername());
-        if(sysUser != null){
-            return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),getName());
+        SysUser user = new SysUser();
+        user.setTel(token.getUsername());
+        try {
+            SysUser sysUser = sysUserService.selectAll(user).get(0);
+            if(sysUser != null){
+                return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),getName());
+            }
+            return null;
+        } catch (IndexOutOfBoundsException e){
+            throw new UnknownAccountException();
         }
-        return null;
     }
 }
