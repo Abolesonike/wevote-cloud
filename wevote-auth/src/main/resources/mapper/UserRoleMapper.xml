@@ -25,6 +25,12 @@
         select role_id from user_role where user_id = #{userId}
     </select>
 
+    <!-- 查询指定用户的角色 -->
+    <select id="selectCommRoleByUserId" resultType="java.lang.Integer" >
+        select type from community_admin where user_id = #{userId} and community_id = #{communityId}
+    </select>
+
+
     <!-- 更具角色id查询 -->
     <select id="selectByRoleId" parameterType="java.lang.Integer" resultType="java.util.List" resultMap="BaseResultMap" >
         select * from user_role where role_id = #{roleId}

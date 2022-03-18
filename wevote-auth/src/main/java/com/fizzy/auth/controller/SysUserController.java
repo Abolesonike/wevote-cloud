@@ -5,6 +5,7 @@ import com.fizzy.auth.service.SysUserService;
 import com.fizzy.auth.service.UserRoleService;
 import com.fizzy.core.entity.SysUser;
 import com.fizzy.core.entity.UserRole;
+import com.fizzy.redis.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +28,9 @@ public class SysUserController {
 
     @Autowired
     UserRoleService userRoleService;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @GetMapping("/findById")
     public SysUser findById(@RequestParam long id){
@@ -127,5 +131,15 @@ public class SysUserController {
     public String getLoginUserName(){
         SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         return String.valueOf(sysUser.getUsername());
+    }
+
+    @GetMapping("/managerCommId")
+    public boolean managerCommId(@RequestParam String communityId,@RequestParam String userId, @RequestParam int type) {
+        if (type == 1) {
+            redisUtil.set("userManagerCommId:"+userId,communityId);
+        } else {
+            redisUtil.delete("userManagerCommId:"+userId);
+        }
+        return true;
     }
 }

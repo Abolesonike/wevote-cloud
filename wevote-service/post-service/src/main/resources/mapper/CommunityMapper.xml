@@ -104,7 +104,7 @@
         delete from community where id = #{id}
     </delete>
 
-    <insert id="insertOne" parameterType="com.fizzy.core.entity.Community" useGeneratedKeys="true">
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.Community" useGeneratedKeys="true" keyProperty="id">
         insert into community (name, introduction, cover_url, status,
                                owner, classification, creation_date)
         values (#{name}, #{introduction}, #{coverUrl}, #{status},
@@ -147,7 +147,7 @@
         SELECT c.*
         FROM community_admin ca
                  LEFT JOIN community c ON ca.community_id = c.id
-        WHERE ca.user_id = #{userId}
+        WHERE ca.user_id = #{userId} and c.status = 2
     </select>
 
     <select id="checkUserIsJoined" resultType="java.lang.Long">

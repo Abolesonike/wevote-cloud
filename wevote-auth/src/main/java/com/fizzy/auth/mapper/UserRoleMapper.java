@@ -26,6 +26,8 @@ public interface UserRoleMapper {
      */
     Integer selectRoleByUserId(int id);
 
+    Integer selectCommRoleByUserId(int userId,int communityId);
+
     /**
      * 根据角色查询
      * @param roleId id

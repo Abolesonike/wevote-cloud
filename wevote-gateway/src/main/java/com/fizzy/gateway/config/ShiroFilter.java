@@ -18,11 +18,14 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * Author FizzyElf
- * Date 2021/10/18 16:57
+ * @author FizzyElf
+ * @date 2021/10/18 16:57
  * GateWay过滤器
  * 拦截所有GateWay的请求，进行鉴权
  */
@@ -36,6 +39,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
 
     ExecutorService executorService = Executors.newFixedThreadPool(1);
+
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -51,13 +55,14 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         System.out.println(token+userCode);
         String requestUrl = exchange.getRequest().getURI().getRawPath();
         System.out.println("requestUrl:"+requestUrl);
-
         // 1.检查是否是 不需要登录 或者 不需要权限 的接口
         if("/login".equals(requestUrl)
                 ||"/signIn".equals(requestUrl)
                 || "/verifyCode".equals(requestUrl)
                 || "/messageCode".equals(requestUrl)
-                || "/resetPassword".equals(requestUrl)   ){
+                || "/resetPassword".equals(requestUrl)
+                || "/logout".equals(requestUrl)
+                || "/sysUser/managerCommId".equals(requestUrl)){
             return chain.filter(exchange);
         }
 

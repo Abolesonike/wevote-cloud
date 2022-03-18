@@ -59,7 +59,7 @@ public class CommApplyService {
 
     public boolean agree(CommunityApply communityApply){
         CommunityAdmin commAdmin = new CommunityAdmin();
-        commAdmin.setType(3);
+        commAdmin.setType(4);
         commAdmin.setUserId(communityApply.getApplyUserId());
         commAdmin.setCommunityId(communityApply.getApplyCommunity());
         Date date = new Date();

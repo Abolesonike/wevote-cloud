@@ -6,6 +6,7 @@ import com.fizzy.auth.service.SysUserService;
 import com.fizzy.auth.service.UserRoleService;
 import com.fizzy.core.entity.RolePerms;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.redis.utils.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -35,6 +36,9 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     RolePermsService rolePermsService;
 
+    @Autowired
+    RedisUtil redisUtil;
+
     /**
      * 角色的权限信息，授权时使用
      * @param principalCollection 授权
@@ -48,8 +52,16 @@ public class UserRealm extends AuthorizingRealm {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser)subject.getPrincipal();
         SysUser dbUser = sysUserService.selectUserByName(sysUser.getUsername());
-        // 获取当前用户的角色
-        int sysRole = userRoleService.selectRoleByUserId(dbUser.getUserId().intValue());
+        String managerCommId = redisUtil.get("userManagerCommId:" + dbUser.getUserId());
+        int sysRole = 0;
+        if (managerCommId != null) {
+            // 获取当前用户的角色
+            sysRole = userRoleService.selectCommRoleByUserId(dbUser.getUserId().intValue(),Integer.parseInt(managerCommId));
+
+        } else {
+            // 获取当前用户的角色
+            sysRole = userRoleService.selectRoleByUserId(dbUser.getUserId().intValue());
+        }
         // 获取角色对应的权限
         List<RolePerms> perms = rolePermsService.selectByRoleId(sysRole);
         // 添加授权字符串
@@ -58,7 +70,6 @@ public class UserRealm extends AuthorizingRealm {
             info.addStringPermission(permName);
         }
         return info;
-
     }
 
     /**

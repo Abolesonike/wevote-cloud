@@ -112,10 +112,8 @@ public class LoginController {
     }
 
     @RequestMapping("/logout")
-    public Result logout(@RequestParam String user_name){
+    public Result logout(){
         SecurityUtils.getSubject().logout();
-
-        QueryResult queryResult = new QueryResult();
         return new Result(200);
     }
 

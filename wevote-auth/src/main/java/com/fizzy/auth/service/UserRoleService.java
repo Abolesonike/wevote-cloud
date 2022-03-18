@@ -37,6 +37,12 @@ public class UserRoleService {
     public Integer selectRoleByUserId(int id){
         return userRoleMapper.selectRoleByUserId(id);
     }
+    /**
+     * 查询指定用户的角色
+     */
+    public Integer selectCommRoleByUserId(int userId, int communityId){
+        return userRoleMapper.selectCommRoleByUserId(userId, communityId);
+    }
 
     /**
      * 检查角色是否被分配

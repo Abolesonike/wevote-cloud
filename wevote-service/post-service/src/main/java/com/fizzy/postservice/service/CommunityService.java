@@ -2,6 +2,7 @@ package com.fizzy.postservice.service;
 
 import com.fizzy.core.entity.Community;
 import com.fizzy.core.entity.CommunityAdmin;
+import com.fizzy.core.entity.Message;
 import com.fizzy.core.entity.SysUser;
 import com.fizzy.postservice.mapper.CommunityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CommunityService {
     @Autowired
     CommAdminService commAdminService;
 
+    @Autowired
+    MessageService messageService;
+
     public boolean insertOne(Community community) {
         return communityMapper.insertOne(community);
     }
@@ -33,6 +37,44 @@ public class CommunityService {
     }
 
     public boolean updateAllById(Community community) {
+        Community oldCommunity = findById(community.getId());
+        if (oldCommunity.getStatus() != community.getStatus()) {
+            // 状态发生改变发送消息给用户
+            Message message = new Message();
+            Date date = new Date();
+            message.setCreationDate(new java.sql.Timestamp(date.getTime()));
+            message.setTitle("社区状态改变通知");
+            message.setUserId((int) community.getOwner());
+            message.setIsRead(2);
+            StringBuilder content = new StringBuilder();
+            content.append("社区：");
+            content.append(community.getName());
+            content.append(",状态改变。");
+            switch ((int) community.getStatus()) {
+                case 1:
+                    content.append("社区已被管理员重新提交审核。");
+                    message.setContent(String.valueOf(content));
+                    messageService.insertOne(message);
+                    break;
+                case 2:
+                    content.append("社区已经审核通过。");
+                    message.setContent(String.valueOf(content));
+                    messageService.insertOne(message);
+                    break;
+                case 3:
+                    content.append("社区审核未通过。");
+                    message.setContent(String.valueOf(content));
+                    messageService.insertOne(message);
+                    break;
+                case 4:
+                    content.append("社区已被管理员隐藏。");
+                    message.setContent(String.valueOf(content));
+                    messageService.insertOne(message);
+                    break;
+                default:
+                    break;
+            }
+        }
         return communityMapper.updateAllById(community);
     }
 
@@ -61,8 +103,8 @@ public class CommunityService {
             CommunityAdmin communityAdmin = new CommunityAdmin();
             communityAdmin.setCommunityId(community.getId());
             communityAdmin.setUserId(community.getOwner());
-            // 设置为管理员
-            communityAdmin.setType(0);
+            // 设置为社区组长
+            communityAdmin.setType(1);
             // 将管理员插入成员表
             return  commAdminService.insertOne(communityAdmin);
         } else {
