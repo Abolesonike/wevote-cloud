@@ -18,4 +18,11 @@ public class CommAdminService {
     public boolean insertOne(CommunityAdmin communityAdmin) {
         return communityAdminMapper.insertOne(communityAdmin);
     }
+
+    public boolean update(CommunityAdmin communityAdmin) {
+        return communityAdminMapper.update(communityAdmin);
+    }
+    public boolean delete(CommunityAdmin communityAdmin) {
+        return communityAdminMapper.delete(communityAdmin);
+    }
 }

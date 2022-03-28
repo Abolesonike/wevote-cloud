@@ -32,7 +32,7 @@ public class EsController {
     /**
      * 类型
      */
-    private String esType = "post";
+    private String esType = "postVo";
 
     /**
      * 创建索引
@@ -103,7 +103,7 @@ public class EsController {
         boolQueryBuilder.should(queryBuilder);
         boolQueryBuilder.should(queryBuilder2);
         EsPage list = ElasticsearchUtil.
-                searchDataPage(indexName, esType, pageNum,pageSize,  boolQueryBuilder,"content,title,create_time", "create_time", "title");
+                searchDataPage(indexName, esType, pageNum,pageSize,  boolQueryBuilder,"content,title,create_time,name", "create_time", "title");
         return JSONObject.toJSONString(list);
     }
 

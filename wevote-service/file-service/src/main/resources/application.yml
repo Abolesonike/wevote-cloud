@@ -22,10 +22,10 @@ oss:
     accessKey: AnbwnvJGdVe033gk71ScVKY_8n_YqdiTCjN5E15Y
     secretKey: 9LfD-d-GOqwecWviVMKqdaCsBVYGWFR-OBipr-gk
     #图片名字
-    bucketPictureName: we-vote
+    bucketPictureName: we-vote-img
     #图片外部访问拦截
-    domainPicture: http://r3bpa9qft.hn-bkt.clouddn.com/
+    domainPicture: http://r90zn7z2i.bkt.clouddn.com/
     #文件名字
     bucketFileName: we-vote-file
     #文件外部访问拦截
-    domainFile: http://r3bpa9qft.hn-bkt.clouddn.com/
+    domainFile: http://r90zn7z2i.bkt.clouddn.com/

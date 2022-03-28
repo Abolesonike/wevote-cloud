@@ -94,9 +94,27 @@
     </select>
 
     <update id="updateAllById" parameterType="com.fizzy.core.entity.Community">
-        update community set name=#{name},introduction=#{introduction},cover_url=#{coverUrl},
-                             status=#{status},owner=#{owner},classification=#{classification},
-                             creation_date=#{creationDate}
+        update community
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="introduction!=null and introduction!=''">
+                introduction=#{introduction},
+            </if>
+            <if test="coverUrl!=null and coverUrl!=''">
+                cover_url=#{coverUrl},
+            </if>
+            <if test="status!=null and status!='' and status!=0">
+                status=#{status},
+            </if>
+            <if test="owner!=null and owner!='' and owner!=0">
+                owner=#{owner},
+            </if>
+            <if test="classification!=null and classification!='' and classification!=0">
+                classification=#{classification},
+            </if>
+        </set>
         where id=#{id}
     </update>
 
@@ -180,7 +198,7 @@
                 LEFT JOIN ( SELECT community_id, count(*) user_num FROM community_admin GROUP BY community_id ) t2 ON t2.community_id = c.id
         WHERE
             ca.user_id = #{userId}
-          AND ca.type != 3
+          AND ca.type != 4
     </select>
 
 </mapper>

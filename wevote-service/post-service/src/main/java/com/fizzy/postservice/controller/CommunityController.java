@@ -1,10 +1,16 @@
 package com.fizzy.postservice.controller;
 
 import com.fizzy.core.entity.Community;
+import com.fizzy.core.entity.CommunityAdmin;
 import com.fizzy.core.entity.CommunityClassification;
+import com.fizzy.core.entity.CommunityCovers;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.core.utils.Result;
+import com.fizzy.postservice.mapper.CommunityCoversMapper;
+import com.fizzy.postservice.service.CommAdminService;
 import com.fizzy.postservice.service.CommClassificationService;
 import com.fizzy.postservice.service.CommunityService;
+import com.fizzy.redis.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +36,12 @@ import java.util.List;
 public class CommunityController {
     @Autowired
     CommunityService communityService;
+
+    @Autowired
+    CommAdminService commAdminService;
+
+    @Autowired
+    CommunityCoversMapper communityCoversMapper;
 
 
     /**
@@ -132,4 +144,32 @@ public class CommunityController {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(communityService.managerCommunity(userId));
     }
+
+    @PostMapping("/changeCommunityRole")
+    public boolean changeCommunityRole(@RequestBody CommunityAdmin communityAdmin) {
+        return commAdminService.update(communityAdmin);
+    }
+
+    @PostMapping("/removeMember")
+    public boolean removeMember(@RequestBody CommunityAdmin communityAdmin) {
+        return communityService.removeMember(communityAdmin);
+    }
+
+    @PostMapping("/uploadCover")
+    public boolean uploadCover(@RequestBody CommunityCovers communityCovers) {
+        return communityCoversMapper.insertOne(communityCovers);
+    }
+
+    @PutMapping("/changeCover")
+    public Result changeCover(@RequestBody CommunityCovers communityCovers) {
+        return communityService.changeCover(communityCovers);
+    }
+
+    @PutMapping("/changeIntroduction")
+    public boolean changeIntroduction(@RequestBody Community community) {
+        return communityService.updateAllById(community);
+    }
+
+
+
 }

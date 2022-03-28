@@ -5,6 +5,7 @@ import com.fizzy.auth.service.SysUserService;
 import com.fizzy.auth.service.UserRoleService;
 import com.fizzy.core.entity.SysUser;
 import com.fizzy.core.entity.UserRole;
+import com.fizzy.core.utils.Result;
 import com.fizzy.redis.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -142,4 +143,15 @@ public class SysUserController {
         }
         return true;
     }
+
+    @PutMapping("/updateUsername")
+    public Result updateUsername(@RequestBody SysUser sysUser) {
+        return sysUserService.updateUsernameById(sysUser);
+    }
+
+    @PutMapping("/updateEmail")
+    public Result updateEmail(@RequestBody SysUser sysUser) {
+        return sysUserService.updateEmailById(sysUser);
+    }
+
 }

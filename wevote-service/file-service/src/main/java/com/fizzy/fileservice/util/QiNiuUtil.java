@@ -21,7 +21,7 @@ public class QiNiuUtil {
      */
     public String upload(FileInputStream file, String fileType) throws Exception {
         // zone0华东区域,zone1是华北区域,zone2是华南区域
-        Configuration cfg = new Configuration(Region.region2());
+        Configuration cfg = new Configuration(Region.regionAs0());
         UploadManager uploadManager = new UploadManager(cfg);
         // 生成上传凭证，然后准备上传
         Auth auth = Auth.create(Constant.accessKey, Constant.secretKey);

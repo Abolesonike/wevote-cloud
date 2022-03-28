@@ -2,8 +2,10 @@ package com.fizzy.auth.service;
 
 import com.fizzy.auth.mapper.SysUserMapper;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.core.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -69,5 +71,35 @@ public class SysUserService {
      */
     public Boolean updateById(SysUser sysUser){
         return sysUserMapper.updateById(sysUser);
+    }
+
+    /**
+     * 修改用户名
+     */
+    public Result updateUsernameById(SysUser sysUser){
+        if(selectUserByName(sysUser.getUsername()) != null) {
+            return new Result(203,"用户名已被使用！");
+        }
+        if(sysUserMapper.updateById(sysUser)) {
+            return new Result(200,"成功！");
+        } else {
+            return new Result(500,"失败！");
+        }
+    }
+
+    /**
+     * 修改邮箱
+     */
+    public Result updateEmailById(SysUser sysUser){
+        SysUser user = new SysUser();
+        user.setEmail(sysUser.getEmail());
+        if(CollectionUtils.isEmpty(selectAll(user))) {
+            return new Result(203,"邮箱已被使用！");
+        }
+        if(sysUserMapper.updateById(sysUser)) {
+            return new Result(200,"成功！");
+        } else {
+            return new Result(500,"失败！");
+        }
     }
 }

@@ -57,7 +57,6 @@ public class UserRealm extends AuthorizingRealm {
         if (managerCommId != null) {
             // 获取当前用户的角色
             sysRole = userRoleService.selectCommRoleByUserId(dbUser.getUserId().intValue(),Integer.parseInt(managerCommId));
-
         } else {
             // 获取当前用户的角色
             sysRole = userRoleService.selectRoleByUserId(dbUser.getUserId().intValue());

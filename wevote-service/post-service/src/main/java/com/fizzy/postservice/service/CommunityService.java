@@ -2,8 +2,11 @@ package com.fizzy.postservice.service;
 
 import com.fizzy.core.entity.Community;
 import com.fizzy.core.entity.CommunityAdmin;
+import com.fizzy.core.entity.CommunityCovers;
 import com.fizzy.core.entity.Message;
 import com.fizzy.core.entity.SysUser;
+import com.fizzy.core.utils.Result;
+import com.fizzy.postservice.mapper.CommunityCoversMapper;
 import com.fizzy.postservice.mapper.CommunityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class CommunityService {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    CommunityCoversMapper communityHeadsMapper;
 
     public boolean insertOne(Community community) {
         return communityMapper.insertOne(community);
@@ -147,5 +153,58 @@ public class CommunityService {
      */
     public List<Community> managerCommunity(int userId) {
         return communityMapper.managerCommunity(userId);
+    }
+
+    /**
+     * 移除社区成员
+     * @param communityAdmin 用户
+     * @return 社区
+     */
+    public boolean removeMember(CommunityAdmin communityAdmin) {
+        Message message = new Message();
+        Date date = new Date();
+        message.setCreationDate(new java.sql.Timestamp(date.getTime()));
+        message.setTitle("社区通知");
+        message.setUserId((int) communityAdmin.getUserId());
+        message.setIsRead(2);
+        StringBuilder content = new StringBuilder();
+        Community community = findById(communityAdmin.getCommunityId());
+        content.append("来自社区：").append(community.getName()).append("，");
+        content.append("你已经被管理员移除社区！");
+        message.setContent(String.valueOf(content));
+        messageService.insertOne(message);
+        return commAdminService.delete(communityAdmin);
+    }
+
+    /**
+     * 查询历史头像
+     * @param communityId 社区id
+     * @return 结果
+     */
+    public List<CommunityCovers> selectHeads(int communityId) {
+        return communityHeadsMapper.selectByCommId(communityId);
+    }
+
+    /**
+     * 改变社区封面
+     * @param communityCovers 社区封面
+     * @return 结果
+     */
+    public Result changeCover(CommunityCovers communityCovers) {
+        Community community = new Community();
+        community.setId(communityCovers.getCommunityId());
+        community.setCoverUrl(communityCovers.getCoverUrl());
+        communityMapper.updateAllById(community);
+        return new Result(200,"成功");
+    }
+
+    /**
+     * 改变社区介绍
+     * @param community 社区
+     * @return 结果
+     */
+    public Result changeIntroduction(Community community) {
+        communityMapper.updateAllById(community);
+        return new Result(200,"成功");
     }
 }

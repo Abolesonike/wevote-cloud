@@ -8,6 +8,7 @@
         <!-- 用result属性来映射非主键字段 -->
         <result column="from_user_id" jdbcType="INTEGER" property="fromUserId"/>
         <result column="from_user_name" jdbcType="VARCHAR" property="fromUserName"/>
+        <result column="from_user_head" jdbcType="VARCHAR" property="fromUserHead"/>
         <result column="to_user_id" jdbcType="INTEGER" property="toUserId"/>
         <result column="to_user_name" jdbcType="VARCHAR" property="toUserName"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
@@ -22,11 +23,13 @@
     <!--查找所有回复-->
     <select id="select" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
         SELECT c.*,
-               t1.from_user_name
+               t1.from_user_name,
+               t1.from_user_head
         FROM COMMENT c,
              (
                  SELECT c.id,
-                        u.username from_user_name
+                        u.username from_user_name,
+                        u.head_url from_user_head
                  FROM COMMENT c
                           LEFT JOIN sys_user u ON c.from_user_id = u.user_id
              ) t1
@@ -74,11 +77,13 @@
     <select id="findBy2or3AndBelong" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
         SELECT c.*,
                t1.from_user_name,
+               t1.from_user_head,
                t2.to_user_name
         FROM COMMENT c,
              (
                  SELECT c.id,
-                        u.username from_user_name
+                        u.username from_user_name,
+                        u.head_url from_user_head
                  FROM COMMENT c
                           LEFT JOIN sys_user u ON c.from_user_id = u.user_id
              ) t1,
@@ -99,11 +104,13 @@
     <select id="findByReplayTypeAndBelong" parameterType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
         SELECT c.*,
                t1.from_user_name,
+               t1.from_user_head,
                t2.to_user_name
         FROM COMMENT c,
              (
                  SELECT c.id,
-                        u.username from_user_name
+                        u.username from_user_name,
+                        u.head_url from_user_head
                  FROM COMMENT c
                           LEFT JOIN sys_user u ON c.from_user_id = u.user_id
              ) t1,

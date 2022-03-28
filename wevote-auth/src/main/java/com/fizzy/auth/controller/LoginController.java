@@ -97,6 +97,7 @@ public class LoginController {
         Date nowDate = new Date();
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(nowDate.getTime());
         sysUser.setCreateTime(sqlDate);
+        sysUser.setEnableStatus("1");
         sysUserService.insertOne(sysUser);
         UserRole userRole = new UserRole();
         userRole.setUserId(sysUser.getUserId());

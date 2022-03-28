@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fizzy.postservice.mapper.CommunityCoversMapper">
+    <resultMap id="BaseResultMap" type="com.fizzy.core.entity.CommunityCovers">
+        <!-- 用id属性来映射主键字段 -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <!-- 用result属性来映射非主键字段 -->
+        <result column="community_id" jdbcType="INTEGER" property="communityId" />
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl" />
+    </resultMap>
+
+    <insert id="insertOne" parameterType="com.fizzy.core.entity.CommunityCovers" useGeneratedKeys="true">
+        insert into community_covers (community_id, cover_url)
+        values (#{communityId}, #{coverUrl})
+    </insert>
+
+    <!--根据status查找所有帖子-->
+    <select id="selectByCommId" parameterType="java.lang.Integer" resultType="com.fizzy.core.entity.CommunityCovers" resultMap="BaseResultMap">
+        select * from community_covers where community_id = #{communityId}
+    </select>
+
+    <!--根据status查找所有帖子-->
+    <select id="selectByCommIdAndUrl" resultType="com.fizzy.core.entity.CommunityCovers" resultMap="BaseResultMap">
+        select * from community_covers where community_id = #{communityId} and cover_url = #{coverUrl}
+    </select>
+
+    <delete id="deleteById" parameterType="com.fizzy.core.entity.CommunityCovers">
+        delete from community_covers where id=#{id}
+    </delete>
+
+</mapper>

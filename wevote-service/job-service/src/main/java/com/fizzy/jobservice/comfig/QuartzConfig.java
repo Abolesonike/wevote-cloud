@@ -32,8 +32,8 @@ public class QuartzConfig {
     @Bean
     public Trigger updateLatestPostHeatTrigger() {
         // 每小时
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 0 */1 * * ?");
-        //CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("*/30 * * * * ?");
+        // CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 0 */1 * * ?");
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("*/30 * * * * ?");
         return TriggerBuilder.newTrigger()
                 .forJob(updateLatestPostHeatDetail())
                 //关联上述的JobDetail

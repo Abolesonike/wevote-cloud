@@ -19,6 +19,8 @@ public class Comment {
    */
   private String fromUserName;
 
+  private String fromUserHead;
+
   private int toUserId;
 
   /**

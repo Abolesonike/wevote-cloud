@@ -11,12 +11,16 @@
         <result column="type" jdbcType="INTEGER" property="type" />
     </resultMap>
 
-
-
     <insert id="insertOne" parameterType="com.fizzy.core.entity.CommunityAdmin" useGeneratedKeys="true">
-        insert into community_admin (community_id, user_id, type)
-        values (#{communityId}, #{userId}, #{type})
+        insert into community_admin (community_id, user_id,join_time, type)
+        values (#{communityId}, #{userId}, #{joinTime}, #{type})
     </insert>
-
+    <update id="update" parameterType="com.fizzy.core.entity.CommunityAdmin">
+        update community_admin set community_id=#{communityId},user_id=#{userId},type=#{type}
+        where  community_id=#{communityId} and user_id=#{userId}
+    </update>
+    <delete id="delete" parameterType="com.fizzy.core.entity.CommunityAdmin">
+        delete from community_admin where community_id=#{communityId} and user_id=#{userId}
+    </delete>
 
 </mapper>

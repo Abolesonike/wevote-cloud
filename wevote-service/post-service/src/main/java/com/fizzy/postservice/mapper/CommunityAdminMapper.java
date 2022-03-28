@@ -19,5 +19,19 @@ public interface CommunityAdminMapper {
      * @return 是否成功
      */
     boolean insertOne(CommunityAdmin communityAdmin);
+    /**
+     * 更新一条
+     * @param communityAdmin 插入数据
+     * @return 是否成功
+     */
+    boolean update(CommunityAdmin communityAdmin);
+    /**
+     * 删除一条
+     * @param communityAdmin 插入数据
+     * @return 是否成功
+     */
+    boolean delete(CommunityAdmin communityAdmin);
+
+
 
 }
