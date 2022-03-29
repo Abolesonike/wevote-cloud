@@ -9,16 +9,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="wevote-common-es" />
-        <module name="wevote-gateway" />
-        <module name="file-service" />
         <module name="job-service" />
         <module name="wevote-commin-aliyun" />
-        <module name="wevote-common" />
         <module name="post-service" />
         <module name="comment-service" />
-        <module name="WeVote" />
+        <module name="wevote-gateway" />
         <module name="wevote-auth" />
         <module name="wevote-common-redis" />
+        <module name="file-service" />
         <module name="wevote-core" />
       </profile>
     </annotationProcessing>
