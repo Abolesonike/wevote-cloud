@@ -13,10 +13,8 @@
         <module name="file-service" />
         <module name="job-service" />
         <module name="wevote-commin-aliyun" />
-        <module name="wevote-common" />
         <module name="post-service" />
         <module name="comment-service" />
-        <module name="WeVote" />
         <module name="wevote-auth" />
         <module name="wevote-common-redis" />
         <module name="wevote-core" />
@@ -44,7 +42,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="WeVote" options="-parameters" />
+      <module name="WeVote" options="" />
       <module name="comment-service" options="-parameters" />
       <module name="file-service" options="-parameters" />
       <module name="job-service" options="-parameters" />
@@ -53,7 +51,7 @@
       <module name="user-service" options="-parameters" />
       <module name="wevote-auth" options="-parameters" />
       <module name="wevote-commin-aliyun" options="-parameters" />
-      <module name="wevote-common" options="-parameters" />
+      <module name="wevote-common" options="" />
       <module name="wevote-common-es" options="-parameters" />
       <module name="wevote-common-qiniu" options="-parameters" />
       <module name="wevote-common-redis" options="-parameters" />

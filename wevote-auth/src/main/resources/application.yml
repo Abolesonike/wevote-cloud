@@ -6,10 +6,10 @@ spring:
     name: auth-service
   redis:
     host: 47.108.113.58 #Redis服务器地址
+    password: good18882336322
     port: 6379 #Redis服务器连接端口
     database: 0 #Redis数据库索引（默认为0）
     timeout: 180000 #连接超时时间（毫秒）
-    password: good18882336322
   cloud:
     loadbalancer:
       enabled: true

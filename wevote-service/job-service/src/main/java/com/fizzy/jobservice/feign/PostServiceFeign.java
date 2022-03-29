@@ -2,7 +2,7 @@ package com.fizzy.jobservice.feign;
 
 import com.fizzy.core.entity.Message;
 import com.fizzy.core.entity.Post;
-import com.fizzy.postservice.entity.PostVo;
+import com.fizzy.core.entity.PostVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

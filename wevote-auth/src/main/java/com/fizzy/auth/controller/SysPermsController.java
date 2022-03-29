@@ -3,17 +3,12 @@ package com.fizzy.auth.controller;
 import com.fizzy.auth.entity.PermsTreeNode;
 import com.fizzy.auth.service.SysPermsService;
 import com.fizzy.core.entity.SysPerms;
-import com.fizzy.core.entity.SysRole;
-import com.fizzy.core.entity.SysUser;
 import com.fizzy.core.utils.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
