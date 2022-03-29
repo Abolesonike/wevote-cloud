@@ -5,8 +5,8 @@ spring:
   application:
     name: auth-service
   redis:
-    host: 47.108.113.58 #Redis服务器地址
-    port: 6379 #Redis服务器连接端口
+    url: redis://Good18882336322@r-2vcfvtkk2p3t1j95lm.redis.cn-chengdu.rds.aliyuncs.com:6379
+    username: r-2vcfvtkk2p3t1j95lm
     database: 0 #Redis数据库索引（默认为0）
     timeout: 180000 #连接超时时间（毫秒）
     password: good18882336322
@@ -17,9 +17,9 @@ spring:
       discovery:
         server-addr: http://47.108.113.58:8848/
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/we-vote?characterEncoding=UTF-8
+    url: jdbc:mysql://rm-2vcvh24t0l5f72556.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
     username: root
-    password: good18882336322
+    password: Good18882336322
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:

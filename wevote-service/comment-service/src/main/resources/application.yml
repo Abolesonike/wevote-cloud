@@ -11,9 +11,9 @@ spring:
       discovery:
         server-addr: http://47.108.113.58:8848/
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/we-vote?characterEncoding=UTF-8
+    url: jdbc:mysql://rm-2vcvh24t0l5f72556.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
     username: root
-    password: good18882336322
+    password: Good18882336322
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:

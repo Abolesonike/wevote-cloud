@@ -5,8 +5,8 @@ spring:
   application:
     name: gateway
   redis:
-    host: 47.108.113.58 #Redis服务器地址
-    port: 6379 #Redis服务器连接端口
+    url: redis://Good18882336322@r-2vcfvtkk2p3t1j95lm.redis.cn-chengdu.rds.aliyuncs.com:6379
+    username: r-2vcfvtkk2p3t1j95lm
     database: 0 #Redis数据库索引（默认为0）
     timeout: 180000 #连接超时时间（毫秒）
     password: good18882336322
@@ -52,7 +52,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:8080"
+            allowedOrigins: "http://www.wevote.site"
             allowCredentials: true
             allowedHeaders: "*"
             allowedMethods:
