@@ -24,8 +24,8 @@ oss:
     #图片名字
     bucketPictureName: we-vote-img
     #图片外部访问拦截
-    domainPicture: http://r90zn7z2i.bkt.clouddn.com/
+    domainPicture: http://img.wevote.site/
     #文件名字
     bucketFileName: we-vote-file
     #文件外部访问拦截
-    domainFile: http://r90zn7z2i.bkt.clouddn.com/
+    domainFile: http://img.wevote.site/

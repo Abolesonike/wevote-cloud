@@ -16,6 +16,7 @@ spring:
     nacos:
       discovery:
         server-addr: http://47.108.113.58:8848/
+        # ip: 47.108.113.58
   datasource:
     url: jdbc:mysql://rm-2vcvh24t0l5f72556.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
     username: root

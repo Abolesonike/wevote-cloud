@@ -16,6 +16,7 @@ spring:
     nacos:
       discovery:
         server-addr: http://47.108.113.58:8848/ # 注册到Nacos中
+        # ip: 47.108.113.58
     gateway:
       routes:
         - id: gateway-user-service # 路由唯一表示
@@ -52,7 +53,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://www.wevote.site"
+            allowedOrigins: "http://www.wevote.site/"
             allowCredentials: true
             allowedHeaders: "*"
             allowedMethods:
