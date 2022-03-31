@@ -13,6 +13,7 @@ public class PostVo {
     private int id;
     private String title;
     private String postUserName;
+    private String postUserHead;
     private String content;
     private java.sql.Timestamp createTime;
     private int likes;
