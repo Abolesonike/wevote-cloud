@@ -22,6 +22,7 @@
         <!-- 用result属性来映射非主键字段 -->
         <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="username" jdbcType="VARCHAR" property="postUserName" />
+        <result column="user_head" jdbcType="VARCHAR" property="postUserHead" />
         <result column="content" jdbcType="VARCHAR" property="content" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="likes" jdbcType="INTEGER" property="likes" />
@@ -75,6 +76,7 @@
         p.votes,
         p.`status`,
         u.username,
+        u.head_url user_head,
         c.`name`
         FROM
         post p
