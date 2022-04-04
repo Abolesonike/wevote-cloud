@@ -141,9 +141,9 @@ public class LoginController {
         // 检查号码是否注册
         SysUser  sysUse = new SysUser();
         sysUse.setTel(phoneNumber);
-//        if (!CollectionUtils.isEmpty(sysUserService.selectAll(sysUse))) {
-//            return new Result(201,"该号码已经注册！");
-//        }
+        if (!CollectionUtils.isEmpty(sysUserService.selectAll(sysUse))) {
+            return new Result(201,"该号码已经注册！");
+        }
         String coed =  String.valueOf((int)((Math.random()*9+1)*100000));
 //        com.aliyun.dysmsapi20170525.Client client = AliyunMessageClient.createClient(
 //                "LTAI5t6Z8uvgTr8KPNyg5gK5", "UwkVykTht8JN2YdOE9P3QF4DDAmrAh");
@@ -161,7 +161,7 @@ public class LoginController {
 //            return new Result(203,sendSmsResponse.getBody().getMessage());
 //        }
         redisUtil.setExpire("phoneVerifyCode:" + phoneNumber,coed,30,TimeUnit.MINUTES);
-        return new Result(200,"验证码发送成功！");
+        return new Result(200,"验证码发送成功！你的验证码为：" + coed);
 
     }
 

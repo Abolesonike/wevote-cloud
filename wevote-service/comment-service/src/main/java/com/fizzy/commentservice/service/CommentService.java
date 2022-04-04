@@ -5,6 +5,7 @@ import com.fizzy.commentservice.feign.SysUserServiceFeign;
 import com.fizzy.commentservice.mapper.CommentMapper;
 import com.fizzy.core.entity.Comment;
 import com.fizzy.core.entity.Message;
+import com.fizzy.core.entity.Post;
 import com.fizzy.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,53 @@ public class CommentService {
         return commentMapper.insertOneReplay(replay);
     }
 
+    public boolean changeStatus(Comment comment) {
+        Message message = new Message();
+        Date date = new Date();
+        message.setCreationDate(new java.sql.Timestamp(date.getTime()));
+        message.setTitle("评论状态改变通知");
+        message.setUserId(comment.getFromUserId());
+        message.setIsRead(2);
+        StringBuilder content = new StringBuilder();
+        content.append("帖子《");
+        if (comment.getReplayType() == 1) {
+            content.append(postFeign.postDetail(comment.getBelong()).getTitle());
+        } else {
+            content.append(postFeign.postDetail(findById(comment.getBelong()).getBelong()).getTitle());
+        }
+        content.append("》，内容：“").append(comment.getContent()).append("”。");
+        switch (comment.getStatus()) {
+            case 3:
+                content.append("评论审核未通过，");
+                content.append("理由为：”");
+                content.append(comment.getStatusReason());
+                content.append("“。");
+                message.setContent(String.valueOf(content));
+                postFeign.insertMessage(message);
+                break;
+            case 4:
+                content.append("评论已被管理员删除，");
+                content.append("理由为：”");
+                content.append(comment.getStatusReason()).append("”。");
+                message.setContent(String.valueOf(content));
+                postFeign.insertMessage(message);
+                break;
+            case 5:
+                content.append("评论被举报");
+                content.append("理由为：");
+                content.append(comment.getStatusReason());
+                message.setContent(String.valueOf(content));
+                postFeign.insertMessage(message);
+                break;
+            default:
+                break;
+        }
+        return updateAll(comment);
+    }
+
+    public boolean updateAll(Comment comment){
+        return commentMapper.updateAll(comment);
+    };
     public boolean replayLikeAdd(int id){
         return commentMapper.replayLikeAdd(id);
     }

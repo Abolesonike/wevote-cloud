@@ -54,5 +54,12 @@ public interface CommentMapper {
      */
     Boolean insertOneReplay(Comment replay);
 
+    /**
+     * 更新内容和状态
+     * @param comment 跟新数据
+     * @return 是否成功
+     */
+    Boolean updateAll(Comment comment);
+
     Boolean replayLikeAdd(int id);
 }

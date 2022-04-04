@@ -6,10 +6,12 @@ import com.fizzy.core.entity.Post;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,7 +71,26 @@ public class CommentController {
         return commentService.insertOneReplay(comment);
     }
 
-    @CrossOrigin
+    /**
+     * 改变帖子的状态
+     *
+     * @param id     主键
+     * @param status 需要改变的状态
+     * @return 是否成功
+     */
+    @GetMapping("/changeStatus")
+    public boolean changeStatus(@RequestParam int id, @RequestParam int status, @RequestParam String reason) {
+        // 查询帖子
+        Comment comment = commentService.findById(id);
+        // 改变状态
+        comment.setStatus(status);
+        if (!ObjectUtils.isEmpty(reason) && !"".equals(reason)) {
+            comment.setStatusReason(reason);
+        }
+        // 更新全部字段
+        return commentService.changeStatus(comment);
+    }
+
     @PostMapping("/api/replayLike")
     @ResponseBody
     public boolean replayLikeAdd(@RequestBody HashMap<String,Integer> id){

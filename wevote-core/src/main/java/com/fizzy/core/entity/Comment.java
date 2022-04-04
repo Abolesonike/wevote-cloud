@@ -40,6 +40,8 @@ public class Comment {
 
   private int status;
 
+  private String statusReason;
+
   private java.sql.Timestamp createTime;
   private java.sql.Timestamp createTimeStart;
   private java.sql.Timestamp createTimeEnd;

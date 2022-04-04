@@ -1,6 +1,7 @@
 package com.fizzy.commentservice.feign;
 
 import com.fizzy.core.entity.Message;
+import com.fizzy.core.entity.Post;
 import com.fizzy.core.entity.SysUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,4 +24,12 @@ public interface PostServiceFeign {
      */
     @PostMapping("/message/insert")
     Boolean insertMessage(@RequestBody Message message);
+
+    /**
+     * 查询帖子详情
+     * @param id 帖子id
+     * @return 帖子详情
+     */
+    @GetMapping("/post/findById")
+    Post postDetail(@RequestParam int id);
 }
