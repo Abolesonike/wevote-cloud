@@ -59,7 +59,7 @@
 
 
     <!--通过id查找-->
-    <select id="findById" parameterType="com.fizzy.core.entity.Comment" resultType="com.fizzy.core.entity.Comment">
+    <select id="findById" resultType="com.fizzy.core.entity.Comment" resultMap="BaseResultMap">
         select *
         from comment
         where id = #{id}
@@ -97,6 +97,7 @@
           AND t2.id = c.id
           AND (replay_type = 2 or replay_type = 3)
           AND belong = #{belong}
+          AND (status = 1 or status = 2)
         order by c.create_time
     </select>
 
@@ -124,6 +125,7 @@
           AND t2.id = c.id
           AND c.replay_type = #{replayType}
           AND c.belong = #{belong}
+          AND (status = 1 or status = 2)
         order by c.create_time desc
     </select>
 
@@ -134,6 +136,12 @@
         values (#{fromUserId}, #{toUserId}, #{content}, #{likeCount}, #{replayType}, #{belong},
                 #{toComment}, #{createTime},#{status})
     </insert>
+
+    <!-- 全部更新 -->
+    <update id="updateAll" parameterType="com.fizzy.core.entity.Comment">
+        update comment set content=#{content},status=#{status}
+        where id=#{id}
+    </update>
 
     <!-- 点赞 -->
     <update id="replayLikeAdd">
