@@ -165,6 +165,29 @@ public class LoginController {
 
     }
 
+    @GetMapping("/messageCodeFind")
+    public Result messageCodeFind(@RequestParam String phoneNumber) throws Exception {
+        String coed =  String.valueOf((int)((Math.random()*9+1)*100000));
+//        com.aliyun.dysmsapi20170525.Client client = AliyunMessageClient.createClient(
+//                "LTAI5t6Z8uvgTr8KPNyg5gK5", "UwkVykTht8JN2YdOE9P3QF4DDAmrAh");
+//        SendSmsRequest sendSmsRequest = new SendSmsRequest()
+//                .setSignName("阿里云短信测试")
+//                .setTemplateCode("SMS_154950909")
+//                .setPhoneNumbers(phoneNumber)
+//                .setTemplateParam("{\"code\":\""+ coed +"\"}");
+//        // 复制代码运行请自行打印 API 的返回值
+//        SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
+//        if ("OK".equals(sendSmsResponse.getBody().getCode())) {
+//            redisUtil.setExpire("phoneVerifyCode:" + phoneNumber,coed,30,TimeUnit.MINUTES);
+//            return new Result(200,"验证码发送成功！");
+//        } else {
+//            return new Result(203,sendSmsResponse.getBody().getMessage());
+//        }
+        redisUtil.setExpire("phoneVerifyCode:" + phoneNumber,coed,30,TimeUnit.MINUTES);
+        return new Result(200,"验证码发送成功！你的验证码为：" + coed);
+
+    }
+
     @GetMapping("/resetPassword")
     public Result resetPassword(@RequestParam String tel,
                                   @RequestParam String password,
