@@ -88,7 +88,7 @@ public class CommentService {
             message.setContent(content);
             postFeign.insertMessage(message);
         }
-        // redisUtil.setSet("postHeatUpdateList", replay.getBelong());
+        redisUtil.setSet("postHeatUpdateList", replay.getBelong());
         return commentMapper.insertOneReplay(replay);
     }
 

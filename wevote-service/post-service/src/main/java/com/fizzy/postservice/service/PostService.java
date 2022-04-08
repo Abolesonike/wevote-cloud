@@ -104,6 +104,10 @@ public class PostService {
      * @return 帖子对象
      */
     public Post findPostById(int id){
+        Post post = postMapper.findPostById(id);
+        String s = redisUtil.get("postViewNumber:" + post.getId());
+        int view = Integer.parseInt(s) + 1;
+        post.setViewNumber(view);
         return postMapper.findPostById(id);
     }
 
