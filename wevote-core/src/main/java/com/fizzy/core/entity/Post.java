@@ -48,4 +48,5 @@ public class Post {
 
     private int type;
 
+    private int viewNumber;
 }
