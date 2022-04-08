@@ -106,8 +106,12 @@ public class PostService {
     public Post findPostById(int id){
         Post post = postMapper.findPostById(id);
         String s = redisUtil.get("postViewNumber:" + post.getId());
-        int view = Integer.parseInt(s) + 1;
-        post.setViewNumber(view);
+        try {
+            int view = Integer.parseInt(s) + 1;
+            post.setViewNumber(view);
+        } catch (NumberFormatException e){
+            post.setViewNumber(1);
+        }
         return post;
     }
 

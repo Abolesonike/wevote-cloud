@@ -52,5 +52,4 @@ public class Post {
      * 非数据库字段，浏览量
      */
     private int viewNumber;
-
 }
