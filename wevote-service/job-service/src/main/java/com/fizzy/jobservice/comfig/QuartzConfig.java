@@ -1,6 +1,7 @@
 package com.fizzy.jobservice.comfig;
 
 import com.fizzy.jobservice.job.UpdateLatestPostHeat;
+import com.fizzy.jobservice.job.UpdatePostHeat;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -45,9 +46,9 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail updatePostHeatDetail(){
-        return JobBuilder.newJob(UpdateLatestPostHeat.class)
+        return JobBuilder.newJob(UpdatePostHeat.class)
                 //PrintTimeJob我们的业务类
-                .withIdentity("UpdateLatestPostHeat")
+                .withIdentity("UpdatePostHeat")
                 //可以给该JobDetail起一个id
                 //每个JobDetail内都有一个Map，包含了关联到这个Job的数据，在Job类中可以通过context获取
                 .usingJobData("msg", "更新全部的帖子热度")
@@ -63,7 +64,7 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(updatePostHeatDetail())
                 //关联上述的JobDetail
-                .withIdentity("quartzTaskService")
+                .withIdentity("quartzTaskService2")
                 //给Trigger起个名字
                 .withSchedule(cronScheduleBuilder)
                 .build();
