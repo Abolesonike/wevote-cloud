@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +35,8 @@ public class UpdatePostHeat extends QuartzJobBean {
         //获取JobDetail中关联的数据
         String msg = (String) jobExecutionContext.getJobDetail().getJobDataMap().get("msg");
         System.out.println("current time :" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "---" + msg);
-        List<PostHeat> postHeatList = postHeatMapper.select(null);
+        Set<Object> ids = new HashSet<>();
+        List<PostHeat> postHeatList = postHeatMapper.select(ids);
         updateHeat(postHeatList, redisUtil, postHeatMapper);
         // System.out.println(postHeatList);
     }
