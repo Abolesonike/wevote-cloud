@@ -34,6 +34,7 @@ public class SysRoleService {
         sysRole.setRoleName(roleName);
         sysRole.setRoleDesc(roleDesc);
         sysRole.setEnableStatus("1");
+        sysRole.setType(1);
         if(sysRoleMapper.insertOne(sysRole)){
             Result result = rolePermsService.batchInsert(permsList, sysRole.getRoleId());
             return result.getCode() == 200;
@@ -68,6 +69,13 @@ public class SysRoleService {
      */
     public List<SysRole> selectAll(int enableStatus){
         return sysRoleMapper.selectAll(enableStatus);
+    }
+
+    /**
+     * 查询所有数据
+     */
+    public List<SysRole> selectAll(SysRole sysRole){
+        return sysRoleMapper.selectAll(sysRole);
     }
 
     /**

@@ -59,6 +59,11 @@ public class SysRoleController {
         }
     }
 
+    @PostMapping("/selectAll")
+    public List<SysRole> findAll(@RequestBody SysRole sysRole) {
+            return sysRoleService.selectAll(sysRole);
+    }
+
     /**
      * 分页查询所有
      * @param pageNum 页数

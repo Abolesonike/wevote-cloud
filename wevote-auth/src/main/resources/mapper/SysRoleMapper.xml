@@ -11,12 +11,13 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
         <result column="enable_status" jdbcType="VARCHAR" property="enableStatus" />
         <result column="modify_time" jdbcType="TIMESTAMP"  property="modifyTime" />
+        <result column="type" jdbcType="INTEGER" property="type" />
     </resultMap>
 
     <!-- 插入一条数据 -->
     <insert id="insertOne" parameterType="com.fizzy.core.entity.SysRole" useGeneratedKeys="true" keyProperty="roleId">
-        insert into sys_role (role_name, role_desc, create_date, enable_status, modify_time)
-        values (#{roleName}, #{roleDesc}, #{createDate}, #{enableStatus},#{modifyTime})
+        insert into sys_role (role_name, role_desc, create_date, enable_status, modify_time,type)
+        values (#{roleName}, #{roleDesc}, #{createDate}, #{enableStatus},#{modifyTime},#{type})
     </insert>
 
     <!-- 删除一条数据 -->
@@ -32,14 +33,18 @@
     <!-- 查询所有数据 -->
     <select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
         select * from sys_role
-        <if test="enableStatus != null">where enable_status = #{enableStatus}</if>
+        <where>
+            <if test="enableStatus != null">and enable_status = #{enableStatus}</if>
+            <if test="type != null and type != 0">and type != #{type}</if>
+        </where>
     </select>
 
     <!-- 修改一条数据 -->
     <update id="updateById" parameterType="com.fizzy.core.entity.SysRole">
         update sys_role set role_name = #{roleName},role_desc = #{roleDesc},
                             create_date = #{createDate},enable_status = #{enableStatus},
-                            modify_time = #{modifyTime} where role_id = #{roleId}
+                            modify_time = #{modifyTime},type = #{type}
+        where role_id = #{roleId}
     </update>
 
 </mapper>

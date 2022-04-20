@@ -82,7 +82,7 @@
         post p
         LEFT JOIN sys_user u ON u.user_id = p.post_user_id
         LEFT JOIN community c ON c.id = p.community
-        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` GROUP BY belong) t1
+        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` WHERE replay_type = 1 GROUP BY belong) t1
         ON p.id = t1.belong
         <where>
             <if test="id!=null and id!=0">
@@ -131,12 +131,13 @@
         p.votes,
         p.`status`,
         u.username,
+        u.head_url user_head,
         c.`name`
         FROM
         post p
         LEFT JOIN sys_user u ON u.user_id = p.post_user_id
         LEFT JOIN community c ON c.id = p.community
-        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment` GROUP BY belong) t1
+        LEFT JOIN (SELECT belong, count(belong) comment_num FROM `comment`  WHERE replay_type = 1 GROUP BY belong) t1
         ON p.id = t1.belong
 
                 <where>

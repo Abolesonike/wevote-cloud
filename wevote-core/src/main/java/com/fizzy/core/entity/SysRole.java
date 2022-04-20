@@ -14,4 +14,5 @@ public class SysRole {
   private java.sql.Timestamp createDate;
   private String enableStatus;
   private java.sql.Timestamp modifyTime;
+  private int type;
 }
