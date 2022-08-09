@@ -35,7 +35,7 @@ public class ElasticSearchConfig {
                     .build();
             //配置信息Settings自定义
             transportClient = new PreBuiltTransportClient(esSetting);
-            TransportAddress transportAddress = new TransportAddress(InetAddress.getByName("47.108.113.58"), Integer.parseInt("9300"));
+            TransportAddress transportAddress = new TransportAddress(InetAddress.getByName("127.0.0.1"), Integer.parseInt("9300"));
             transportClient.addTransportAddresses(transportAddress);
         } catch (Exception e) {
             System.out.println(e.toString());

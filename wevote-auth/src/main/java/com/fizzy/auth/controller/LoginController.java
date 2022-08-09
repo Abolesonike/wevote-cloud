@@ -64,7 +64,12 @@ public class LoginController {
             UsernamePasswordToken Token = new UsernamePasswordToken(tel, password, false);
             subject.login(Token);
             SysUser sysUser = (SysUser) subject.getPrincipal();
-            System.out.println(sysUser);
+            // System.out.println(sysUser);
+            if ("2".equals(sysUser.getEnableStatus())) {
+                QueryResult queryResult = new QueryResult();
+                queryResult.setData("该账户已被管理员禁用！");
+                return queryResult;
+            }
             QueryResult queryResult = new QueryResult();
             String token = subject.getSession().getId().toString();
             SecurityUtils.getSubject().getSession().setTimeout(86400000);
