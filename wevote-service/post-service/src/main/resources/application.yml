@@ -12,6 +12,26 @@ spring:
   cloud:
     loadbalancer:
       enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8849
+      datasource:
+        flow: #流控规则
+          nacos:
+            namespace: e8ff47cd-1040-4abe-871c-886af99be1d3
+            server-addr: localhost:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            namespace: e8ff47cd-1040-4abe-871c-886af99be1d3
+            server-addr: localhost:8848
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: degrade
     nacos:
       discovery:
         server-addr: http://localhost:8848/

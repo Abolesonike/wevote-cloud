@@ -1,5 +1,6 @@
 package com.fizzy.postservice.controller;
 
+import com.fizzy.core.annotation.SystemLog;
 import com.fizzy.core.entity.Post;
 import com.fizzy.core.entity.Vote;
 import com.fizzy.postservice.entity.PostVo;
@@ -240,5 +241,13 @@ public class PostController {
         PageHelper.startPage(pageNum, pageSize);
         List<PostVo> contentList = postService.selectPostVo(post);
         return new PageInfo<>(contentList);
+    }
+
+    @GetMapping("/sentinalTest")
+    public void sentinalTest() {
+        for (int i = 0; i < 100; i ++){
+            postService.sentinelTest(i);
+        }
+
     }
 }

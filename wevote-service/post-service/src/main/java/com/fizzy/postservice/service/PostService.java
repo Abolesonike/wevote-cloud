@@ -1,5 +1,15 @@
 package com.fizzy.postservice.service;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.datasource.ReadableDataSource;
+import com.alibaba.csp.sentinel.datasource.nacos.NacosDataSource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.fizzy.core.annotation.SystemLog;
 import com.fizzy.core.entity.Message;
 import com.fizzy.core.entity.Post;
 import com.fizzy.postservice.entity.PostVo;
@@ -8,10 +18,13 @@ import com.fizzy.postservice.mapper.PostMapper;
 import com.fizzy.redis.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +39,8 @@ import java.util.Set;
  * RestController注解 返回数据会被解析成json
  */
 @Service
+@SystemLog(actionType = "service", actionDescription = "调用帖子服务", functionName = "PostService")
+@Slf4j
 public class PostService {
     @Autowired
     PostMapper postMapper;
@@ -103,6 +118,7 @@ public class PostService {
      * @param id 要查询的id
      * @return 帖子对象
      */
+    @SystemLog(actionType = "query", actionDescription = "打开帖子详情", functionName = "postDetail")
     public Post findPostById(int id){
         Post post = postMapper.findPostById(id);
         String s = redisUtil.get("postViewNumber:" + post.getId());
@@ -250,5 +266,17 @@ public class PostService {
         postVo.setCommunity(communityService.findById(post.getCommunity()).getName());
         return postVo;
     }
+
+    @SentinelResource(value = "sentinelTest", blockHandler = "exceptionHandler")
+    public void sentinelTest (int i) {
+
+        log.info(i + "");
+
+    }
+
+    public void exceptionHandler(int i, BlockException blockException) {
+        log.info("阻断：" + i + ";" + blockException);
+    }
+
 
 }
