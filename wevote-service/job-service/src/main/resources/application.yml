@@ -5,24 +5,22 @@ spring:
   application:
     name: job-service
   redis:
-    # url: redis://Good18882336322@r-2vcfvtkk2p3t1j95lm.redis.cn-chengdu.rds.aliyuncs.com:6379
-    url: redis://Good18882336322@r-2vcfvtkk2p3t1j95lmpd.redis.cn-chengdu.rds.aliyuncs.com:6379
-    username: r-2vcfvtkk2p3t1j95lm
-    database: 0 #Redis数据库索引（默认为0）
-    timeout: 180000 #连接超时时间（毫秒）
-    password: good18882336322
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
+    database: 0 # Redis数据库索引（默认为0）
+    timeout: 180000 # 连接超时时间（毫秒）
+    password: ${REDIS_PASSWORD:}
   cloud:
     loadbalancer:
       enabled: true
     nacos:
       discovery:
-        server-addr: http://47.108.113.58:8848/
-        # ip: 183.221.21.238
+        server-addr: ${NACOS_SERVER_ADDR:http://localhost:8848/}
   datasource:
-    # url: jdbc:mysql://rm-2vcvh24t0l5f72556.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
-    url: jdbc:mysql://rm-2vcvh24t0l5f72556oo.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
-    username: root
-    password: Good18882336322
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:we-vote}?characterEncoding=UTF-8
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:Good18882336322}
+    ## driver-class-name: com.mysql.cj.jdbc.Driver # 注意：建议使用MySQL 8+的驱动
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:

@@ -9,11 +9,12 @@ spring:
       enabled: true
     nacos:
       discovery:
-        server-addr: http://localhost:8848/
+        server-addr: ${NACOS_SERVER_ADDR:http://localhost:8848/}
   datasource:
-    url: jdbc:mysql://rm-2vcvh24t0l5f72556.mysql.cn-chengdu.rds.aliyuncs.com:3306/we-vote?characterEncoding=UTF-8
-    username: root
-    password: Good18882336322
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:we-vote}?characterEncoding=UTF-8
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:Good18882336322}
+    ## driver-class-name: com.mysql.cj.jdbc.Driver # 注意：建议使用MySQL 8+的驱动
     driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:
