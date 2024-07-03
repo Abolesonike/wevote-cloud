@@ -151,7 +151,7 @@ public class LoginController {
         }
         String coed =  String.valueOf((int)((Math.random()*9+1)*100000));
 //        com.aliyun.dysmsapi20170525.Client client = AliyunMessageClient.createClient(
-//                "LTAI5t6Z8uvgTr8KPNyg5gK5", "UwkVykTht8JN2YdOE9P3QF4DDAmrAh");
+//                "", "");
 //        SendSmsRequest sendSmsRequest = new SendSmsRequest()
 //                .setSignName("阿里云短信测试")
 //                .setTemplateCode("SMS_154950909")
@@ -174,7 +174,7 @@ public class LoginController {
     public Result messageCodeFind(@RequestParam String phoneNumber) throws Exception {
         String coed =  String.valueOf((int)((Math.random()*9+1)*100000));
 //        com.aliyun.dysmsapi20170525.Client client = AliyunMessageClient.createClient(
-//                "LTAI5t6Z8uvgTr8KPNyg5gK5", "UwkVykTht8JN2YdOE9P3QF4DDAmrAh");
+//                "", "");
 //        SendSmsRequest sendSmsRequest = new SendSmsRequest()
 //                .setSignName("阿里云短信测试")
 //                .setTemplateCode("SMS_154950909")
