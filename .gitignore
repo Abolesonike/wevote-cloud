@@ -1,6 +1,7 @@
 # 项目排除路径
 /wevote-common/wevote-common-redis/target/
 /wevote-common/wevote-common-es/target/
+/wevote-common/wevote-commin-aliyun/target/
 /wevote-core/target/
 /wevote-gateway/target/
 /wevote-auth/target/
