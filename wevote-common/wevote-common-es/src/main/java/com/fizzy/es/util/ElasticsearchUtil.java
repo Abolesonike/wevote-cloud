@@ -326,7 +326,7 @@ public class ElasticsearchUtil {
         for (SearchHit searchHit : searchResponse.getHits().getHits()) {
             searchHit.getSourceAsMap().put("id", searchHit.getId());
             if (StringUtils.isNotEmpty(highlightField)) {
-                System.out.println("遍历 高亮结果集，覆盖 正常结果集" + searchHit.getSourceAsMap());
+                //System.out.println("遍历 高亮结果集，覆盖 正常结果集" + searchHit.getSourceAsMap());
                 String[] highlightFields = highlightField.split(",");
                 for(String field : highlightFields){
                     StringBuffer stringBuffer = new StringBuffer();

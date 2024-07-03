@@ -43,7 +43,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("进入GateWay Shiro过滤器");
+        //System.out.println("进入GateWay Shiro过滤器");
         // 请求对象
         ServerHttpRequest request = exchange.getRequest();
         // Cookie放入redis，设置过期时间一天，方便feign拦截器取得
@@ -52,9 +52,9 @@ public class ShiroFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
         String token = request.getHeaders().getFirst("token");
         String userCode = request.getHeaders().getFirst("userCode");
-        System.out.println(token+userCode);
+        //System.out.println(token+userCode);
         String requestUrl = exchange.getRequest().getURI().getRawPath();
-        System.out.println("requestUrl:"+requestUrl);
+        //System.out.println("requestUrl:"+requestUrl);
         // 1.检查是否是 不需要登录 或者 不需要权限 的接口
         if("/login".equals(requestUrl)
                 ||"/signIn".equals(requestUrl)
@@ -81,7 +81,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
 
         try {
             permitted = future.get();
-            System.out.println(permitted);
+            //System.out.println(permitted);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

@@ -125,10 +125,10 @@ public class LoginController {
 
     @GetMapping("/isPermitted")
     public boolean isPermitted(@RequestParam String requestUrl,@RequestParam String token, HttpServletRequest request) {
-        System.out.println("isPermitted");
+        //System.out.println("isPermitted");
         //方案一，不灵活（对于get请求，不允许在url通过/拼接参数，可以通过?拼接）、不易排查问题
         boolean permitted = SecurityUtils.getSubject().isPermitted(requestUrl);
-        System.out.println("是否授权：" + permitted);
+        //System.out.println("是否授权：" + permitted);
         return permitted;
     }
 

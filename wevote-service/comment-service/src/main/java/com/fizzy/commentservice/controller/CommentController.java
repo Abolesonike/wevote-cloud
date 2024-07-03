@@ -94,7 +94,7 @@ public class CommentController {
     @PostMapping("/api/replayLike")
     @ResponseBody
     public boolean replayLikeAdd(@RequestBody HashMap<String,Integer> id){
-        System.out.println(id);
+        //System.out.println(id);
         return commentService.replayLikeAdd(id.get("id"));
     }
 }
