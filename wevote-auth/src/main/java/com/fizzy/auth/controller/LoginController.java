@@ -89,7 +89,7 @@ public class LoginController {
 
     @PostMapping("/signIn")
     public Result signIn(@RequestBody SysUser sysUser,@RequestParam String verifyCode, HttpServletRequest request) {
-        String verifyCode1 = redisUtil.get("phoneVerifyCode:" + sysUser.getTel());
+        String verifyCode1 = redisUtil.get("mailVerifyCode:" + sysUser.getEmail());
         if(!verifyCode.equalsIgnoreCase(String.valueOf(verifyCode1))) {
             return new Result(202,"验证码错误！");
         }
@@ -213,6 +213,12 @@ public class LoginController {
         } catch (IndexOutOfBoundsException e){
             return new Result(203,"手机号不存在！");
         }
+    }
+
+
+    @GetMapping("/sendMailCode")
+    public Result mailCode(@RequestParam String email) {
+        return sysUserService.sendEmail(email);
     }
 
     @GetMapping("/auth/test")
