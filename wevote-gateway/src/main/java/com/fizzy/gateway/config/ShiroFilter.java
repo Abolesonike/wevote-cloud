@@ -63,6 +63,7 @@ public class ShiroFilter implements GlobalFilter, Ordered {
                 || "/messageCodeFind".equals(requestUrl)
                 || "/resetPassword".equals(requestUrl)
                 || "/logout".equals(requestUrl)
+                || "/sendMailCode".equals(requestUrl)
                 || "/sysUser/managerCommId".equals(requestUrl)){
             return chain.filter(exchange);
         }

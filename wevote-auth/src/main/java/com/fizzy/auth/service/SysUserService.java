@@ -120,7 +120,7 @@ public class SysUserService {
 
         SysUser user = new SysUser();
         user.setEmail(email);
-        if(CollectionUtils.isEmpty(selectAll(user))) {
+        if(!CollectionUtils.isEmpty(selectAll(user))) {
             return new Result(203,"邮箱已被使用！");
         }
         try {

@@ -71,6 +71,9 @@
             <if test="username!=null and username!=''">
                 AND u.username LIKE CONCAT('%', CONCAT(#{username}, '%'))
             </if>
+            <if test="email!=null and email!=''">
+                AND u.email = #{email}
+            </if>
             <if test="tel!=null and tel!=0 and tel!=''">
                 AND u.tel = #{tel}
             </if>

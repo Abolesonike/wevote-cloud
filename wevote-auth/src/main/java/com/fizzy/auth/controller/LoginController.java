@@ -45,7 +45,7 @@ public class LoginController {
     UserRoleService userRoleService;
 
     @PostMapping("/login")
-    public QueryResult loginByPwd(@RequestParam String tel,
+    public QueryResult loginByPwd(@RequestParam String email,
                                   @RequestParam String password,
                                   @RequestParam String verifyCode,
                                   HttpServletRequest request) {
@@ -59,9 +59,9 @@ public class LoginController {
             // 认证 Subject：主体
             Subject subject = SecurityUtils.getSubject();
             // 根据用户信息，组成用户令牌token
-            Md5Hash md5 = new Md5Hash(password, tel,5);
+            Md5Hash md5 = new Md5Hash(password, email,5);
             password = md5.toString();
-            UsernamePasswordToken Token = new UsernamePasswordToken(tel, password, false);
+            UsernamePasswordToken Token = new UsernamePasswordToken(email, password, false);
             subject.login(Token);
             SysUser sysUser = (SysUser) subject.getPrincipal();
             // System.out.println(sysUser);
@@ -78,7 +78,7 @@ public class LoginController {
             return queryResult;
         } catch (UnknownAccountException e) {
             QueryResult queryResult = new QueryResult();
-            queryResult.setData("电话号码不存在！");
+            queryResult.setData("邮箱未注册！");
             return queryResult;
         } catch (IncorrectCredentialsException e) {
             QueryResult queryResult = new QueryResult();
@@ -96,7 +96,7 @@ public class LoginController {
         if(sysUserService.selectUserByName(sysUser.getUsername()) != null) {
             return new Result(201,"用户名重复！");
         }
-        Md5Hash md5 = new Md5Hash(sysUser.getPassword(), sysUser.getTel(),5);
+        Md5Hash md5 = new Md5Hash(sysUser.getPassword(), sysUser.getEmail(),5);
         sysUser.setPassword(md5.toString());
         // 创建时间
         Date nowDate = new Date();

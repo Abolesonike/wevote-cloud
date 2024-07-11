@@ -81,7 +81,7 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         SysUser user = new SysUser();
-        user.setTel(token.getUsername());
+        user.setEmail(token.getUsername());
         try {
             SysUser sysUser = sysUserService.selectAll(user).get(0);
             if(sysUser != null){
